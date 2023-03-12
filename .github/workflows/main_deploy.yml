@@ -34,5 +34,8 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
+      - name: Update Expo
+        run: expo update
+
       - name: Publish build
         run: eas build --platform android --profile preview --non-interactive
