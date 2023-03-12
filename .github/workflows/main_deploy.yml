@@ -1,0 +1,38 @@
+name: Build and deploy to Azure Static Web Apps
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy_job:
+    runs-on: ubuntu-latest
+    name: EAS build
+    steps:
+      # - name: "Set ENV"
+      #   run: echo "$(BASE_URL)"
+      #   env:
+      #     BASE_URL: https://exampleapp.com
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+          cache: npm
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: $(( secrets.EXPO_TOKEN ))
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish build
+        run: eas build --platform android --profile preview
