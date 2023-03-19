@@ -1,9 +1,8 @@
 import {Alert, StyleSheet} from 'react-native';
 
-import EditScreenInfo from '../../components/EditScreenInfo';
 import {Text, View} from '../../components/Themed';
 import {Configuration, Event, EventApi} from '../../open-api/generated'
-import {RefreshControl, TouchableOpacity, FlatList, Animated, ScrollView} from 'react-native';
+import {FlatList} from 'react-native';
 import {useEffect, useState} from "react";
 import {BigButton} from "../../components/BigButton";
 import {EventCard} from "../../components/EventCard";
@@ -61,36 +60,21 @@ export default function TabOneScreen() {
     }
 
     useEffect(() => {
-        // console.log("Before getEvents");
         getEvents();
-        // fetchCars();
-        // console.log("After getEvents");
     }, []);
 
-
-    // const [_, setActiveCarId] = useRecoilState(selectedCarIdState); // used to set ID for Car Details screen
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Tab One</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)"/>
-            {/*<EditScreenInfo path="app/(tabs)/index.tsx" />*/}
             <View>
                 <FlatList
                     data={data}
-                    // keyExtractor={({id}, index) => id}
-                    /*refreshControl={
-                      <RefreshControl
-                          refreshing={isLoading}
-                          onRefresh={fetchCars}
-                      />
-                    }*/
                     renderItem={({item, index}) => (
                         <BigButton
                             index={index}
                             onPress={() => {
-                                // setActiveCarId(item.id);
-                                // navigation.navigate('CarDetailsScreen');
                             }}>
                             <EventCard event={item}/>
                         </BigButton>
