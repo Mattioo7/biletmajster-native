@@ -1,9 +1,201 @@
 {
   "events": [
     {
+      "id": 0,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "freePlace": 2,
+      "title": "Title - Title 1",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
       "id": 10,
       "freePlace": 2,
-      "title": "Short description of Event",
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "freePlace": 2,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "name": "Long description of Event",
+      "placeSchema": "Serialized place schema",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "freePlace": 2,
+      "title": "Title - Title 12 ",
       "startTime": 1673034164,
       "endTime": 1683034164,
       "name": "Long description of Event",
