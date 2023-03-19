@@ -1,20 +1,18 @@
-import {Alert, StyleSheet} from 'react-native';
+import {Alert, RefreshControl, StyleSheet} from 'react-native';
 
 import {Text, View} from '../../components/Themed';
 import {Configuration, Event, EventApi} from '../../open-api/generated'
 import {FlatList} from 'react-native';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {BigButton} from "../../components/BigButton";
 import {EventCard} from "../../components/EventCard";
 import axios from "axios";
 import 'react-native-url-polyfill/auto';
 import Backend from "../../constants/Backend";
+import {useRecoilState} from "recoil";
+import selectedEventIdState from "../../recoil/selectedEventIdState";
 
 export default function TabOneScreen() {
-
-    const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState<Event[]>();
-    const [event, setEvent] = useState<Event>();
 
     const config = new Configuration();
     const axiosInstance = axios.create({
@@ -22,22 +20,16 @@ export default function TabOneScreen() {
     });
     const eventApi = new EventApi(config, Backend(''), axiosInstance);
 
-    const getEvent = async (id: number) => {
-        try {
-            const fetchedEvent = await eventApi.getEventById(id);
-            setEvent(fetchedEvent.data);
-            setLoading(false);
-        } catch (error) {
-            console.warn(error);
-            Alert.alert('An error occurred');
-        }
-    };
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState<Event[]>();
+
+    const [activeEventId, setActiveEventId] = useRecoilState(selectedEventIdState); // used to set ID for Event Details screen
 
     const getEvents = async () => {
         try {
             const fetchedEvents = await eventApi.getEvents();
             console.log("Fetched getEvents");
-            setData(fetchedEvents.data);
+            setData(data => fetchedEvents.data);
             setLoading(false);
         } catch (error) {
             console.warn(error);
@@ -45,36 +37,30 @@ export default function TabOneScreen() {
         }
     };
 
-    function fetchCars() {
-        setLoading(false);
-        fetch('http://10.0.2.2:8000/events/')
-            .then((response) => response.json())
-            .then((json) => {
-                // console.log(json);
-                setData(json);
-            })
-            .catch((error) => console.error(error))
-            .finally(() => {
-                setLoading(false);
-            });
-    }
-
     useEffect(() => {
         getEvents();
     }, []);
-
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Tab One</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)"/>
             <View>
-                <FlatList
+                <FlatList style={styles.flatList}
                     data={data}
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={isLoading}
+                          onRefresh={getEvents}
+                        />
+                    }
                     renderItem={({item, index}) => (
                         <BigButton
                             index={index}
                             onPress={() => {
+                                setActiveEventId(item.id);
+                                console.log('Pressed event id: ' + item.id);
+                                console.log('Recoil event id: ' + activeEventId);
                             }}>
                             <EventCard event={item}/>
                         </BigButton>
@@ -99,5 +85,8 @@ const styles = StyleSheet.create({
         marginVertical: 30,
         height: 1,
         width: '80%',
+    },
+    flatList: {
+        marginBottom: 60,
     },
 });
