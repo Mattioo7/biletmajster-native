@@ -8,7 +8,8 @@ import {useEffect, useState} from "react";
 import {BigButton} from "../../components/BigButton";
 import {EventCard} from "../../components/EventCard";
 import axios from "axios";
-// import 'react-native-url-polyfill/auto';
+import 'react-native-url-polyfill/auto';
+import Backend from "../../constants/Backend";
 
 export default function TabOneScreen() {
 
@@ -20,7 +21,7 @@ export default function TabOneScreen() {
     const axiosInstance = axios.create({
         headers: {Authorization: 'YOUR_TOKEN'},
     });
-    const eventApi = new EventApi(config, 'http://localhost:3000', axiosInstance);
+    const eventApi = new EventApi(config, Backend(''), axiosInstance);
 
     const getEvent = async (id: number) => {
         try {
@@ -36,7 +37,7 @@ export default function TabOneScreen() {
     const getEvents = async () => {
         try {
             const fetchedEvents = await eventApi.getEvents();
-            console.log("Udalo sie");
+            console.log("Fetched getEvents");
             setData(fetchedEvents.data);
             setLoading(false);
         } catch (error) {
@@ -47,7 +48,7 @@ export default function TabOneScreen() {
 
     function fetchCars() {
         setLoading(false);
-        fetch('http://localhost:3000/events/')
+        fetch('http://10.0.2.2:8000/events/')
             .then((response) => response.json())
             .then((json) => {
                 // console.log(json);
@@ -60,10 +61,10 @@ export default function TabOneScreen() {
     }
 
     useEffect(() => {
-        console.log("Before getEvents");
-        // getEvents();
-        fetchCars();
-        console.log("After getEvents");
+        // console.log("Before getEvents");
+        getEvents();
+        // fetchCars();
+        // console.log("After getEvents");
     }, []);
 
 
