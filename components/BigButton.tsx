@@ -4,7 +4,7 @@ import {Link} from "expo-router";
 
 export const BigButton = (props: { children: ReactNode | ReactNode[], onPress: () => void, index?: number }) => {
     return (
-      <Link href="/modal" asChild>
+      <Link href="/event" asChild>
         <Pressable
           onPress={props.onPress}
           android_ripple={{
