@@ -1,7 +1,7 @@
 import {Alert, RefreshControl, StyleSheet} from 'react-native';
 
 import {Text, View} from '../../components/Themed';
-import {Configuration, Event, EventApi} from '../../open-api/generated'
+import {CategoriesApi, Category, Configuration, Event, EventApi} from '../../open-api/generated'
 import {FlatList} from 'react-native';
 import React, {useEffect, useState} from "react";
 import {BigButton} from "../../components/BigButton";
@@ -11,6 +11,8 @@ import 'react-native-url-polyfill/auto';
 import Backend from "../../constants/Backend";
 import {useRecoilState} from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
+import showCategoriesAccordionState from "../../recoil/showCategoriesAccordionState";
+import {EventsFiltersAccordion} from "../../components/EventsFiltersAccordion";
 
 export default function TabOneScreen() {
 
@@ -20,16 +22,34 @@ export default function TabOneScreen() {
     });
     const eventApi = new EventApi(config, Backend(''), axiosInstance);
 
+    const categoriesApi = new CategoriesApi(config, Backend(''), axiosInstance);
+
     const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState<Event[]>();
+    const [events, setEvents] = useState<Event[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
 
     const [activeEventId, setActiveEventId] = useRecoilState(selectedEventIdState); // used to set ID for Event Details screen
+
+    // const [showCategoriesAccordion, setShowCategoriesAccordion] = useState<boolean>(true);
+    const [showCategoriesAccordion, setShowCategoriesAccordion] = useRecoilState(showCategoriesAccordionState);
 
     const getEvents = async () => {
         try {
             const fetchedEvents = await eventApi.getEvents();
             console.log("Fetched getEvents");
-            setData(data => fetchedEvents.data);
+            setEvents(data => fetchedEvents.data);
+            setLoading(false);
+        } catch (error) {
+            console.warn(error);
+            Alert.alert('An error occurred');
+        }
+    };
+
+    const getCategories = async () => {
+        try {
+            const fetchedCategories = await categoriesApi.getCategories();
+            console.log("Fetched getEvents");
+            setCategories(data => fetchedCategories.data);
             setLoading(false);
         } catch (error) {
             console.warn(error);
@@ -45,9 +65,19 @@ export default function TabOneScreen() {
         <View style={styles.container}>
             <Text style={styles.title}>Tab One</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)"/>
+            {
+                showCategoriesAccordion ?
+                  <EventsFiltersAccordion
+                    categories={categories}
+                    getEvents={eventApi.getEvents}
+                    getByCategory={eventApi.getByCategory}
+                    getCategories={categoriesApi.getCategories}
+                  />
+                  : undefined
+            }
             <View>
                 <FlatList style={styles.flatList}
-                    data={data}
+                    data={events}
                     refreshControl={
                         <RefreshControl
                           refreshing={isLoading}
