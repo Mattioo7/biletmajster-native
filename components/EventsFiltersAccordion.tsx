@@ -54,7 +54,7 @@ export const EventsFiltersAccordion = (
 					}}
 					value={categoryId}
 					setValue={setCategoryId}
-					list={props.categories.map(category => ({label: category.name, value: category.id}))}
+					list={props.categories.map(category => ({label: category.name as string, value: category.id as number}))}
 				/>
 			</View>
 			<View style={{flexDirection: 'row'}}>
