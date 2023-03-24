@@ -1,4 +1,4 @@
-import {Alert, RefreshControl, StyleSheet} from 'react-native';
+import {Alert, Image, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
 import {Text, View} from '../../components/Themed';
 import {CategoriesApi, Category, Configuration, Event, EventApi} from '../../open-api/generated'
 import {FlatList} from 'react-native';
@@ -12,7 +12,7 @@ import {useRecoilState} from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
 import showCategoriesAccordionState from "../../recoil/showCategoriesAccordionState";
 import {EventsFiltersAccordion} from "../../components/EventsFiltersAccordion";
-import {Drawer} from 'react-native-paper';
+import {Banner, FAB} from "react-native-paper";
 
 export default function TabOneScreen() {
 
@@ -59,51 +59,129 @@ export default function TabOneScreen() {
 
 	useEffect(() => {
 		getEvents();
+		getCategories();
 	}, []);
 
+	const [active, setActive] = React.useState('');
+	const [visible, setVisible] = React.useState(true);
+
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Tab One</Text>
-			<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)"/>'
-			{/*<Drawer.CollapsedItem
-				focusedIcon="inbox"
-				unfocusedIcon="inbox-outline"
-				label="Inbox"
-				onPress={() => setShowCategoriesAccordion(currVal => !currVal)}
-			/>*/}
-			{/*{
-				showCategoriesAccordion ?
-					<EventsFiltersAccordion
+		<SafeAreaView style={{flex: 1}}>
+			<View style={styles.container}>
+
+				<Text style={styles.title}>Tab One</Text>
+				{/*<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)"/>*/}
+
+
+				{/*{
+					!showCategoriesAccordion ?
+						<View style={{marginTop: 120, backgroundColor: "red"}}>
+							<EventsFiltersAccordion
+							categories={categories}
+							getEvents={eventApi.getEvents}
+							getByCategory={eventApi.getByCategory}
+							getCategories={categoriesApi.getCategories}
+						/>
+							<Banner style={{backgroundColor: "green"}}
+											visible={!showCategoriesAccordion}
+											actions={[
+												{
+													label: 'Fix it',
+													onPress: () => setVisible(false),
+												},
+												{
+													label: 'Learn more',
+													onPress: () => setVisible(false),
+												},
+											]}
+											icon={({size}) => (
+												<Image
+													source={{
+														uri: 'https://avatars3.githubusercontent.com/u/17571969?s=400&v=4',
+													}}
+													style={{
+														width: size,
+														height: size,
+													}}
+												/>
+											)}
+							>
+								<EventsFiltersAccordion
+								categories={categories}
+								getEvents={eventApi.getEvents}
+								getByCategory={eventApi.getByCategory}
+								getCategories={categoriesApi.getCategories}
+							/>
+								<Text>
+									xDD
+								</Text>
+							</Banner>
+						</View>
+						: undefined
+				}*/}
+
+				<Banner
+					visible={visible}
+					actions={[
+						{
+							label: 'Fix it',
+							onPress: () => setVisible(false),
+							color: 'red'
+						},
+						{
+							label: 'Learn more',
+							onPress: () => setVisible(false),
+							color: 'red'
+						},
+					]}>
+					<View style={{backgroundColor: "lightblue", marginTop: 100}}>
+						<Text style={{fontWeight: "bold", fontSize: 10}}>
+							Ajflfjlawjfljflwjflia
+						</Text>
+					</View>
+					{/*<EventsFiltersAccordion
 						categories={categories}
 						getEvents={eventApi.getEvents}
 						getByCategory={eventApi.getByCategory}
 						getCategories={categoriesApi.getCategories}
+					/>*/}
+				</Banner>
+
+				<View style={{backgroundColor: "blue"}}>
+					<FlatList style={styles.flatList}
+										data={events}
+										refreshControl={
+											<RefreshControl
+												refreshing={isLoading}
+												onRefresh={getEvents}
+											/>
+										}
+										renderItem={({item, index}) => (
+											<BigButton
+												index={index}
+												onPress={() => {
+													setActiveEventId(item.id);
+													console.log('Pressed event id: ' + item.id);
+													console.log('Recoil event id: ' + activeEventId);
+												}}>
+												<EventCard event={item}/>
+											</BigButton>
+										)}
 					/>
-					: undefined
-			}*/}
-			<View>
-				<FlatList style={styles.flatList}
-									data={events}
-									refreshControl={
-										<RefreshControl
-											refreshing={isLoading}
-											onRefresh={getEvents}
-										/>
-									}
-									renderItem={({item, index}) => (
-										<BigButton
-											index={index}
-											onPress={() => {
-												setActiveEventId(item.id);
-												console.log('Pressed event id: ' + item.id);
-												console.log('Recoil event id: ' + activeEventId);
-											}}>
-											<EventCard event={item}/>
-										</BigButton>
-									)}
+				</View>
+				<FAB
+					icon="filter-variant"
+					style={styles.fab}
+					onPress={
+						() => {
+							console.log('Pressed');
+							setShowCategoriesAccordion(currVal => !currVal);
+							setVisible(currVal => !currVal);
+						}
+					}
 				/>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }
 
@@ -114,15 +192,24 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	title: {
+		marginTop: 100,
 		fontSize: 20,
 		fontWeight: 'bold',
+		backgroundColor: "brown",
+		width: "auto",
 	},
 	separator: {
-		marginVertical: 30,
+		marginVertical: 50,
 		height: 1,
 		width: '80%',
 	},
 	flatList: {
 		marginBottom: 60,
+	},
+	fab: {
+		position: 'absolute',
+		margin: 10,
+		right: 0,
+		bottom: 0,
 	},
 });
