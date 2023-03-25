@@ -5,7 +5,7 @@ import {Button} from 'react-native-paper';
 import {AxiosRequestConfig} from "axios";
 import {Category} from "../open-api/generated";
 
-export const EventsFiltersAccordion = (
+export const EventsCategoriesFilter = (
 	props: {
 		categories: Category[],
 		getEvents: (options?: AxiosRequestConfig) => void,
@@ -42,8 +42,9 @@ export const EventsFiltersAccordion = (
 
 
 	return (
-		<View>
-			<View style={styles.margins}>
+		<View style={{position: "relative"}}>
+
+			<View style={{...styles.margins, }}>
 				<DropDown
 					label={"Category"}
 					mode={"outlined"}
@@ -57,13 +58,16 @@ export const EventsFiltersAccordion = (
 					list={props.categories.map(category => ({label: category.name as string, value: category.id as number}))}
 				/>
 			</View>
+
 			<View style={{flexDirection: 'row'}}>
+
 				<View style={{width: '50%'}}>
 					<Button
 						style={{...styles.margins, marginRight: 5}} icon="filter-remove" mode="outlined" onPress={clearFilters}>
 						Clear filters
 					</Button>
 				</View>
+
 				<View style={{width: '50%'}}>
 					<Button
 						style={{...styles.margins, marginLeft: 5}} icon="car-info" mode="contained" onPress={() => {
@@ -75,7 +79,9 @@ export const EventsFiltersAccordion = (
 						Use filters
 					</Button>
 				</View>
+
 			</View>
+
 		</View>
 	)
 }

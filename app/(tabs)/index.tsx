@@ -11,8 +11,8 @@ import Backend from "../../constants/Backend";
 import {useRecoilState} from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
 import showCategoriesAccordionState from "../../recoil/showCategoriesAccordionState";
-import {EventsFiltersAccordion} from "../../components/EventsFiltersAccordion";
-import {Banner, FAB} from "react-native-paper";
+import {EventsCategoriesFilter} from "../../components/EventsCategoriesFilter";
+import {FAB, Provider, Portal, Modal, Dialog, Button} from "react-native-paper";
 
 export default function TabOneScreen() {
 
@@ -62,126 +62,81 @@ export default function TabOneScreen() {
 		getCategories();
 	}, []);
 
-	const [active, setActive] = React.useState('');
+	// modal
 	const [visible, setVisible] = React.useState(true);
+	const showModal = () => setVisible(true);
+	const hideModal = () => setVisible(false);
 
 	return (
-		<SafeAreaView style={{flex: 1}}>
-			<View style={styles.container}>
+		<Provider>
+			<SafeAreaView style={{flex: 1}}>
+				<View style={styles.container}>
 
-				<Text style={styles.title}>Tab One</Text>
-				{/*<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)"/>*/}
-
-
-				{/*{
-					!showCategoriesAccordion ?
-						<View style={{marginTop: 120, backgroundColor: "red"}}>
-							<EventsFiltersAccordion
-							categories={categories}
-							getEvents={eventApi.getEvents}
-							getByCategory={eventApi.getByCategory}
-							getCategories={categoriesApi.getCategories}
-						/>
-							<Banner style={{backgroundColor: "green"}}
-											visible={!showCategoriesAccordion}
-											actions={[
-												{
-													label: 'Fix it',
-													onPress: () => setVisible(false),
-												},
-												{
-													label: 'Learn more',
-													onPress: () => setVisible(false),
-												},
-											]}
-											icon={({size}) => (
-												<Image
-													source={{
-														uri: 'https://avatars3.githubusercontent.com/u/17571969?s=400&v=4',
-													}}
-													style={{
-														width: size,
-														height: size,
-													}}
-												/>
-											)}
-							>
-								<EventsFiltersAccordion
+					<Portal>
+						<Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modal}>
+							<Text>Example Modal. Click outside this area to dismiss.</Text>
+							<EventsCategoriesFilter
 								categories={categories}
 								getEvents={eventApi.getEvents}
 								getByCategory={eventApi.getByCategory}
 								getCategories={categoriesApi.getCategories}
 							/>
-								<Text>
-									xDD
-								</Text>
-							</Banner>
-						</View>
-						: undefined
-				}*/}
+						</Modal>
+						{/*<Dialog visible={visible} onDismiss={hideModal}>
+							<Dialog.Title>Alert</Dialog.Title>
+							<Dialog.Content>
+								<Text >This is simple dialog</Text>
+							</Dialog.Content>
+							<Dialog.Actions>
+								<Button onPress={hideModal}>Done</Button>
+							</Dialog.Actions>
+							<EventsCategoriesFilter
+								categories={categories}
+								getEvents={eventApi.getEvents}
+								getByCategory={eventApi.getByCategory}
+								getCategories={categoriesApi.getCategories}
+							/>
+						</Dialog>*/}
+					</Portal>
 
-				<Banner
-					visible={visible}
-					actions={[
-						{
-							label: 'Fix it',
-							onPress: () => setVisible(false),
-							color: 'red'
-						},
-						{
-							label: 'Learn more',
-							onPress: () => setVisible(false),
-							color: 'red'
-						},
-					]}>
-					<View style={{backgroundColor: "lightblue", marginTop: 100}}>
-						<Text style={{fontWeight: "bold", fontSize: 10}}>
-							Ajflfjlawjfljflwjflia
-						</Text>
+					<View style={{backgroundColor: "none"}}>
+						<FlatList style={styles.flatList}
+											data={events}
+											refreshControl={
+												<RefreshControl
+													refreshing={isLoading}
+													onRefresh={getEvents}
+												/>
+											}
+											renderItem={({item, index}) => (
+												<BigButton
+													index={index}
+													onPress={() => {
+														setActiveEventId(item.id);
+														console.log('Pressed event id: ' + item.id);
+														console.log('Recoil event id: ' + activeEventId);
+													}}>
+													<EventCard event={item}/>
+												</BigButton>
+											)}
+						/>
 					</View>
-					{/*<EventsFiltersAccordion
-						categories={categories}
-						getEvents={eventApi.getEvents}
-						getByCategory={eventApi.getByCategory}
-						getCategories={categoriesApi.getCategories}
-					/>*/}
-				</Banner>
 
-				<View style={{backgroundColor: "blue"}}>
-					<FlatList style={styles.flatList}
-										data={events}
-										refreshControl={
-											<RefreshControl
-												refreshing={isLoading}
-												onRefresh={getEvents}
-											/>
-										}
-										renderItem={({item, index}) => (
-											<BigButton
-												index={index}
-												onPress={() => {
-													setActiveEventId(item.id);
-													console.log('Pressed event id: ' + item.id);
-													console.log('Recoil event id: ' + activeEventId);
-												}}>
-												<EventCard event={item}/>
-											</BigButton>
-										)}
+					<FAB
+						icon="filter-variant"
+						style={styles.fab}
+						onPress={
+							() => {
+								console.log('Pressed');
+								setShowCategoriesAccordion(currVal => !currVal);
+								setVisible(currVal => !currVal);
+							}
+						}
 					/>
 				</View>
-				<FAB
-					icon="filter-variant"
-					style={styles.fab}
-					onPress={
-						() => {
-							console.log('Pressed');
-							setShowCategoriesAccordion(currVal => !currVal);
-							setVisible(currVal => !currVal);
-						}
-					}
-				/>
-			</View>
-		</SafeAreaView>
+
+			</SafeAreaView>
+		</Provider>
 	);
 }
 
@@ -204,7 +159,7 @@ const styles = StyleSheet.create({
 		width: '80%',
 	},
 	flatList: {
-		marginBottom: 60,
+
 	},
 	fab: {
 		position: 'absolute',
@@ -212,4 +167,14 @@ const styles = StyleSheet.create({
 		right: 0,
 		bottom: 0,
 	},
+	modal: {
+		backgroundColor: 'white',
+		padding: 20,
+		height: 500,
+		marginBottom: 50,
+		marginHorizontal: 15,
+		justifyContent : "center",
+		alignItems: "center"
+	}
+
 });
