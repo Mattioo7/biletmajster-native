@@ -13,6 +13,7 @@ import {Button, Divider, Searchbar} from "react-native-paper";
 import {EventsSortByDropdown} from "../components/EventsSortByDropdown";
 import allEventsSortByState from "../recoil/allEventsSortByState";
 import allEventsSearchNameState from "../recoil/allEventsSortByNameState";
+import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
 
 export default function ModalScreen() {
 
@@ -26,12 +27,16 @@ export default function ModalScreen() {
 
   // categories
   const [categories, setCategories] = useState<Category[]>([]);
+  const [categoryId, setCategoryId] = useRecoilState(allEventsFilterByCategoryState);
 
   // search bar
   const [searchQuery, setSearchQuery] = useRecoilState(allEventsSearchNameState);
   const onChangeSearch = (query: string)  => {
     setSearchQuery(query);
   }
+
+  // sort by
+  const [sortBy, setSortBy] = useRecoilState(allEventsSortByState);
 
   // fetch categories
   const getCategories = async () => {
@@ -46,6 +51,18 @@ export default function ModalScreen() {
   };
 
   // use filters
+
+
+  // clear filters
+  const clearFilters = () => {
+    setCategoryId(undefined);
+    setSearchQuery('');
+    setSortBy('');
+    console.log("ClearFilters");
+    console.log("SearchQuery: " + searchQuery);
+    console.log("CategoryId: " + categoryId);
+    console.log("SortBy: " + sortBy);
+  }
 
 
   // on screen load
@@ -79,7 +96,7 @@ export default function ModalScreen() {
 
         <View style={{width: '50%'}}>
           <Button
-            style={{...styles.margins, marginRight: 5}} icon="filter-remove" mode="outlined" onPress={() => {}}>
+            style={{...styles.margins, marginRight: 5}} icon="filter-remove" mode="outlined" onPress={clearFilters}>
             Clear filters
           </Button>
         </View>
