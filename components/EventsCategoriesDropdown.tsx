@@ -6,6 +6,7 @@ import {AxiosRequestConfig} from "axios";
 import {Category} from "../open-api/generated";
 import {useRecoilState} from "recoil";
 import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
+import SelectDropdown from "react-native-select-dropdown";
 
 export const EventsCategoriesDropdown = (
 	props: {
@@ -45,7 +46,7 @@ export const EventsCategoriesDropdown = (
 	return (
 		<View style={{position: "relative", width: '100%'}}>
 
-			<View style={{...styles.margins, }}>
+			<View style={{ ...styles.margins, }}>
 				<DropDown
 					label={"Category"}
 					mode={"outlined"}

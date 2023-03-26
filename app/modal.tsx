@@ -14,6 +14,7 @@ import {EventsSortByDropdown} from "../components/EventsSortByDropdown";
 import allEventsSortByState from "../recoil/allEventsSortByState";
 import allEventsSearchNameState from "../recoil/allEventsSortByNameState";
 import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
+import { ModalSelect } from '../components/ModalSelect';
 
 export default function ModalScreen() {
 
@@ -74,6 +75,7 @@ export default function ModalScreen() {
   // useEffect(() => {
   //   console.log("SearchQuery: " + searchQuery);
   // }, [searchQuery])
+  const [selecion, setSelecitnon] = useState<number | undefined>(undefined);
 
   return (
     <View style={styles.container}>
@@ -108,6 +110,9 @@ export default function ModalScreen() {
           </Button>
         </View>
 
+      </View>
+      <View style={{ width: '100%' }}>
+        <ModalSelect label="Items" items={["Item 1", "Item 2", "Item 3"]} renderItem={i => i} selectedIndex={selecion} setSelectedIndex={setSelecitnon} />
       </View>
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
