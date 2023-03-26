@@ -28,7 +28,7 @@ export default function ModalScreen() {
 	const getEvent = async () => {
 		try {
 			const fetchedEvents = await eventApi.getEventById(eventId as number);
-			console.log("Fetched getEvent");
+			// console.log("Fetched getEvent");
 			setEvent(data => fetchedEvents.data);
 		} catch (error) {
 			console.warn(error);

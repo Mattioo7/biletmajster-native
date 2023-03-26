@@ -4,8 +4,10 @@ import DropDown from "react-native-paper-dropdown";
 import {Button} from 'react-native-paper';
 import {AxiosRequestConfig} from "axios";
 import {Category} from "../open-api/generated";
+import {useRecoilState} from "recoil";
+import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
 
-export const EventsCategoriesFilter = (
+export const EventsCategoriesDropdown = (
 	props: {
 		categories: Category[],
 		getEvents: (options?: AxiosRequestConfig) => void,
@@ -28,21 +30,20 @@ export const EventsCategoriesFilter = (
 		}
 	];
 
-	const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
+	const [categoryId, setCategoryId] = useRecoilState(allEventsFilterByCategoryState);
 
 	const clearFilters = () => {
 		setCategoryId(undefined);
-		props.getEvents();
 	}
 
 	// DEBUG
-	useEffect(() => {
-		console.log("CategoryId: " + categoryId);
-	}, [categoryId])
+	// useEffect(() => {
+	// 	console.log("CategoryId: " + categoryId);
+	// }, [categoryId])
 
 
 	return (
-		<View style={{position: "relative"}}>
+		<View style={{position: "relative", width: '100%'}}>
 
 			<View style={{...styles.margins, }}>
 				<DropDown
@@ -59,7 +60,7 @@ export const EventsCategoriesFilter = (
 				/>
 			</View>
 
-			<View style={{flexDirection: 'row'}}>
+			{/*<View style={{flexDirection: 'row'}}>
 
 				<View style={{width: '50%'}}>
 					<Button
@@ -80,7 +81,7 @@ export const EventsCategoriesFilter = (
 					</Button>
 				</View>
 
-			</View>
+			</View>*/}
 
 		</View>
 	)

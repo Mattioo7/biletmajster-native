@@ -11,8 +11,11 @@ import Backend from "../../constants/Backend";
 import {useRecoilState} from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
 import showCategoriesAccordionState from "../../recoil/showCategoriesAccordionState";
-import {EventsCategoriesFilter} from "../../components/EventsCategoriesFilter";
+import {EventsCategoriesDropdown} from "../../components/EventsCategoriesDropdown";
 import {FAB, Provider, Portal, Modal, Dialog, Button} from "react-native-paper";
+import allEventsSearchNameState from "../../recoil/allEventsSortByNameState";
+import allEventsFilterByCategoryState from "../../recoil/allEventsFilterByCategoryState";
+import allEventsSortByState from "../../recoil/allEventsSortByState";
 
 export default function TabOneScreen() {
 
@@ -28,15 +31,18 @@ export default function TabOneScreen() {
 	const [events, setEvents] = useState<Event[]>([]);
 	const [categories, setCategories] = useState<Category[]>([]);
 
-	const [activeEventId, setActiveEventId] = useRecoilState(selectedEventIdState); // used to set ID for Event Details screen
-
-	// const [showCategoriesAccordion, setShowCategoriesAccordion] = useState<boolean>(true);
+	const [activeEventId, setActiveEventId] = useRecoilState(selectedEventIdState);
 	const [showCategoriesAccordion, setShowCategoriesAccordion] = useRecoilState(showCategoriesAccordionState);
+
+	// filters and sorts
+	const [searchQuery, setSearchQuery] = useRecoilState(allEventsSearchNameState);
+	const [categoryId, setCategoryId] = useRecoilState(allEventsFilterByCategoryState);
+	const [sortBy, setSortBy] = useRecoilState(allEventsSortByState);
 
 	const getEvents = async () => {
 		try {
 			const fetchedEvents = await eventApi.getEvents();
-			console.log("Fetched getEvents");
+			// console.log("Fetched getEvents");
 			setEvents(data => fetchedEvents.data);
 			setLoading(false);
 		} catch (error) {
@@ -48,7 +54,7 @@ export default function TabOneScreen() {
 	const getCategories = async () => {
 		try {
 			const fetchedCategories = await categoriesApi.getCategories();
-			console.log("Fetched getEvents");
+			// console.log("Fetched getCategories");
 			setCategories(data => fetchedCategories.data);
 			setLoading(false);
 		} catch (error) {
@@ -63,9 +69,20 @@ export default function TabOneScreen() {
 	}, []);
 
 	// modal
-	const [visible, setVisible] = React.useState(true);
+	const [visible, setVisible] = React.useState(false);
 	const showModal = () => setVisible(true);
 	const hideModal = () => setVisible(false);
+
+	// DEBUG
+	// useEffect(() => {
+	// 	console.log("SearchQuery: " + searchQuery);
+	// }, [searchQuery])
+	// useEffect(() => {
+	// 	console.log("CategoryId: " + categoryId);
+	// }, [categoryId])
+	useEffect(() => {
+		console.log("SortBy: " + sortBy);
+	}, [sortBy])
 
 	return (
 		<Provider>
@@ -75,7 +92,7 @@ export default function TabOneScreen() {
 					<Portal>
 						<Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modal}>
 							<Text>Example Modal. Click outside this area to dismiss.</Text>
-							<EventsCategoriesFilter
+							<EventsCategoriesDropdown
 								categories={categories}
 								getEvents={eventApi.getEvents}
 								getByCategory={eventApi.getByCategory}
@@ -90,7 +107,7 @@ export default function TabOneScreen() {
 							<Dialog.Actions>
 								<Button onPress={hideModal}>Done</Button>
 							</Dialog.Actions>
-							<EventsCategoriesFilter
+							<EventsCategoriesDropdown
 								categories={categories}
 								getEvents={eventApi.getEvents}
 								getByCategory={eventApi.getByCategory}
@@ -113,8 +130,8 @@ export default function TabOneScreen() {
 													index={index}
 													onPress={() => {
 														setActiveEventId(item.id);
-														console.log('Pressed event id: ' + item.id);
-														console.log('Recoil event id: ' + activeEventId);
+														// console.log('Pressed event id: ' + item.id);
+														// console.log('Recoil event id: ' + activeEventId);
 													}}>
 													<EventCard event={item}/>
 												</BigButton>
@@ -127,7 +144,7 @@ export default function TabOneScreen() {
 						style={styles.fab}
 						onPress={
 							() => {
-								console.log('Pressed');
+								// console.log('Pressed');
 								setShowCategoriesAccordion(currVal => !currVal);
 								setVisible(currVal => !currVal);
 							}
