@@ -89,7 +89,7 @@ export default function TabOneScreen() {
 			<SafeAreaView style={{flex: 1}}>
 				<View style={styles.container}>
 
-					<Portal>
+					{/*<Portal>
 						<Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modal}>
 							<Text>Example Modal. Click outside this area to dismiss.</Text>
 							<EventsCategoriesDropdown
@@ -99,22 +99,7 @@ export default function TabOneScreen() {
 								getCategories={categoriesApi.getCategories}
 							/>
 						</Modal>
-						{/*<Dialog visible={visible} onDismiss={hideModal}>
-							<Dialog.Title>Alert</Dialog.Title>
-							<Dialog.Content>
-								<Text >This is simple dialog</Text>
-							</Dialog.Content>
-							<Dialog.Actions>
-								<Button onPress={hideModal}>Done</Button>
-							</Dialog.Actions>
-							<EventsCategoriesDropdown
-								categories={categories}
-								getEvents={eventApi.getEvents}
-								getByCategory={eventApi.getByCategory}
-								getCategories={categoriesApi.getCategories}
-							/>
-						</Dialog>*/}
-					</Portal>
+					</Portal>*/}
 
 					<View style={{backgroundColor: "none"}}>
 						<FlatList style={styles.flatList}
@@ -139,7 +124,7 @@ export default function TabOneScreen() {
 						/>
 					</View>
 
-					<FAB
+					{/*<FAB
 						icon="filter-variant"
 						style={styles.fab}
 						onPress={
@@ -149,7 +134,7 @@ export default function TabOneScreen() {
 								setVisible(currVal => !currVal);
 							}
 						}
-					/>
+					/>*/}
 				</View>
 
 			</SafeAreaView>

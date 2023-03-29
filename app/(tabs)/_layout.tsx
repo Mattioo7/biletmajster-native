@@ -28,17 +28,17 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Eventy',
+          title: 'Events',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/Filters" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
-                    name="info-circle"
+                    name="filter"
                     size={25}
                     color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    style={{ marginRight: 20, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
               </Pressable>
@@ -49,7 +49,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="two"
         options={{
-          title: 'Moje rezerwacje',
+          title: 'My reservations',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />

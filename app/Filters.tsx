@@ -111,9 +111,9 @@ export default function ModalScreen() {
         </View>
 
       </View>
-      <View style={{ width: '100%' }}>
+      {/*<View style={{ width: '100%' }}>
         <ModalSelect label="Items" items={["Item 1", "Item 2", "Item 3"]} renderItem={i => i} selectedIndex={selecion} setSelectedIndex={setSelecitnon} />
-      </View>
+      </View>*/}
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />

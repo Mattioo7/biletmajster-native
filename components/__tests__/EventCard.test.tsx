@@ -35,9 +35,9 @@ describe('EventCard', () => {
 		expect(startTime).toBeDefined();
 	});
 
-	it('should render the "Rezerwuj" button', () => {
+	it('should render the "Reserve" button', () => {
 		const { getByText } = render(<EventCard event={event} />);
-		const button = getByText('Rezerwuj');
+		const button = getByText('Reserve');
 		expect(button).toBeDefined();
 	});
 });
