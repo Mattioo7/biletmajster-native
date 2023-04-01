@@ -1,12 +1,10 @@
-import React, {Key, useEffect, useState} from "react";
+import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
 import DropDown from "react-native-paper-dropdown";
-import {Button} from 'react-native-paper';
 import {AxiosRequestConfig} from "axios";
 import {Category} from "../open-api/generated";
 import {useRecoilState} from "recoil";
 import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
-import SelectDropdown from "react-native-select-dropdown";
 
 export const EventsCategoriesDropdown = (
 	props: {
@@ -20,9 +18,6 @@ export const EventsCategoriesDropdown = (
 
 	// dropdown 1
 	const [showDropDownCategories, setShowDropDownCategories] = useState(false);
-
-	// models of brand
-	const [models, setModels] = useState<Category[]>([]);
 
 	const emptyModelList = [
 		{

@@ -1,7 +1,6 @@
-import {Alert, Image, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
-import {Text, View} from '../../components/Themed';
+import {Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
+import {View} from '../../components/Themed';
 import {CategoriesApi, Category, Configuration, Event, EventApi} from '../../open-api/generated'
-import {FlatList} from 'react-native';
 import React, {useEffect, useState} from "react";
 import {BigButton} from "../../components/BigButton";
 import {EventCard} from "../../components/EventCard";
@@ -10,9 +9,7 @@ import 'react-native-url-polyfill/auto';
 import Backend from "../../constants/Backend";
 import {useRecoilState} from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
-import showCategoriesAccordionState from "../../recoil/showCategoriesAccordionState";
-import {EventsCategoriesDropdown} from "../../components/EventsCategoriesDropdown";
-import {FAB, Provider, Portal, Modal, Dialog, Button} from "react-native-paper";
+import {Provider} from "react-native-paper";
 import allEventsSearchNameState from "../../recoil/allEventsSortByNameState";
 import allEventsFilterByCategoryState from "../../recoil/allEventsFilterByCategoryState";
 import allEventsSortByState from "../../recoil/allEventsSortByState";
@@ -32,7 +29,6 @@ export default function TabOneScreen() {
 	const [categories, setCategories] = useState<Category[]>([]);
 
 	const [activeEventId, setActiveEventId] = useRecoilState(selectedEventIdState);
-	const [showCategoriesAccordion, setShowCategoriesAccordion] = useRecoilState(showCategoriesAccordionState);
 
 	// filters and sorts
 	const [searchQuery, setSearchQuery] = useRecoilState(allEventsSearchNameState);
@@ -68,18 +64,13 @@ export default function TabOneScreen() {
 		getCategories();
 	}, []);
 
-	// modal
-	const [visible, setVisible] = React.useState(false);
-	const showModal = () => setVisible(true);
-	const hideModal = () => setVisible(false);
-
 	// DEBUG
-	// useEffect(() => {
-	// 	console.log("SearchQuery: " + searchQuery);
-	// }, [searchQuery])
-	// useEffect(() => {
-	// 	console.log("CategoryId: " + categoryId);
-	// }, [categoryId])
+	useEffect(() => {
+		console.log("SearchQuery: " + searchQuery);
+	}, [searchQuery])
+	useEffect(() => {
+		console.log("CategoryId: " + categoryId);
+	}, [categoryId])
 	useEffect(() => {
 		console.log("SortBy: " + sortBy);
 	}, [sortBy])
@@ -88,18 +79,6 @@ export default function TabOneScreen() {
 		<Provider>
 			<SafeAreaView style={{flex: 1}}>
 				<View style={styles.container}>
-
-					{/*<Portal>
-						<Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modal}>
-							<Text>Example Modal. Click outside this area to dismiss.</Text>
-							<EventsCategoriesDropdown
-								categories={categories}
-								getEvents={eventApi.getEvents}
-								getByCategory={eventApi.getByCategory}
-								getCategories={categoriesApi.getCategories}
-							/>
-						</Modal>
-					</Portal>*/}
 
 					<View style={{backgroundColor: "none"}}>
 						<FlatList style={styles.flatList}
@@ -123,18 +102,6 @@ export default function TabOneScreen() {
 											)}
 						/>
 					</View>
-
-					{/*<FAB
-						icon="filter-variant"
-						style={styles.fab}
-						onPress={
-							() => {
-								// console.log('Pressed');
-								setShowCategoriesAccordion(currVal => !currVal);
-								setVisible(currVal => !currVal);
-							}
-						}
-					/>*/}
 				</View>
 
 			</SafeAreaView>

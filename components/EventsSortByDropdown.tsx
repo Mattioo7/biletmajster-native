@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
 import DropDown from "react-native-paper-dropdown";
 import allEventsSortByState from "../recoil/allEventsSortByState";
 import {useRecoilState} from "recoil";
-import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
 
 export const EventsSortByDropdown = () => {
 
