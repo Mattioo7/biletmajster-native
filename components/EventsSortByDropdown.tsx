@@ -1,32 +1,13 @@
 import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
 import DropDown from "react-native-paper-dropdown";
-import allEventsSortByState from "../recoil/allEventsSortByState";
+import allEventsSortByState, { eventSortByPairs } from "../recoil/allEventsSortByState";
 import {useRecoilState} from "recoil";
 
 export const EventsSortByDropdown = () => {
 
 	const [showDropDown, setShowDropDown] = useState(false);
 	const [sortBy, setSortBy] = useRecoilState(allEventsSortByState);
-
-	const sortByOptions = [
-		{
-			label: "Name",
-			value: "name",
-		},
-		{
-			label: "Free place",
-			value: "freePlace",
-		},
-		{
-			label: "Start time",
-			value: "startTime",
-		},
-		{
-			label: "End time",
-			value: "endTime",
-		},
-	]
 
 	// DEBUG
 	// useEffect(() => {
@@ -47,7 +28,7 @@ export const EventsSortByDropdown = () => {
 					}}
 					value={sortBy}
 					setValue={setSortBy}
-					list={sortByOptions}
+					list={eventSortByPairs}
 				/>
 			</View>
 

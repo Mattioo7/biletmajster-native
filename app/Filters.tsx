@@ -58,7 +58,7 @@ export default function ModalScreen() {
   const clearFilters = () => {
     setCategoryId(undefined);
     setSearchQuery('');
-    setSortBy('');
+    setSortBy(undefined);
     console.log("ClearFilters");
     console.log("SearchQuery: " + searchQuery);
     console.log("CategoryId: " + categoryId);
