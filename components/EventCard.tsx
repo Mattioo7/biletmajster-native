@@ -26,7 +26,7 @@ export const EventCard = (props: { event: Event }) => {
                     </View>
                     <View style={styles.button}>
                         <Button mode="contained">
-                            Rezerwuj
+                            Reserve
                         </Button>
                     </View>
                 </View>

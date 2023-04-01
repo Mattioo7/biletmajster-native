@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import {Alert, FlatList, Image, Platform, RefreshControl, StyleSheet} from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import {useRecoilState} from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
@@ -11,8 +10,7 @@ import axios from "axios/index";
 import Backend from "../constants/Backend";
 import {ActivityIndicator, Card} from "react-native-paper";
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import {BigButton} from "../components/BigButton";
-import {EventCard} from "../components/EventCard";
+
 
 export default function ModalScreen() {
 
@@ -28,7 +26,7 @@ export default function ModalScreen() {
 	const getEvent = async () => {
 		try {
 			const fetchedEvents = await eventApi.getEventById(eventId as number);
-			console.log("Fetched getEvent");
+			// console.log("Fetched getEvent");
 			setEvent(data => fetchedEvents.data);
 		} catch (error) {
 			console.warn(error);
