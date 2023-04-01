@@ -1,10 +1,10 @@
 import {Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
 import {View} from '../../components/Themed';
-import {CategoriesApi, Category, Configuration, Event, EventApi} from '../../open-api/generated'
+import { Category, Event } from '../../api/Api'
+import { apiClient } from '../../api/apiClient';
 import React, {useEffect, useState} from "react";
 import {BigButton} from "../../components/BigButton";
 import {EventCard} from "../../components/EventCard";
-import axios from "axios";
 import 'react-native-url-polyfill/auto';
 import Backend from "../../constants/Backend";
 import {useRecoilState} from "recoil";
@@ -15,15 +15,6 @@ import allEventsFilterByCategoryState from "../../recoil/allEventsFilterByCatego
 import allEventsSortByState from "../../recoil/allEventsSortByState";
 
 export default function TabOneScreen() {
-
-	const config = new Configuration();
-	const axiosInstance = axios.create({
-		headers: {Authorization: 'YOUR_TOKEN'},
-	});
-	const eventApi = new EventApi(config, Backend(''), axiosInstance);
-
-	const categoriesApi = new CategoriesApi(config, Backend(''), axiosInstance);
-
 	const [isLoading, setLoading] = useState(true);
 	const [events, setEvents] = useState<Event[]>([]);
 	const [categories, setCategories] = useState<Category[]>([]);
@@ -37,25 +28,35 @@ export default function TabOneScreen() {
 
 	const getEvents = async () => {
 		try {
-			const fetchedEvents = await eventApi.getEvents();
+			const fetchedEvents = await apiClient.events.getEvents();
 			// console.log("Fetched getEvents");
-			setEvents(data => fetchedEvents.data);
-			setLoading(false);
+			if (fetchedEvents.ok)
+				setEvents(fetchedEvents.data);
+			else {
+				// TODO: Handle error
+			}
 		} catch (error) {
 			console.warn(error);
 			Alert.alert('An error occurred');
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	const getCategories = async () => {
 		try {
-			const fetchedCategories = await categoriesApi.getCategories();
+			const fetchedCategories = await apiClient.categories.getCategories();
 			// console.log("Fetched getCategories");
-			setCategories(data => fetchedCategories.data);
-			setLoading(false);
+			if (fetchedCategories.ok)
+				setCategories(fetchedCategories.data);
+			else {
+				// TODO: Handle error
+			}
 		} catch (error) {
 			console.warn(error);
 			Alert.alert('An error occurred');
+		} finally {
+			setLoading(false);
 		}
 	};
 

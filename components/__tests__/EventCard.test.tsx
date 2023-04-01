@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import { EventCard } from '../EventCard';
-import { Event } from '../../open-api/generated';
+import { Event } from '../../api/Api';
 
 describe('EventCard', () => {
 	const event: Event = {
