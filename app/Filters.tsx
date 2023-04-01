@@ -1,20 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import {Alert, Platform, StyleSheet} from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import {View} from '../components/Themed';
 import {useRecoilState} from "recoil";
-import selectedEventIdState from "../recoil/selectedEventIdState";
 import {EventsCategoriesDropdown} from "../components/EventsCategoriesDropdown";
 import React, {useEffect, useState} from "react";
 import {CategoriesApi, Category, Configuration, EventApi} from "../open-api/generated";
 import axios from "axios/index";
 import Backend from "../constants/Backend";
-import {Button, Divider, Searchbar} from "react-native-paper";
+import {Button, Searchbar} from "react-native-paper";
 import {EventsSortByDropdown} from "../components/EventsSortByDropdown";
 import allEventsSortByState from "../recoil/allEventsSortByState";
 import allEventsSearchNameState from "../recoil/allEventsSortByNameState";
 import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
-import { ModalSelect } from '../components/ModalSelect';
 
 export default function ModalScreen() {
 
@@ -55,15 +53,29 @@ export default function ModalScreen() {
 
 
   // clear filters
+  const [clearFiltersState, setClearFiltersState] = useState<boolean>(false);
   const clearFilters = () => {
-    setCategoryId(undefined);
-    setSearchQuery('');
-    setSortBy(undefined);
-    console.log("ClearFilters");
+    setCategoryId(prev => undefined);
+    setSearchQuery(prev => '');
+    setSortBy(prev => undefined);
+    setClearFiltersState(prev => !prev);
+    // console.log("ClearFilters");
+    console.log("****************");
     console.log("SearchQuery: " + searchQuery);
     console.log("CategoryId: " + categoryId);
     console.log("SortBy: " + sortBy);
+    console.log("****************");
   }
+
+  // reload screen
+  useEffect(() => {
+    console.log("#################");
+    console.log("ClearFilters or [render] :(");
+    console.log("SearchQuery: " + searchQuery);
+    console.log("CategoryId: " + categoryId);
+    console.log("SortBy: " + sortBy);
+    console.log("#################");
+  }, [clearFiltersState]);
 
 
   // on screen load

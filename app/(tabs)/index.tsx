@@ -66,14 +66,22 @@ export default function TabOneScreen() {
 
 	// DEBUG
 	useEffect(() => {
+		console.log("----------------------");
 		console.log("SearchQuery: " + searchQuery);
-	}, [searchQuery])
-	useEffect(() => {
 		console.log("CategoryId: " + categoryId);
-	}, [categoryId])
-	useEffect(() => {
 		console.log("SortBy: " + sortBy);
-	}, [sortBy])
+		console.log("----------------------");
+	}, [searchQuery, categoryId, sortBy])
+
+	// useEffect(() => {
+	// 	console.log("SearchQuery: " + searchQuery);
+	// }, [searchQuery])
+	// useEffect(() => {
+	// 	console.log("CategoryId: " + categoryId);
+	// }, [categoryId])
+	// useEffect(() => {
+	// 	console.log("SortBy: " + sortBy);
+	// }, [sortBy])
 
 	return (
 		<Provider>
