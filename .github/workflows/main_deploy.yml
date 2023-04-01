@@ -1,4 +1,4 @@
-name: Build and deploy to Azure Static Web Apps
+name: Build APK
 
 on:
   push:
@@ -24,15 +24,18 @@ jobs:
           node-version: 18.x
           cache: npm
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Setup Expo
         uses: expo/expo-github-action@v7
         with:
           expo-version: latest
           eas-version: latest
-          token: $(( secrets.EXPO_TOKEN ))
+          token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Install dependencies
-        run: npm install
+      - name: Update Expo
+        run: expo update
 
       - name: Publish build
-        run: eas build --platform android --profile preview
+        run: eas build --platform android --profile preview --non-interactive
