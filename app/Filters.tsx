@@ -5,8 +5,8 @@ import {View} from '../components/Themed';
 import {useRecoilState} from "recoil";
 import {EventsCategoriesDropdown} from "../components/EventsCategoriesDropdown";
 import React, {useEffect, useState} from "react";
-import {CategoriesApi, Category, Configuration, EventApi} from "../open-api/generated";
-import axios from "axios/index";
+import { Category } from "../api/Api";
+import { apiClient } from '../api/apiClient';
 import Backend from "../constants/Backend";
 import {Button, Searchbar} from "react-native-paper";
 import {EventsSortByDropdown} from "../components/EventsSortByDropdown";
@@ -15,15 +15,6 @@ import allEventsSearchNameState from "../recoil/allEventsSortByNameState";
 import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
 
 export default function ModalScreen() {
-
-  // api
-  const config = new Configuration();
-  const axiosInstance = axios.create({
-    headers: {Authorization: 'YOUR_TOKEN'},
-  });
-  const eventApi = new EventApi(config, Backend(''), axiosInstance);
-  const categoriesApi = new CategoriesApi(config, Backend(''), axiosInstance);
-
   // categories
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useRecoilState(allEventsFilterByCategoryState);
@@ -40,9 +31,13 @@ export default function ModalScreen() {
   // fetch categories
   const getCategories = async () => {
     try {
-      const fetchedCategories = await categoriesApi.getCategories();
+      const fetchedCategories = await apiClient.categories.getCategories({ headers: { "sessionToken": "token" } });
       // console.log("Fetched getEvents");
-      setCategories(data => fetchedCategories.data);
+      if (fetchedCategories.ok)
+        setCategories(fetchedCategories.data);
+      else {
+        // TODO: Support error codes
+      }
     } catch (error) {
       console.warn(error);
       Alert.alert('An error occurred');
@@ -99,10 +94,11 @@ export default function ModalScreen() {
       {/*<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />*/}
       <EventsCategoriesDropdown
         categories={categories}
-        getEvents={eventApi.getEvents}
-        getByCategory={eventApi.getByCategory}
-        getCategories={categoriesApi.getCategories}
+        getEvents={apiClient.events.getEvents}
+        getByCategory={num => apiClient.events.getByCategory({ categoryId: num })}
+        getCategories={apiClient.categories.getCategories}
       />
+      {/* TODO: Do we need to pass getters and setters like this? */}
 
       <EventsSortByDropdown/>
 

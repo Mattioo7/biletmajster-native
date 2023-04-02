@@ -5,29 +5,26 @@ import { Text, View } from '../components/Themed';
 import {useRecoilState} from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
 import React, {useEffect, useState} from "react";
-import {Configuration, Event, EventApi} from '../open-api/generated'
-import axios from "axios/index";
+import { Event } from '../api/Api'
+import { apiClient } from '../api/apiClient';
 import Backend from "../constants/Backend";
 import {ActivityIndicator, Card} from "react-native-paper";
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 export default function ModalScreen() {
-
-	const config = new Configuration();
-	const axiosInstance = axios.create({
-		headers: {Authorization: 'YOUR_TOKEN'},
-	});
-	const eventApi = new EventApi(config, Backend(''), axiosInstance);
-
 	const [eventId, setEventId] = useRecoilState(selectedEventIdState);
 	const [event, setEvent] = useState<Event | undefined>();
 
 	const getEvent = async () => {
 		try {
-			const fetchedEvents = await eventApi.getEventById(eventId as number);
+			const fetchedEvents = await apiClient.events.getEventById(eventId as number);
 			// console.log("Fetched getEvent");
-			setEvent(data => fetchedEvents.data);
+			if (fetchedEvents.ok)
+				setEvent(fetchedEvents.data);
+			else {
+				// TODO: Handle errors
+			}
 		} catch (error) {
 			console.warn(error);
 			Alert.alert('An error occurred');

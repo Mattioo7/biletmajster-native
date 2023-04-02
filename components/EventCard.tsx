@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, Text, Button } from "react-native-paper";
-import {Event} from '../open-api/generated'
+import { Event } from '../api/Api'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export const EventCard = (props: { event: Event }) => {

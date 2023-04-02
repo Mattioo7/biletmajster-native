@@ -1,17 +1,17 @@
 import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
 import DropDown from "react-native-paper-dropdown";
-import {AxiosRequestConfig} from "axios";
-import {Category} from "../open-api/generated";
+import { Category } from "../api/Api";
+import { apiClient } from '../api/apiClient';
 import {useRecoilState} from "recoil";
 import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
 
 export const EventsCategoriesDropdown = (
 	props: {
 		categories: Category[],
-		getEvents: (options?: AxiosRequestConfig) => void,
-		getByCategory: (categoryId: number, options?: AxiosRequestConfig) => void,
-		getCategories: (options?: AxiosRequestConfig) => void,
+		getEvents: () => void,
+		getByCategory: (categoryId: number) => void,
+		getCategories: () => void,
 	}) => {
 
 	const [isLoadingCategories, setLoadingCategories] = useState(true);
