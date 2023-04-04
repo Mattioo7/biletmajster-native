@@ -445,7 +445,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrganizerDTOForm"
+                "$ref": "#/components/schemas/OrganizerForm"
               }
             }
           }
@@ -456,7 +456,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OrganizerDTO"
+                  "$ref": "#/components/schemas/Organizer"
                 }
               }
             }
@@ -478,7 +478,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OrganizerDTO"
+                  "$ref": "#/components/schemas/Organizer"
                 }
               }
             }
@@ -592,7 +592,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrganizerDTOPatch"
+                "$ref": "#/components/schemas/OrganizerPatch"
               }
             }
           }
@@ -1011,7 +1011,7 @@
           }
         }
       },
-      "OrganizerDTO": {
+      "Organizer": {
         "type": "object",
         "required": [
           "id",

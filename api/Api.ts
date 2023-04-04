@@ -198,7 +198,7 @@ export interface ReservationDTO {
   reservationToken: string;
 }
 
-export interface OrganizerDTO {
+export interface Organizer {
   /**
    * @format int64
    * @example 10
@@ -646,8 +646,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Create orginizer account
      * @request POST:/organizer
      */
-    signUp: (data: any, params: RequestParams = {}) =>
-      this.request<OrganizerDTO, void>({
+    signUp: (data: OrganizerForm, params: RequestParams = {}) =>
+      this.request<Organizer, void>({
         path: `/organizer`,
         method: "POST",
         body: data,
@@ -666,7 +666,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     getOrganizer: (params: RequestParams = {}) =>
-      this.request<OrganizerDTO, void>({
+      this.request<Organizer, void>({
         path: `/organizer`,
         method: "GET",
         secure: true,
@@ -715,7 +715,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/organizer/{id}
      * @secure
      */
-    patchOrganizer: (id: string, data: any, params: RequestParams = {}) =>
+    patchOrganizer: (id: string, data: OrganizerPatch, params: RequestParams = {}) =>
       this.request<void, void>({
         path: `/organizer/${id}`,
         method: "PATCH",
