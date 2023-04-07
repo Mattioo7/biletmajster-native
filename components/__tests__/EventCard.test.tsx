@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, fireEvent, waitFor, screen} from '@testing-library/react-native';
+import {render, screen} from '@testing-library/react-native';
 import {EventCard} from '../EventCard';
 import {Event, EventStatus} from '../../api/Api';
 
@@ -19,6 +19,13 @@ describe('EventCard', () => {
 	};
 
 	const mockFunction = jest.fn();
+
+	// Mock the getAddressFromCoordinates function
+	jest.mock('../GetAddressFromCoordinates', () => ({
+		getAddressFromCoordinates: jest.fn().mockImplementation(
+			(() => Promise.resolve('Mocked City, Mocked Country'))
+		),
+	}));
 
 	it('renders without crashing', () => {
 		render(<EventCard event={event} myFunction={mockFunction} />);
