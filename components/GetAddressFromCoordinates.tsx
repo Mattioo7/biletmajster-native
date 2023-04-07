@@ -1,5 +1,3 @@
-// import {MAP_API_KEY} from './../constants';
-
 import {MAP_API_KEY} from "../constants/MAP_API_KEY";
 
 interface LocationInfo {

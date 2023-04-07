@@ -1,9 +1,8 @@
 import React, {useEffect} from "react";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet} from "react-native";
 import {Button, Card, Text} from "react-native-paper";
 import {Event} from '../api/Api'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {getAddressFromCoordinates} from "./GetAddressFromCoordinates";
 
 export const ReservedEventCard = (
