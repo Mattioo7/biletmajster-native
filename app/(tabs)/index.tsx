@@ -90,24 +90,26 @@ export default function TabOneScreen() {
 
 					<View style={{backgroundColor: "none"}}>
 						<FlatList style={styles.flatList}
-											data={events}
-											refreshControl={
-												<RefreshControl
-													refreshing={isLoading}
-													onRefresh={getEvents}
-												/>
-											}
-											renderItem={({item, index}) => (
-												<BigButton
-													index={index}
-													onPress={() => {
-														setActiveEventId(item.id);
-														// console.log('Pressed event id: ' + item.id);
-														// console.log('Recoil event id: ' + activeEventId);
-													}}>
-													<EventCard event={item} myFunction={() => {console.log("Reserve")}}/>
-												</BigButton>
-											)}
+								  data={events}
+								  refreshControl={
+									  <RefreshControl
+										  refreshing={isLoading}
+										  onRefresh={getEvents}
+									  />
+								  }
+								  renderItem={({item, index}) => (
+									  <BigButton
+										  index={index}
+										  onPress={() => {
+											  setActiveEventId(item.id);
+											  // console.log('Pressed event id: ' + item.id);
+											  // console.log('Recoil event id: ' + activeEventId);
+										  }}>
+										  <EventCard event={item} myFunction={() => {
+											  console.log("Reserve")
+										  }}/>
+									  </BigButton>
+								  )}
 						/>
 					</View>
 				</View>
@@ -135,9 +137,7 @@ const styles = StyleSheet.create({
 		height: 1,
 		width: '80%',
 	},
-	flatList: {
-
-	},
+	flatList: {},
 	fab: {
 		position: 'absolute',
 		margin: 10,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
 		height: 500,
 		marginBottom: 50,
 		marginHorizontal: 15,
-		justifyContent : "center",
+		justifyContent: "center",
 		alignItems: "center"
 	}
 

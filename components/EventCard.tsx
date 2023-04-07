@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {StyleSheet, View} from "react-native";
 import {Button, Card, Text} from "react-native-paper";
 import {Event} from '../api/Api'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {getAddressFromCoordinates} from "./GetAddressFromCoordinates";
 
 export const EventCard = (
 	props: {
@@ -13,10 +14,20 @@ export const EventCard = (
 
 	const {event, myFunction} = {...props};
 
+	const [address, setAddress] = React.useState<string>('a');
+
+	useEffect(() => {
+		getAddressFromCoordinates({latitude: event.latitude, longitude: event.longitude})
+			.then(r => setAddress(r as string))
+			.catch(e => {
+				console.log(e + ' lat: ' + event.latitude + ' long: ' + event.longitude);
+				setAddress('Address not found');
+			});
+	}, []);
+
 	return (
 		<Card style={styles.card}>
-			<Card.Title title={event.title} titleStyle={{fontSize: 20, fontWeight: 'bold'}} subtitle={event.latitude + ' ' +
-				event.longitude} subtitleStyle={{fontSize: 14}}/>
+			<Card.Title title={event.title} titleStyle={{fontSize: 20, fontWeight: 'bold'}} subtitle={address} subtitleStyle={{fontSize: 14}}/>
 			<Card.Content>
 				<View style={styles.contentView}>
 					<View style={styles.information}>
