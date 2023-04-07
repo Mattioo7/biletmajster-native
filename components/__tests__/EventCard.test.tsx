@@ -2,6 +2,7 @@ import React from 'react';
 import {render, screen, waitFor} from '@testing-library/react-native';
 import {EventCard} from '../EventCard';
 import {Event, EventStatus} from '../../api/Api';
+import * as GetAddressModule from '../GetAddressFromCoordinates';
 
 describe('EventCard', () => {
 	const event: Event = {
@@ -20,21 +21,18 @@ describe('EventCard', () => {
 
 	const mockFunction = jest.fn();
 
-	// // Mock the getAddressFromCoordinates function
-	// jest.mock('../GetAddressFromCoordinates', () => ({
-	// 	getAddressFromCoordinates: jest.fn().mockImplementation(
-	// 		(() => Promise.resolve('Mocked City, Mocked Country'))
-	// 	),
-	// }));
+	// Mock the getAddressFromCoordinates function
+	jest.mock('../GetAddressFromCoordinates', () => ({
+		getAddressFromCoordinates: jest.fn().mockImplementation(
+			(() => Promise.resolve('Mocked City, Mocked Country'))
+		),
+	}));
 
-	beforeAll(() => {
-		// Mock the getAddressFromCoordinates function
-		jest.mock('../GetAddressFromCoordinates', () => ({
-			getAddressFromCoordinates: jest.fn().mockImplementation(
-				(() => Promise.resolve('Mocked City, Mocked Country'))
-			),
-		}));
-	});
+	// Mock the getAddressFromCoordinates function
+	const mockGetAddressFromCoordinates = jest.spyOn(GetAddressModule, 'getAddressFromCoordinates');
+	mockGetAddressFromCoordinates.mockImplementation(() =>
+		Promise.resolve('Mocked City, Mocked Country')
+	);
 
 	/*it('renders without crashing', () => {
 		render(<EventCard event={event} myFunction={mockFunction} />);
@@ -51,30 +49,33 @@ describe('EventCard', () => {
 
 	});
 
-	/*it('should render the "Reserve" button', () => {
+	it('should render the "Reserve" button', async () => {
 		const { getByText } = render(<EventCard event={event} myFunction={mockFunction}/>);
-		const button = getByText('Reserve');
+		const button = await waitFor(() => getByText('Reserve'));
 		expect(button).toBeDefined();
 	});
 
-	it('displays the correct number of free and maximum places for the event', () => {
-		const { getByText } = render(<EventCard event={event} myFunction={mockFunction}/>);
+	it('displays the correct number of free and maximum places for the event', async () => {
+		const { getByText, findByText } = render(<EventCard event={event} myFunction={mockFunction}/>);
 
-		expect(getByText(`${event.freePlace}/${event.maxPlace}`)).toBeTruthy();
+		// Use waitFor to wait for the expected element to appear in the DOM
+		const freeMaxPlacesText = await waitFor(() => findByText(`${event.freePlace}/${event.maxPlace}`));
+
+		expect(freeMaxPlacesText).toBeTruthy();
 	});
 
-	it('enables the Reserve button when there are free places available and disables it when there are no free places', () => {
+	it('enables the Reserve button when there are free places available and disables it when there are no free places', async () => {
 		const { rerender } = render(<EventCard event={event} myFunction={mockFunction} />);
 
-		const reserveButton = screen.getByText('Reserve');
+		const reserveButton = await waitFor(() => screen.getByText('Reserve'));
 		expect(reserveButton).toBeTruthy();
 		expect(reserveButton.parent.props.disabled).toBeFalsy();
 
 		const noFreePlacesEvent = { ...event, freePlace: 0 };
 		rerender(<EventCard event={noFreePlacesEvent} myFunction={mockFunction} />);
 
-		const disabledReserveButton = screen.getByText('Reserve');
+		const disabledReserveButton = await waitFor(() => screen.getByText('Reserve'));
 		expect(disabledReserveButton).toBeTruthy();
 		expect(disabledReserveButton.parent.props.selectable).toBeFalsy();
-	});*/
+	});
 });
