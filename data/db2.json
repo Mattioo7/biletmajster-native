@@ -208,6 +208,20 @@
         }
       ]
     }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Sport"
+    },
+    {
+      "id": 2,
+      "name": "Open air"
+    },
+    {
+      "id": 3,
+      "name": "Music"
+    }
   ]
 }
 

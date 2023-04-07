@@ -1,12 +1,11 @@
 import {Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
 import {View} from '../../components/Themed';
-import { Category, Event } from '../../api/Api'
-import { apiClient } from '../../api/apiClient';
+import {Category, Event} from '../../api/Api'
+import {apiClient} from '../../api/apiClient';
 import React, {useEffect, useState} from "react";
 import {BigButton} from "../../components/BigButton";
 import {EventCard} from "../../components/EventCard";
 import 'react-native-url-polyfill/auto';
-import Backend from "../../constants/Backend";
 import {useRecoilState} from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
 import {Provider} from "react-native-paper";
@@ -66,13 +65,13 @@ export default function TabOneScreen() {
 	}, []);
 
 	// DEBUG
-	useEffect(() => {
-		console.log("----------------------");
-		console.log("SearchQuery: " + searchQuery);
-		console.log("CategoryId: " + categoryId);
-		console.log("SortBy: " + sortBy);
-		console.log("----------------------");
-	}, [searchQuery, categoryId, sortBy])
+	// useEffect(() => {
+	// 	console.log("----------------------");
+	// 	console.log("SearchQuery: " + searchQuery);
+	// 	console.log("CategoryId: " + categoryId);
+	// 	console.log("SortBy: " + sortBy);
+	// 	console.log("----------------------");
+	// }, [searchQuery, categoryId, sortBy])
 
 	// useEffect(() => {
 	// 	console.log("SearchQuery: " + searchQuery);
@@ -106,7 +105,7 @@ export default function TabOneScreen() {
 														// console.log('Pressed event id: ' + item.id);
 														// console.log('Recoil event id: ' + activeEventId);
 													}}>
-													<EventCard event={item}/>
+													<EventCard event={item} myFunction={() => {console.log("Reserve")}}/>
 												</BigButton>
 											)}
 						/>
