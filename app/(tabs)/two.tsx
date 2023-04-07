@@ -56,7 +56,9 @@ export default function TabTwoScreen() {
                           // console.log('Pressed event id: ' + item.id);
                           // console.log('Recoil event id: ' + activeEventId);
                         }}>
-                        <ReservedEventCard event={item}/>
+                        <ReservedEventCard event={item} myFunction={() => {
+                          console.log("Cancel")
+                        }}/>
                       </BigButton>
                     )}
           />

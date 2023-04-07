@@ -1,6 +1,5 @@
 import {StatusBar} from 'expo-status-bar';
 import {Alert, Image, Platform, StyleSheet} from 'react-native';
-
 import {Text, View} from '../components/Themed';
 import {useRecoilState} from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
@@ -8,6 +7,7 @@ import React, {useEffect, useState} from "react";
 import {Event} from '../api/Api'
 import {apiClient} from '../api/apiClient';
 import {ActivityIndicator, Card} from "react-native-paper";
+// @ts-ignore
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
