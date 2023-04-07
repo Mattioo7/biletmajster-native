@@ -113,7 +113,7 @@ export default function ModalScreen() {
 
         <View style={{width: '50%'}}>
           <Button
-            style={{...styles.margins, marginLeft: 5}} icon="car-info" mode="contained" onPress={() => {}}>
+            style={{...styles.margins, marginLeft: 5}} icon="car-info" mode="contained" onPress={() => {console.debug("Use filters clicked")}}>
             Use filters
           </Button>
         </View>
