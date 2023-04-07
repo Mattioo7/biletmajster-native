@@ -14,13 +14,13 @@ export const EventCard = (
 
 	const {event, myFunction} = {...props};
 
-	const [address, setAddress] = React.useState<string>('a');
+	const [address, setAddress] = React.useState<string>('');
 
 	useEffect(() => {
 		getAddressFromCoordinates({latitude: event.latitude, longitude: event.longitude})
 			.then(r => setAddress(r as string))
 			.catch(e => {
-				console.log(e + ' lat: ' + event.latitude + ' long: ' + event.longitude);
+				console.log(e);
 				setAddress('Address not found');
 			});
 	}, []);
