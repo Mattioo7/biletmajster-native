@@ -94,7 +94,7 @@ export default function ModalScreen() {
       <EventsCategoriesDropdown
         categories={categories}
         getEvents={apiClient.events.getEvents}
-        getByCategory={num => apiClient.events.getByCategory({ categoryId: num })}
+        getByCategory={num => apiClient.events.getByCategory({ headers: { categoryId: num.toString() } })}
         getCategories={apiClient.categories.getCategories}
       />
       {/* TODO: Do we need to pass getters and setters like this? */}
