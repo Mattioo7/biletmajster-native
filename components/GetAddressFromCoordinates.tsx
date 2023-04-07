@@ -43,7 +43,6 @@ interface LocationInfo {
 export function getAddressFromCoordinates({ latitude, longitude }: { latitude: string, longitude: string }): Promise<string | undefined> {
 	return new Promise((resolve, reject) => {
 		const url = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${latitude}%2C${longitude}&lang=en-US&apiKey=${MAP_API_KEY}`
-		// const url = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=48.2181679,16.3899064&lang=en-US&apiKey=hpsl2FKiv7ZcvoYEgP7dp_EaI6L1mcY0j6Optncmwu4`
 		fetch(url)
 			.then(res => res.json() as Promise<LocationInfo>)
 			.then((resJson) => {
