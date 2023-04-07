@@ -20,12 +20,21 @@ describe('EventCard', () => {
 
 	const mockFunction = jest.fn();
 
-	// Mock the getAddressFromCoordinates function
-	jest.mock('../GetAddressFromCoordinates', () => ({
-		getAddressFromCoordinates: jest.fn().mockImplementation(
-			(() => Promise.resolve('Mocked City, Mocked Country'))
-		),
-	}));
+	// // Mock the getAddressFromCoordinates function
+	// jest.mock('../GetAddressFromCoordinates', () => ({
+	// 	getAddressFromCoordinates: jest.fn().mockImplementation(
+	// 		(() => Promise.resolve('Mocked City, Mocked Country'))
+	// 	),
+	// }));
+
+	beforeAll(() => {
+		// Mock the getAddressFromCoordinates function
+		jest.mock('../GetAddressFromCoordinates', () => ({
+			getAddressFromCoordinates: jest.fn().mockImplementation(
+				(() => Promise.resolve('Mocked City, Mocked Country'))
+			),
+		}));
+	});
 
 	/*it('renders without crashing', () => {
 		render(<EventCard event={event} myFunction={mockFunction} />);
