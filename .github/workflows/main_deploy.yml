@@ -13,8 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set Backend URL
-        run: sed -i -e 's,http://10.0.2.2:8000,${{ secrets.BACKEND_URL }},g' app.json
+      - name: Set Secrets
+        run: |
+          sed -i -e 's,http://10.0.2.2:8000,${{ secrets.BACKEND_URL }},g' app.json
+          sed -i -e 's,xyz,${{ secrets.MAP_KEY }},g' app.json
 
       - name: Setup Node
         uses: actions/setup-node@v2
