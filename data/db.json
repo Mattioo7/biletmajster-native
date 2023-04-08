@@ -2,211 +2,319 @@
   "events": [
     {
       "id": 0,
-      "freePlace": 2,
-      "title": "Title 0 - Short description of Event",
+      "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
       "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      "placeSchema": "Serialized place schema",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 100,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 1,
-      "freePlace": 2,
-      "title": "Title - Title 1",
+      "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "41.88432",
+      "longitude": "-87.63877",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 0,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 2,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
+        },
+        {
+          "id": 2,
+          "name": "Music"
+        },
+        {
+          "id": 3,
+          "name": "Art"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 3,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 0,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 4,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 5,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 6,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 7,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 8,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 9,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 10,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 11,
-      "freePlace": 2,
       "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
         {
           "id": 1,
           "name": "Sport"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     },
     {
       "id": 12,
-      "freePlace": 2,
-      "title": "Title - Title 12 ",
+      "title": "Title - Short description of Event",
       "startTime": 1673034164,
       "endTime": 1683034164,
-      "name": "Long description of Event",
-      "placeSchema": "Serialized place schema",
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "status": "done",
       "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
+    },
+    {
+      "id": 13,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
+    },
+    {
+      "id": 14,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        }
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
+    },
+    {
+      "id": 15,
+      "title": "Title - Short description of Event",
+      "startTime": 1673034164,
+      "endTime": 1683034164,
+      "latitude": "40.4775315",
+      "longitude": "-3.7051359",
+      "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "status": "done",
+      "categories": [
+        {
+          "id": 1,
+          "name": "Sport"
+        },
         {
           "id": 2,
           "name": "Open air"
         }
-      ]
+      ],
+      "freePlace": 2,
+      "maxPlace": 100,
+      "placeSchema": "Seralized place schema"
     }
   ],
   "categories": [

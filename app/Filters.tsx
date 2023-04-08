@@ -5,9 +5,8 @@ import {View} from '../components/Themed';
 import {useRecoilState} from "recoil";
 import {EventsCategoriesDropdown} from "../components/EventsCategoriesDropdown";
 import React, {useEffect, useState} from "react";
-import { Category } from "../api/Api";
-import { apiClient } from '../api/apiClient';
-import Backend from "../constants/Backend";
+import {Category} from "../api/Api";
+import {apiClient} from '../api/apiClient';
 import {Button, Searchbar} from "react-native-paper";
 import {EventsSortByDropdown} from "../components/EventsSortByDropdown";
 import allEventsSortByState from "../recoil/allEventsSortByState";
@@ -50,9 +49,9 @@ export default function ModalScreen() {
   // clear filters
   const [clearFiltersState, setClearFiltersState] = useState<boolean>(false);
   const clearFilters = () => {
-    setCategoryId(prev => undefined);
-    setSearchQuery(prev => '');
-    setSortBy(prev => undefined);
+    setCategoryId(undefined);
+    setSearchQuery('');
+    setSortBy(undefined);
     setClearFiltersState(prev => !prev);
     // console.log("ClearFilters");
     console.log("****************");
@@ -95,7 +94,7 @@ export default function ModalScreen() {
       <EventsCategoriesDropdown
         categories={categories}
         getEvents={apiClient.events.getEvents}
-        getByCategory={num => apiClient.events.getByCategory({ categoryId: num })}
+        getByCategory={num => apiClient.events.getByCategory({ headers: { categoryId: num.toString() } })}
         getCategories={apiClient.categories.getCategories}
       />
       {/* TODO: Do we need to pass getters and setters like this? */}

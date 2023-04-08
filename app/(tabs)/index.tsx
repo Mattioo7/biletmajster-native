@@ -1,12 +1,11 @@
 import {Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
 import {View} from '../../components/Themed';
-import { Category, Event } from '../../api/Api'
-import { apiClient } from '../../api/apiClient';
+import {Category, Event} from '../../api/Api'
+import {apiClient} from '../../api/apiClient';
 import React, {useEffect, useState} from "react";
 import {BigButton} from "../../components/BigButton";
 import {EventCard} from "../../components/EventCard";
 import 'react-native-url-polyfill/auto';
-import Backend from "../../constants/Backend";
 import {useRecoilState} from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
 import {Provider} from "react-native-paper";
@@ -66,13 +65,13 @@ export default function TabOneScreen() {
 	}, []);
 
 	// DEBUG
-	useEffect(() => {
-		console.log("----------------------");
-		console.log("SearchQuery: " + searchQuery);
-		console.log("CategoryId: " + categoryId);
-		console.log("SortBy: " + sortBy);
-		console.log("----------------------");
-	}, [searchQuery, categoryId, sortBy])
+	// useEffect(() => {
+	// 	console.log("----------------------");
+	// 	console.log("SearchQuery: " + searchQuery);
+	// 	console.log("CategoryId: " + categoryId);
+	// 	console.log("SortBy: " + sortBy);
+	// 	console.log("----------------------");
+	// }, [searchQuery, categoryId, sortBy])
 
 	// useEffect(() => {
 	// 	console.log("SearchQuery: " + searchQuery);
@@ -91,24 +90,26 @@ export default function TabOneScreen() {
 
 					<View style={{backgroundColor: "none"}}>
 						<FlatList style={styles.flatList}
-											data={events}
-											refreshControl={
-												<RefreshControl
-													refreshing={isLoading}
-													onRefresh={getEvents}
-												/>
-											}
-											renderItem={({item, index}) => (
-												<BigButton
-													index={index}
-													onPress={() => {
-														setActiveEventId(item.id);
-														// console.log('Pressed event id: ' + item.id);
-														// console.log('Recoil event id: ' + activeEventId);
-													}}>
-													<EventCard event={item}/>
-												</BigButton>
-											)}
+								  data={events}
+								  refreshControl={
+									  <RefreshControl
+										  refreshing={isLoading}
+										  onRefresh={getEvents}
+									  />
+								  }
+								  renderItem={({item, index}) => (
+									  <BigButton
+										  index={index}
+										  onPress={() => {
+											  setActiveEventId(item.id);
+											  // console.log('Pressed event id: ' + item.id);
+											  // console.log('Recoil event id: ' + activeEventId);
+										  }}>
+										  <EventCard event={item} myFunction={() => {
+											  console.log("Reserve")
+										  }}/>
+									  </BigButton>
+								  )}
 						/>
 					</View>
 				</View>
@@ -136,9 +137,7 @@ const styles = StyleSheet.create({
 		height: 1,
 		width: '80%',
 	},
-	flatList: {
-
-	},
+	flatList: {},
 	fab: {
 		position: 'absolute',
 		margin: 10,
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
 		height: 500,
 		marginBottom: 50,
 		marginHorizontal: 15,
-		justifyContent : "center",
+		justifyContent: "center",
 		alignItems: "center"
 	}
 

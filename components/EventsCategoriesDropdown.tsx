@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
 import DropDown from "react-native-paper-dropdown";
-import { Category } from "../api/Api";
-import { apiClient } from '../api/apiClient';
+import {Category} from "../api/Api";
 import {useRecoilState} from "recoil";
 import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
 

@@ -1,11 +1,9 @@
-import { Pressable } from "react-native"
-import { FlatList } from "react-native-gesture-handler"
-import { Button, IconButton, Surface, ActivityIndicator, TextInput } from "react-native-paper"
+import {Pressable, Text, View} from "react-native"
+import {FlatList} from "react-native-gesture-handler"
+import {ActivityIndicator, Button, Surface, TextInput} from "react-native-paper"
 import Modal from 'react-native-modal';
-import { View, Text } from "react-native"
-import { useState } from "react"
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React from "react";
+import React, {useState} from "react"
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 export const ModalSelect = <T,>(
   props: {
