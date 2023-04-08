@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 // @ts-ignore: @env is created at runtime
-import { REACT_NATIVE_API } from '@env';
+import { REACT_NATIVE_API } from '@env'; // Important: Keep this import in line 3
 
 export const BACKEND_URL =
   REACT_NATIVE_API ??

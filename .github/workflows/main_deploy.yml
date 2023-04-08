@@ -17,6 +17,8 @@ jobs:
         run: |
           sed -i -e 's,http://10.0.2.2:8000,${{ secrets.BACKEND_URL }},g' app.json
           sed -i -e 's,xyz,${{ secrets.MAP_KEY }},g' app.json
+          sed -i -e '3 c\\ const REACT_NATIVE_API = undefined;' constants/Backend.ts
+          sed -i -e '3 c\\ const REACT_NATIVE_MAPKEY = undefined;' constants/MAP_API_KEY.ts
 
       - name: Setup Node
         uses: actions/setup-node@v2
