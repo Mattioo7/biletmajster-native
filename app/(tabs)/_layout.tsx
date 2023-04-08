@@ -1,6 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {Link, Tabs} from 'expo-router';
-import {Pressable, useColorScheme} from 'react-native';
+import { Pressable, useColorScheme } from 'react-native';
+import Constants from 'expo-constants';
 
 import Colors from '../../constants/Colors';
 
@@ -25,7 +26,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Events',
+          title: 'Events' + Constants.expoConfig?.extra?.apiUrl,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Link href="/Filters" asChild>
