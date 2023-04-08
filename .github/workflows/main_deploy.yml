@@ -10,13 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     name: EAS build
     steps:
-      # - name: "Set ENV"
-      #   run: echo "$(BASE_URL)"
-      #   env:
-      #     BASE_URL: https://exampleapp.com
-
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Set Backend URL
+        run: sed -i -e 's,http://10.0.2.2:8000,${{ secrets.BACKEND_URL }},g' app.json
 
       - name: Setup Node
         uses: actions/setup-node@v2

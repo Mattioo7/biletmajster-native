@@ -31,9 +31,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "51ef1454-0697-49df-9d96-bc96df6da8c5",
-        "apiUrl": "http://10.0.2.2:8000"
-      }
+        "projectId": "51ef1454-0697-49df-9d96-bc96df6da8c5"
+      },
+      "api": "http://10.0.2.2:8000"
     }
   }
 }
