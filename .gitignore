@@ -145,5 +145,4 @@ node_modules
 # Expo
 .expo
 /.expo/
-
 .env
