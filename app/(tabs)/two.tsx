@@ -1,14 +1,18 @@
-import {Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
-import {View} from '../../components/Themed';
-import {BigButton} from "../../components/BigButton";
-import {ReservedEventCard} from "../../components/ReservedEventCard";
-import React, {useEffect, useState} from "react";
-import {apiClient} from "../../api/apiClient";
-import {Event} from "../../api/Api";
-import {useRecoilState} from "recoil";
+import { Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
+import { View } from '../../components/Themed';
+import { BigButton } from "../../components/BigButton";
+import { ReservedEventCard } from "../../components/ReservedEventCard";
+import React, { useEffect, useState } from "react";
+import { apiClient } from "../../api/apiClient";
+import { Event } from "../../api/Api";
+import { useRecoilState } from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
+import { useRouter } from 'expo-router';
+import qrDataState from '../../recoil/qrDataState';
 
 export default function TabTwoScreen() {
+  const router = useRouter();
+  const [qrData, setQrData] = useRecoilState(qrDataState);
 
   const [isLoading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
@@ -31,36 +35,45 @@ export default function TabTwoScreen() {
     }
   };
 
+  const showQRCode = (event: Event) => {
+    const dtf = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'
+    }); 
+    setQrData({
+      coreData: "QR Pass for event " + event.name + " at " + event.latitude + ", " + event.longitude + " from " + dtf.format(event.startTime) + " to " + dtf.format(event.endTime),
+      title: event.name,
+      description: dtf.format(event.startTime) + " - " + dtf.format(event.endTime)
+    });
+    router.push("/QRPage")
+  }
+
   useEffect(() => {
     getEvents();
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
 
-        <View style={{backgroundColor: "none"}}>
+        <View style={{ backgroundColor: "none" }}>
           <FlatList style={styles.flatList}
-                    data={events}
-                    refreshControl={
-                      <RefreshControl
-                        refreshing={isLoading}
-                        onRefresh={getEvents}
-                      />
-                    }
-                    renderItem={({item, index}) => (
-                      <BigButton
-                        index={index}
-                        onPress={() => {
-                          setActiveEventId(item.id);
-                          // console.log('Pressed event id: ' + item.id);
-                          // console.log('Recoil event id: ' + activeEventId);
-                        }}>
-                        <ReservedEventCard event={item} myFunction={() => {
-                          console.log("Cancel")
-                        }}/>
-                      </BigButton>
-                    )}
+            data={events}
+            refreshControl={
+              <RefreshControl
+                refreshing={isLoading}
+                onRefresh={getEvents}
+              />
+            }
+            renderItem={({ item, index }) => (
+              <ReservedEventCard
+                key={item.id}
+                event={item}
+                qrFunction={() => showQRCode(item)}
+                cancelFunction={() => { console.log("Cancel") }}
+                infoFunction={() => { setActiveEventId(item.id); router.push("/event"); }}
+              />
+            )}
           />
         </View>
       </View>

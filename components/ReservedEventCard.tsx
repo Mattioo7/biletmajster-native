@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {StyleSheet} from "react-native";
-import {Button, Card, Text} from "react-native-paper";
+import {Button, Card, IconButton, Text} from "react-native-paper";
 import {Event} from '../api/Api'
 // @ts-ignore
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -9,10 +9,12 @@ import {getAddressFromCoordinates} from "./GetAddressFromCoordinates";
 export const ReservedEventCard = (
 	props: {
 		event: Event,
-		myFunction: () => void
+		cancelFunction: () => void,
+		qrFunction: () => void,
+		infoFunction: () => void
 	}) => {
 
-	const { event, myFunction } = { ...props };
+	const { event, cancelFunction, qrFunction, infoFunction } = { ...props };
 
 	const [address, setAddress] = React.useState<string>('');
 	useEffect(() => {
@@ -47,7 +49,9 @@ export const ReservedEventCard = (
 				</Text>
 			</Card.Content>
 			<Card.Actions>
-				<Button onPress={() => {console.log("Cancel")}}>Cancel</Button>
+				<IconButton icon="information" onPress={infoFunction} />
+				<IconButton icon="qrcode" onPress={qrFunction}/>
+				<Button onPress={cancelFunction}>Cancel</Button>
 			</Card.Actions>
 
 		</Card>
@@ -56,6 +60,7 @@ export const ReservedEventCard = (
 
 const styles = StyleSheet.create({
 	card: {
+		margin: 10
 	},
 	contentView: {
 		display: 'flex',
