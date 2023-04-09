@@ -1,7 +1,12 @@
-export const CONSTANTS_BACKEND_LOCAL_ALS = 'http://10.0.2.2:8000'
-export const CONSTANTS_BACKEND_LOCALHOST = 'http://localhost:8000'
-export const CONSTANTS_BACKEND_CLOUD = 'https://xxx.azurewebsites.net';
+import Constants from 'expo-constants';
+// @ts-ignore: @env is created at runtime
+import { REACT_NATIVE_API } from '@env'; // Important: Keep this import in line 3
 
-const Backend = (path: string) => CONSTANTS_BACKEND_LOCAL_ALS + path;
+export const BACKEND_URL =
+  REACT_NATIVE_API ??
+  Constants.expoConfig?.extra?.api ??
+  'url';
+
+const Backend = (path: string) => BACKEND_URL + path;
 
 export default Backend;
