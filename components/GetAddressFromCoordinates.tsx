@@ -40,21 +40,25 @@ interface LocationInfo {
 
 export function getAddressFromCoordinates({ latitude, longitude }: { latitude: string, longitude: string }): Promise<string | undefined> {
 	return new Promise((resolve, reject) => {
-		const url = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${latitude}%2C${longitude}&lang=en-US&apiKey=${MAP_API_KEY}`
-		fetch(url)
-			.then(res => res.json() as Promise<LocationInfo>)
-			.then((resJson) => {
-				// console.log('resJson ', resJson)
-				// the response had a deeply nested structure :/
-				if (resJson) {
-					resolve(resJson.items[0].address.city + ', ' + resJson.items[0].address.countryName);
-				} else {
-					reject('not found: ' + url);
-				}
-			})
-			.catch((e) => {
-				console.log('Error in getAddressFromCoordinates', e)
-				reject(e);
-			})
+		resolve('Warsaw, Poland');
 	})
+
+	// return new Promise((resolve, reject) => {
+	// 	const url = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${latitude}%2C${longitude}&lang=en-US&apiKey=${MAP_API_KEY}`
+	// 	fetch(url)
+	// 		.then(res => res.json() as Promise<LocationInfo>)
+	// 		.then((resJson) => {
+	// 			// console.log('resJson ', resJson)
+	// 			// the response had a deeply nested structure :/
+	// 			if (resJson) {
+	// 				resolve(resJson.items[0].address.city + ', ' + resJson.items[0].address.countryName);
+	// 			} else {
+	// 				reject('not found: ' + url);
+	// 			}
+	// 		})
+	// 		.catch((e) => {
+	// 			console.log('Error in getAddressFromCoordinates', e)
+	// 			reject(e);
+	// 		})
+	// })
 }
