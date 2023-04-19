@@ -1,14 +1,14 @@
-import {Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
-import {View} from '../../components/Themed';
-import {Category, Event} from '../../api/Api'
-import {apiClient} from '../../api/apiClient';
-import React, {useEffect, useState} from "react";
-import {BigButton} from "../../components/BigButton";
-import {EventCard} from "../../components/EventCard";
+import { Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
+import { View } from '../../components/Themed';
+import { Category, Event } from '../../api/Api'
+import { apiClient } from '../../api/apiClient';
+import React, { useEffect, useState } from "react";
+import { BigButton } from "../../components/BigButton";
+import { EventCard } from "../../components/EventCard";
 import 'react-native-url-polyfill/auto';
-import {useRecoilState} from "recoil";
+import { useRecoilState } from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
-import {Provider} from "react-native-paper";
+import { Provider } from "react-native-paper";
 import allEventsSearchNameState from "../../recoil/allEventsSortByNameState";
 import allEventsFilterByCategoryState from "../../recoil/allEventsFilterByCategoryState";
 import allEventsSortByState from "../../recoil/allEventsSortByState";
@@ -33,6 +33,7 @@ export default function TabOneScreen() {
 				setEvents(fetchedEvents.data);
 			else {
 				// TODO: Handle error
+				console.log("Error: " + fetchedEvents);
 			}
 		} catch (error) {
 			console.warn(error);
@@ -50,6 +51,7 @@ export default function TabOneScreen() {
 				setCategories(fetchedCategories.data);
 			else {
 				// TODO: Handle error
+				console.log("Error: " + fetchedCategories);
 			}
 		} catch (error) {
 			console.warn(error);
@@ -105,9 +107,7 @@ export default function TabOneScreen() {
 											  // console.log('Pressed event id: ' + item.id);
 											  // console.log('Recoil event id: ' + activeEventId);
 										  }}>
-										  <EventCard event={item} myFunction={() => {
-											  console.log("Reserve")
-										  }}/>
+										  <EventCard event={item}/>
 									  </BigButton>
 								  )}
 						/>

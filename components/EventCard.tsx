@@ -1,21 +1,58 @@
 import React, {useEffect} from "react";
-import {StyleSheet, View} from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import {Button, Card, Text} from "react-native-paper";
 import {Event} from '../api/Api'
 // @ts-ignore
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {getAddressFromCoordinates} from "./GetAddressFromCoordinates";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { apiClient } from "../api/apiClient";
+import { Reservation } from "../models/Reservation";
 
 export const EventCard = (
 	props: {
-		event: Event,
-		myFunction: () => void
+		event: Event
 	}) => {
 
-	const {event, myFunction} = {...props};
+	const {event} = {...props};
 
 	const [address, setAddress] = React.useState<string>('');
+
+	const storeData = async (key: string, value: string) => {
+		const jsonValue = JSON.stringify(value);
+		await AsyncStorage.setItem(key, jsonValue);
+	};
+
+	const makeReservation = async () => {
+		try {
+			// const reservation = await apiClient.reservation.makeReservation();
+			const reservation = {
+				ok: true,
+				data: {
+					reservationToken: "123",
+					placeId: 456
+				}
+			}
+			// console.log("Fetched getCategories");
+			if (reservation.ok) {
+				const reservationData: Reservation = {
+					event: event,
+					reservationToken: reservation.data.reservationToken,
+					placeId: reservation.data.placeId,
+				};
+				await storeData(event.id.toString(), JSON.stringify(reservationData));
+			}
+			else {
+				// TODO: Handle error
+			}
+		} catch (error) {
+			console.warn(error);
+			Alert.alert('An error occurred');
+		} finally {
+			console.log("Reserve");
+		}
+	}
 
 	useEffect(() => {
 		getAddressFromCoordinates({latitude: event.latitude, longitude: event.longitude})
@@ -52,7 +89,7 @@ export const EventCard = (
 			<Card.Actions>
 				<MaterialCommunityIcons name="account-multiple" size={30} color="#555"/>
 				<Text style={{marginRight: 20}}>{event.freePlace}/{event.maxPlace}</Text>
-				{event.freePlace > 0 ? <Button mode="contained" onPress={myFunction}>Reserve</Button> :
+				{event.freePlace > 0 ? <Button mode="contained" onPress={makeReservation}>Reserve</Button> :
 					<Button mode="contained" disabled={true}>Reserve</Button>}
 			</Card.Actions>
 		</Card>
