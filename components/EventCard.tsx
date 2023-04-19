@@ -20,8 +20,7 @@ export const EventCard = (
 	const [address, setAddress] = React.useState<string>('');
 
 	const storeData = async (key: string, value: string) => {
-		const jsonValue = JSON.stringify(value);
-		await AsyncStorage.setItem(key, jsonValue);
+		await AsyncStorage.setItem(key, value);
 	};
 
 	const makeReservation = async () => {

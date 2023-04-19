@@ -57,7 +57,7 @@ export default function TabOneScreen() {
 			console.warn(error);
 			Alert.alert('An error occurred');
 		} finally {
-			setLoading(false);
+			// setLoading(false);
 		}
 	};
 

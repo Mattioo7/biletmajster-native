@@ -60,7 +60,8 @@ export const ReservedEventCard = (
 
 const styles = StyleSheet.create({
 	card: {
-		margin: 10
+		margin: 10,
+		minWidth: '90%',
 	},
 	contentView: {
 		display: 'flex',
