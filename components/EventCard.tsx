@@ -23,6 +23,7 @@ export const EventCard = (
 		await AsyncStorage.setItem(key, value);
 	};
 
+	// TODO: add refetch of events after reservation or move to parent component
 	const makeReservation = async () => {
 		try {
 			// TODO: Api call
