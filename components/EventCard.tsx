@@ -6,54 +6,17 @@ import {Event} from '../api/Api'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {getAddressFromCoordinates} from "./GetAddressFromCoordinates";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { apiClient } from "../api/apiClient";
-import { Reservation } from "../models/Reservation";
+
 
 export const EventCard = (
 	props: {
-		event: Event
+		event: Event,
+		makeReservation: () => void,
 	}) => {
 
-	const {event} = {...props};
+	const {event, makeReservation} = {...props};
 
 	const [address, setAddress] = React.useState<string>('');
-
-	const storeData = async (key: string, value: string) => {
-		await AsyncStorage.setItem(key, value);
-	};
-
-	// TODO: add refetch of events after reservation or move to parent component
-	const makeReservation = async () => {
-		try {
-			// TODO: Api call
-			// const reservation = await apiClient.reservation.makeReservation();
-			const reservation = {
-				ok: true,
-				data: {
-					reservationToken: "123",
-					placeId: 456
-				}
-			}
-			// console.log("Fetched getCategories");
-			if (reservation.ok) {
-				const reservationData: Reservation = {
-					event: event,
-					reservationToken: reservation.data.reservationToken,
-					placeId: reservation.data.placeId,
-				};
-				await storeData(event.id.toString(), JSON.stringify(reservationData));
-			}
-			else {
-				// TODO: Handle error
-			}
-		} catch (error) {
-			console.warn(error);
-			Alert.alert('An error occurred');
-		} finally {
-			console.log("Reserve");
-		}
-	}
 
 	useEffect(() => {
 		getAddressFromCoordinates({latitude: event.latitude, longitude: event.longitude})
