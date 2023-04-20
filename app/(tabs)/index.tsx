@@ -30,7 +30,7 @@ export default function TabOneScreen() {
 	const getEvents = async () => {
 		try {
 			const fetchedEvents = await apiClient.events.getEvents();
-			console.log("Fetched getEvents");
+			// console.log("Fetched getEvents");
 			if (fetchedEvents.ok)
 				setEvents(fetchedEvents.data);
 			else {
@@ -128,7 +128,7 @@ export default function TabOneScreen() {
 			<SafeAreaView style={{flex: 1}}>
 				<View style={styles.container}>
 
-					<View style={{backgroundColor: "none"}}>
+					<View style={{backgroundColor: "none", flex: 1}}>
 						<FlatList style={styles.flatList}
 								  data={events}
 								  refreshControl={
@@ -175,7 +175,9 @@ const styles = StyleSheet.create({
 		height: 1,
 		width: '80%',
 	},
-	flatList: {},
+	flatList: {
+		flex: 1,
+	},
 	fab: {
 		position: 'absolute',
 		margin: 10,
