@@ -25,6 +25,7 @@ export const EventCard = (
 
 	const makeReservation = async () => {
 		try {
+			// TODO: Api call
 			// const reservation = await apiClient.reservation.makeReservation();
 			const reservation = {
 				ok: true,

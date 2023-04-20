@@ -17,58 +17,22 @@ export default function TabTwoScreen() {
 
 	const [isLoading, setLoading] = useState(true);
 	const [events, setEvents] = useState<Event[]>([]);
-	// const [reservations, setReservations] = useState<Reservation[]>([]);
 	const [reservations, setReservations] = useState<Reservation[]>([]);
 	const [activeEventId, setActiveEventId] = useRecoilState(selectedEventIdState);
 
-	const ress: Reservation = {
-		"event":
-			{
-				"id": 21,
-				"title": "Patch test",
-				"startTime": 1687568840,
-				"endTime": 1688568840,
-				"latitude": "52.3682382",
-				"longitude": "20.8801369",
-				"name": "Postman test",
-				"status": EventStatus.Cancelled,
-				"categories": [
-					{
-						"id": 1,
-						"name": "Sport"
-					},
-					{
-						"id": 2,
-						"name": "Art"
-					}
-				],
-				"freePlace": 10,
-				"maxPlace": 10,
-				"placeSchema": ""
-			},
-		"reservationToken": "123",
-		"placeId": 456
-	}
-
 	const getReservations = async () => {
-		// console.log("getReservations");
 		try {
 			const keys = await AsyncStorage.getAllKeys();
 			const data = await AsyncStorage.multiGet(keys);
-
-			const eee = data.map(([key, value]) => JSON.parse(value as string));
-
-			setReservations(prevState => data.map(([key, value]) => JSON.parse(JSON.parse(value as string))));
-
-			console.log("here2");
-
+			setReservations(prevState => data.map(([key, value]) => JSON.parse(value as string)));
 		} catch (e) {
 			console.log(e);
 		} finally {
-			setLoading(false);
+			// setLoading(false);
 		}
 	}
 
+	// if backend is a mock
 	// const getEvents = async () => {
 	//   try {
 	//     const fetchedEvents = await apiClient.events.getEvents();
@@ -99,9 +63,25 @@ export default function TabTwoScreen() {
 		router.push("/QRPage")
 	}
 
+	const cancelReservation = (id: number) => {
+		AsyncStorage.removeItem(id.toString())
+			.then(() => {
+				console.log('Item removed successfully!');
+				setReservations(prevState => prevState.filter(reservation => reservation.event.id != id));
+				// TODO: api call
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	}
+
 	useEffect(() => {
+		// if backend is a mock
 		// getEvents();
-		getReservations();
+		getReservations()
+			.then(r => {
+				setLoading(false);
+			});
 	}, []);
 
 	return (
@@ -123,9 +103,7 @@ export default function TabTwoScreen() {
 									  key={item.event.id}
 									  event={item.event}
 									  qrFunction={() => showQRCode(item.event)}
-									  cancelFunction={() => {
-										  console.log("Cancel")
-									  }}
+									  cancelFunction={cancelReservation}
 									  infoFunction={() => {
 										  setActiveEventId(item.event.id);
 										  router.push("/event");
