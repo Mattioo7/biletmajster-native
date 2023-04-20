@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {StyleSheet, View} from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import {Button, Card, Text} from "react-native-paper";
 import {Event} from '../api/Api'
 // @ts-ignore
@@ -7,13 +7,14 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {getAddressFromCoordinates} from "./GetAddressFromCoordinates";
 
+
 export const EventCard = (
 	props: {
 		event: Event,
-		myFunction: () => void
+		makeReservation: () => void,
 	}) => {
 
-	const {event, myFunction} = {...props};
+	const {event, makeReservation} = {...props};
 
 	const [address, setAddress] = React.useState<string>('');
 
@@ -52,7 +53,7 @@ export const EventCard = (
 			<Card.Actions>
 				<MaterialCommunityIcons name="account-multiple" size={30} color="#555"/>
 				<Text style={{marginRight: 20}}>{event.freePlace}/{event.maxPlace}</Text>
-				{event.freePlace > 0 ? <Button mode="contained" onPress={myFunction}>Reserve</Button> :
+				{event.freePlace > 0 ? <Button mode="contained" onPress={makeReservation}>Reserve</Button> :
 					<Button mode="contained" disabled={true}>Reserve</Button>}
 			</Card.Actions>
 		</Card>

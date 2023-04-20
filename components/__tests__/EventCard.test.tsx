@@ -34,29 +34,23 @@ describe('EventCard', () => {
 		Promise.resolve('Mocked City, Mocked Country')
 	);
 
-	/*it('renders without crashing', () => {
-		render(<EventCard event={event} myFunction={mockFunction} />);
-	});*/
-
 	it('should render the event title', async () => {
-		const {getByText} = render(<EventCard event={event} myFunction={mockFunction}/>);
+		const {getByText} = render(<EventCard event={event} makeReservation={mockFunction}/>);
 		const title = getByText(event.title!);
 
 		await waitFor(() => {
 			expect(title).toBeDefined();
 		});
-
-
 	});
 
 	it('should render the "Reserve" button', async () => {
-		const { getByText } = render(<EventCard event={event} myFunction={mockFunction}/>);
+		const { getByText } = render(<EventCard event={event} makeReservation={mockFunction}/>);
 		const button = await waitFor(() => getByText('Reserve'));
 		expect(button).toBeDefined();
 	});
 
 	it('displays the correct number of free and maximum places for the event', async () => {
-		const { getByText, findByText } = render(<EventCard event={event} myFunction={mockFunction}/>);
+		const { getByText, findByText } = render(<EventCard event={event} makeReservation={mockFunction}/>);
 
 		// Use waitFor to wait for the expected element to appear in the DOM
 		const freeMaxPlacesText = await waitFor(() => findByText(`${event.freePlace}/${event.maxPlace}`));
@@ -65,14 +59,14 @@ describe('EventCard', () => {
 	});
 
 	it('enables the Reserve button when there are free places available and disables it when there are no free places', async () => {
-		const { rerender } = render(<EventCard event={event} myFunction={mockFunction} />);
+		const { rerender } = render(<EventCard event={event} makeReservation={mockFunction}/>);
 
 		const reserveButton = await waitFor(() => screen.getByText('Reserve'));
 		expect(reserveButton).toBeTruthy();
 		expect(reserveButton.parent.props.disabled).toBeFalsy();
 
 		const noFreePlacesEvent = { ...event, freePlace: 0 };
-		rerender(<EventCard event={noFreePlacesEvent} myFunction={mockFunction} />);
+		rerender(<EventCard event={noFreePlacesEvent} makeReservation={mockFunction}/>);
 
 		const disabledReserveButton = await waitFor(() => screen.getByText('Reserve'));
 		expect(disabledReserveButton).toBeTruthy();

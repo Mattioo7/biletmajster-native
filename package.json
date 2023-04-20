@@ -19,6 +19,7 @@
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@openapitools/openapi-generator-cli": "^0.0.6",
+    "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-navigation/native": "^6.0.2",
     "@testing-library/react-native": "^12.0.1",
     "@typescript-eslint/eslint-plugin": "^5.57.1",

@@ -9,7 +9,7 @@ import {getAddressFromCoordinates} from "./GetAddressFromCoordinates";
 export const ReservedEventCard = (
 	props: {
 		event: Event,
-		cancelFunction: () => void,
+		cancelFunction: (id: number) => void,
 		qrFunction: () => void,
 		infoFunction: () => void
 	}) => {
@@ -51,7 +51,7 @@ export const ReservedEventCard = (
 			<Card.Actions>
 				<IconButton icon="information" onPress={infoFunction} />
 				<IconButton icon="qrcode" onPress={qrFunction}/>
-				<Button onPress={cancelFunction}>Cancel</Button>
+				<Button onPress={() => cancelFunction(event.id)}>Cancel</Button>
 			</Card.Actions>
 
 		</Card>
@@ -60,7 +60,8 @@ export const ReservedEventCard = (
 
 const styles = StyleSheet.create({
 	card: {
-		margin: 10
+		margin: 10,
+		minWidth: '90%',
 	},
 	contentView: {
 		display: 'flex',

@@ -17,7 +17,7 @@
       ],
       "freePlace": 100,
       "maxPlace": 100,
-      "placeSchema": "Seralized place schema"
+      "placeSchema": "Serialized place schema"
     },
     {
       "id": 1,

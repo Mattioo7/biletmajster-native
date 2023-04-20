@@ -18,9 +18,11 @@ export default function ModalScreen() {
 	const getEvent = async () => {
 		try {
 			const fetchedEvents = await apiClient.events.getEventById(eventId as number);
-			// console.log("Fetched getEvent");
-			if (fetchedEvents.ok)
+			console.log("Fetched getEvent");
+			if (fetchedEvents.ok) {
 				setEvent(fetchedEvents.data);
+				// console.log(fetchedEvents.data);
+			}
 			else {
 				// TODO: Handle errors
 			}
@@ -79,10 +81,12 @@ export default function ModalScreen() {
 									<MaterialCommunityIcon name="seat" size={20} color="#555" />
 									Seats:
 								</Text>
+								{event.placeSchema?
 								<Image
 									style={styles.image}
 									source={{uri: event.placeSchema}}
 								/>
+								: <Text>Not available</Text>}
 							</View>
 							{/*<View>
 								<Text style={{ display: 'flex', fontSize: 20 }}>

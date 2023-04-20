@@ -1,17 +1,19 @@
-import {Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet} from 'react-native';
-import {View} from '../../components/Themed';
-import {Category, Event} from '../../api/Api'
-import {apiClient} from '../../api/apiClient';
-import React, {useEffect, useState} from "react";
-import {BigButton} from "../../components/BigButton";
-import {EventCard} from "../../components/EventCard";
+import { Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
+import { View } from '../../components/Themed';
+import { Category, Event } from '../../api/Api'
+import { apiClient } from '../../api/apiClient';
+import React, { useEffect, useState } from "react";
+import { BigButton } from "../../components/BigButton";
+import { EventCard } from "../../components/EventCard";
 import 'react-native-url-polyfill/auto';
-import {useRecoilState} from "recoil";
+import { useRecoilState } from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
-import {Provider} from "react-native-paper";
+import { Provider } from "react-native-paper";
 import allEventsSearchNameState from "../../recoil/allEventsSortByNameState";
 import allEventsFilterByCategoryState from "../../recoil/allEventsFilterByCategoryState";
 import allEventsSortByState from "../../recoil/allEventsSortByState";
+import { Reservation } from "../../models/Reservation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TabOneScreen() {
 	const [isLoading, setLoading] = useState(true);
@@ -28,11 +30,12 @@ export default function TabOneScreen() {
 	const getEvents = async () => {
 		try {
 			const fetchedEvents = await apiClient.events.getEvents();
-			// console.log("Fetched getEvents");
+			console.log("Fetched getEvents");
 			if (fetchedEvents.ok)
 				setEvents(fetchedEvents.data);
 			else {
 				// TODO: Handle error
+				console.log("Error: " + fetchedEvents);
 			}
 		} catch (error) {
 			console.warn(error);
@@ -50,14 +53,51 @@ export default function TabOneScreen() {
 				setCategories(fetchedCategories.data);
 			else {
 				// TODO: Handle error
+				console.log("Error: " + fetchedCategories);
+			}
+		} catch (error) {
+			console.warn(error);
+			Alert.alert('An error occurred');
+		}
+	};
+
+	const storeData = async (key: string, value: string) => {
+		await AsyncStorage.setItem(key, value);
+	};
+
+	// TODO: add refetch of events after reservation or move to parent component
+	const makeReservation = async (event: Event) => {
+		try {
+			// TODO: Api call
+			// const reservation = await apiClient.reservation.makeReservation();
+			const reservation = {
+				ok: true,
+				data: {
+					reservationToken: "123",
+					placeId: 456
+				}
+			}
+			// console.log("Fetched getCategories");
+			if (reservation.ok) {
+				const reservationData: Reservation = {
+					event: event,
+					reservationToken: reservation.data.reservationToken,
+					placeId: reservation.data.placeId,
+				};
+				await storeData(event.id.toString(), JSON.stringify(reservationData));
+
+				getEvents();
+			}
+			else {
+				// TODO: Handle error
 			}
 		} catch (error) {
 			console.warn(error);
 			Alert.alert('An error occurred');
 		} finally {
-			setLoading(false);
+			console.log("Reserve");
 		}
-	};
+	}
 
 	useEffect(() => {
 		getEvents();
@@ -105,9 +145,7 @@ export default function TabOneScreen() {
 											  // console.log('Pressed event id: ' + item.id);
 											  // console.log('Recoil event id: ' + activeEventId);
 										  }}>
-										  <EventCard event={item} myFunction={() => {
-											  console.log("Reserve")
-										  }}/>
+										  <EventCard event={item} makeReservation={() => makeReservation(item)}/>
 									  </BigButton>
 								  )}
 						/>
