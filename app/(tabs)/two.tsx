@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
+import { Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
 import { View } from '../../components/Themed';
 import { ReservedEventCard } from "../../components/ReservedEventCard";
 import React, { useEffect, useState } from "react";
@@ -10,6 +10,8 @@ import qrDataState from '../../recoil/qrDataState';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Reservation } from "../../models/Reservation";
 import EmptyListComponent from "../../components/EmptyListComponent";
+import { apiClient } from "../../api/apiClient";
+import { FAB } from "react-native-paper";
 
 export default function TabTwoScreen() {
 	const router = useRouter();
@@ -24,11 +26,10 @@ export default function TabTwoScreen() {
 		try {
 			const keys = await AsyncStorage.getAllKeys();
 			const data = await AsyncStorage.multiGet(keys);
+
 			setReservations(prevState => data.map(([key, value]) => JSON.parse(value as string)));
 		} catch (e) {
 			console.log(e);
-		} finally {
-			// setLoading(false);
 		}
 	}
 
@@ -63,23 +64,53 @@ export default function TabTwoScreen() {
 		router.push("/QRPage")
 	}
 
-	const cancelReservation = (id: number) => {
-		AsyncStorage.removeItem(id.toString())
-			.then(() => {
-				console.log('Item removed successfully!');
-				setReservations(prevState => prevState.filter(reservation => reservation.event.id != id));
-				// TODO: api call
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+	const cancelReservation = async (id: number, reservationToken: string) => {
+		try {
+			const headers = {
+				headers: {
+					reservationToken: reservationToken
+				},
+			};
+
+			const response = await apiClient.reservation.deleteReservation(headers);
+			console.log(response.status);
+
+			if (response.status === 204) {
+				AsyncStorage.removeItem(id.toString())
+					.then(() => {
+						console.log('Item removed successfully!');
+						setReservations(prevState => prevState.filter(reservation => reservation.event.id != id));
+					})
+					.catch((error) => {
+						console.error(error);
+					});
+			}
+			else {
+				// TODO: Handle error
+				console.log("Error: " + response.error);
+				console.log(response.status);
+			}
+		} catch (error) {
+			console.warn(error);
+			Alert.alert('An error occurred');
+		}
+	}
+
+	const clearAllData = async () => {
+		try {
+			await AsyncStorage.clear();
+			console.log('AsyncStorage successfully cleared!');
+		} catch (e) {
+			console.log('Failed to clear AsyncStorage:', e);
+		}
 	}
 
 	useEffect(() => {
 		// if backend is a mock
 		// getEvents();
+
 		getReservations()
-			.then(r => {
+			.then(() => {
 				setLoading(false);
 			});
 	}, []);
@@ -101,7 +132,7 @@ export default function TabTwoScreen() {
 							  renderItem={({item, index}) => (
 								  <ReservedEventCard
 									  key={item.event.id}
-									  event={item.event}
+									  reservation={item}
 									  qrFunction={() => showQRCode(item.event)}
 									  cancelFunction={cancelReservation}
 									  infoFunction={() => {
@@ -113,7 +144,13 @@ export default function TabTwoScreen() {
 					/>
 				</View>
 			</View>
-
+			<FAB
+				style={styles.fab}
+				small
+				icon="minus"
+				onPress={clearAllData}
+				disabled={true}
+			/>
 		</SafeAreaView>
 	);
 }
@@ -133,5 +170,13 @@ const styles = StyleSheet.create({
 		height: 1,
 		width: '80%',
 	},
-	flatList: {},
+	flatList: {
+
+	},
+	fab: {
+		position: 'absolute',
+		margin: 16,
+		right: 0,
+		bottom: 0,
+	},
 });

@@ -1,20 +1,21 @@
 import React, {useEffect} from "react";
 import {StyleSheet} from "react-native";
 import {Button, Card, IconButton, Text} from "react-native-paper";
-import {Event} from '../api/Api'
 // @ts-ignore
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {getAddressFromCoordinates} from "./GetAddressFromCoordinates";
+import { Reservation } from "../models/Reservation";
 
 export const ReservedEventCard = (
 	props: {
-		event: Event,
-		cancelFunction: (id: number) => void,
+		reservation: Reservation,
+		cancelFunction: (id: number, reservationToken: string) => void,
 		qrFunction: () => void,
 		infoFunction: () => void
 	}) => {
 
-	const { event, cancelFunction, qrFunction, infoFunction } = { ...props };
+	const { reservation, cancelFunction, qrFunction, infoFunction } = { ...props };
+	const event = reservation.event;
 
 	const [address, setAddress] = React.useState<string>('');
 	useEffect(() => {
@@ -51,7 +52,7 @@ export const ReservedEventCard = (
 			<Card.Actions>
 				<IconButton icon="information" onPress={infoFunction} />
 				<IconButton icon="qrcode" onPress={qrFunction}/>
-				<Button onPress={() => cancelFunction(event.id)}>Cancel</Button>
+				<Button onPress={() => cancelFunction(event.id, reservation.reservationToken)}>Cancel</Button>
 			</Card.Actions>
 
 		</Card>

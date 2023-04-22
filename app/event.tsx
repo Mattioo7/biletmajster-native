@@ -4,12 +4,14 @@ import { Text, View } from '../components/Themed';
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
 import React, { useEffect, useState } from "react";
-import { Event, EventWithPlaces, Place } from '../api/Api'
+import { Event, EventStatus, EventWithPlaces, Place } from '../api/Api'
 import { apiClient } from '../api/apiClient';
-import { ActivityIndicator, Card } from "react-native-paper";
+import { ActivityIndicator, Button, Card } from "react-native-paper";
 // @ts-ignore
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Dropdown } from 'react-native-element-dropdown';
+import { Reservation } from "../models/Reservation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface data {
 	label: string;
@@ -17,42 +19,15 @@ interface data {
 }
 
 export default function ModalScreen() {
+	const [isLoading, setLoading] = useState(true);
+
 	const [eventId, setEventId] = useRecoilState(selectedEventIdState);
 	const [event, setEvent] = useState<EventWithPlaces | undefined>();
 
 	// dropdown
-	const data = [
-		{ label: 'Item 1', value: '1' },
-		{ label: 'Item 2', value: '2' },
-		{ label: 'Item 3', value: '3' },
-		{ label: 'Item 4', value: '4' },
-		{ label: 'Item 5', value: '5' },
-		{ label: 'Item 6', value: '6' },
-		{ label: 'Item 7', value: '7' },
-		{ label: 'Item 8', value: '8' },
-	];
-
-	// const data2 = event.places.map((place) => {
-	// 	label: place.id;
-	// 	value: place.id
-	// });
-
-
 	const [data2, setData2] = useState<data[]>([]);
-
 	const [value, setValue] = useState<number>();
 	const [isFocus, setIsFocus] = useState(false);
-
-	const renderLabel = () => {
-		if (value || isFocus) {
-			return (
-				<Text style={[styles.label, isFocus && { color: 'blue' }]}>
-					Dropdown label
-				</Text>
-			);
-		}
-		return null;
-	};
 	// end dropdown
 
 	const getEvent = async () => {
@@ -78,8 +53,50 @@ export default function ModalScreen() {
 		}
 	};
 
+	const makeReservation = async (event: Event, placeId: number) => {
+		try {
+			const headers = {
+				headers: {
+					eventId: event.id.toString(),
+					placeId: placeId.toString(),
+				},
+			};
+			const reservation = await apiClient.reservation.makeReservation(headers);
+
+			if (reservation.ok) {
+				const reservationData: Reservation = {
+					event: event,
+					reservationToken: reservation.data.reservationToken,
+					placeId: reservation.data.placeId,
+				};
+				await AsyncStorage.setItem(event.id.toString(), JSON.stringify(reservationData))
+					.then(() => {
+						// console.log("Stored reservation: " + JSON.stringify(reservationData));
+					});
+
+				// refetch event
+				setLoading(true);
+				getEvent()
+					.then(() => {
+						setLoading(false);
+					});
+			}
+			else {
+				// TODO: Handle error
+				console.log("Error: " + reservation.error);
+				console.log(reservation.status);
+			}
+		} catch (error) {
+			console.warn(error);
+			Alert.alert('An error occurred');
+		}
+	}
+
 	useEffect(() => {
-		getEvent();
+		getEvent()
+			.then(() => {
+				setLoading(false);
+			});
 	}, []);
 
 	useEffect(() => {
@@ -145,7 +162,6 @@ export default function ModalScreen() {
 										<MaterialCommunityIcon name="seat" size={20} color="#555"/>
 										Seats:
 									</Text>
-									{/*dropdown with seats*/}
 									<Dropdown
 										style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
 										placeholderStyle={styles.placeholderStyle}
@@ -159,7 +175,7 @@ export default function ModalScreen() {
 										valueField="value"
 										placeholder={!isFocus ? 'Select item' : '...'}
 										searchPlaceholder="Search..."
-										value={value}
+										value={value?.toString()}
 										onFocus={() => setIsFocus(true)}
 										onBlur={() => setIsFocus(false)}
 										onChange={item => {
@@ -167,6 +183,12 @@ export default function ModalScreen() {
 											setIsFocus(false);
 										}}
 									/>
+									<Button style={{marginTop: 10}}
+											mode="contained"
+											onPress={() => makeReservation(event, value!)}
+											disabled={event.freePlace <= 0 || event.status !== EventStatus.InFuture || value === undefined}>
+										Reserve
+									</Button>
 									{event.placeSchema ?
 										<Image
 											style={styles.image}
@@ -187,8 +209,10 @@ export default function ModalScreen() {
 									)}
 								/>
 							</View>*/}
-
 							</Card.Content>
+							<Card.Actions style={{marginVertical: 50}}>
+
+							</Card.Actions>
 						</Card>
 					</View>
 				}
@@ -216,6 +240,7 @@ const styles = StyleSheet.create({
 	cardView: {
 		padding: 10,
 		margin: 5,
+		minWidth: '80%',
 	},
 	title: {
 		fontSize: 30,

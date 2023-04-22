@@ -14,6 +14,7 @@ import allEventsFilterByCategoryState from "../../recoil/allEventsFilterByCatego
 import allEventsSortByState from "../../recoil/allEventsSortByState";
 import { Reservation } from "../../models/Reservation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import EmptyListComponent from "../../components/EmptyListComponent";
 
 export default function TabOneScreen() {
 	const [isLoading, setLoading] = useState(true);
@@ -40,8 +41,6 @@ export default function TabOneScreen() {
 		} catch (error) {
 			console.warn(error);
 			Alert.alert('An error occurred');
-		} finally {
-			setLoading(false);
 		}
 	};
 
@@ -61,67 +60,65 @@ export default function TabOneScreen() {
 		}
 	};
 
-	const storeData = async (key: string, value: string) => {
-		await AsyncStorage.setItem(key, value);
-	};
-
-	// TODO: add refetch of events after reservation or move to parent component
 	const makeReservation = async (event: Event) => {
 		try {
-			// TODO: Api call
-			// const reservation = await apiClient.reservation.makeReservation();
-			const reservation = {
-				ok: true,
-				data: {
-					reservationToken: "123",
-					placeId: 456
-				}
-			}
-			// console.log("Fetched getCategories");
+			const headers = {
+				headers: {
+					eventId: event.id.toString()
+				},
+			};
+			// console.log("Event id: " + event.id);
+
+			const reservation = await apiClient.reservation.makeReservation(headers);
+
+			// const reservation = {
+			// 	ok: true,
+			// 	data: {
+			// 		reservationToken: "123",
+			// 		placeId: 456
+			// 	}
+			// }
+			// console.log("Make reservation");
+
 			if (reservation.ok) {
 				const reservationData: Reservation = {
 					event: event,
 					reservationToken: reservation.data.reservationToken,
 					placeId: reservation.data.placeId,
 				};
-				await storeData(event.id.toString(), JSON.stringify(reservationData));
+				await AsyncStorage.setItem(event.id.toString(), JSON.stringify(reservationData))
+					.then(() => {
+						// console.log("Stored reservation: " + JSON.stringify(reservationData));
+					});
 
-				getEvents();
+				// refetch events
+				setLoading(true);
+				getEvents()
+					.then(() => {
+						setLoading(false);
+					});
 			}
 			else {
 				// TODO: Handle error
+				console.log("Error: " + reservation.error);
+				console.log(reservation.status);
 			}
 		} catch (error) {
 			console.warn(error);
 			Alert.alert('An error occurred');
-		} finally {
-			console.log("Reserve");
 		}
 	}
 
 	useEffect(() => {
-		getEvents();
-		getCategories();
+		getEvents()
+			.then(() => {
+				setLoading(false);
+			});
+		getCategories()
+			.then(() => {
+				//console.log("Fetched categories");
+			});
 	}, []);
-
-	// DEBUG
-	// useEffect(() => {
-	// 	console.log("----------------------");
-	// 	console.log("SearchQuery: " + searchQuery);
-	// 	console.log("CategoryId: " + categoryId);
-	// 	console.log("SortBy: " + sortBy);
-	// 	console.log("----------------------");
-	// }, [searchQuery, categoryId, sortBy])
-
-	// useEffect(() => {
-	// 	console.log("SearchQuery: " + searchQuery);
-	// }, [searchQuery])
-	// useEffect(() => {
-	// 	console.log("CategoryId: " + categoryId);
-	// }, [categoryId])
-	// useEffect(() => {
-	// 	console.log("SortBy: " + sortBy);
-	// }, [sortBy])
 
 	return (
 		<Provider>
@@ -131,6 +128,7 @@ export default function TabOneScreen() {
 					<View style={{backgroundColor: "none", flex: 1}}>
 						<FlatList style={styles.flatList}
 								  data={events}
+								  ListEmptyComponent={<EmptyListComponent/>}
 								  refreshControl={
 									  <RefreshControl
 										  refreshing={isLoading}
@@ -142,10 +140,9 @@ export default function TabOneScreen() {
 										  index={index}
 										  onPress={() => {
 											  setActiveEventId(item.id);
-											  // console.log('Pressed event id: ' + item.id);
-											  // console.log('Recoil event id: ' + activeEventId);
 										  }}>
-										  <EventCard event={item} makeReservation={() => makeReservation(item)}/>
+										  <EventCard event={item}
+													 makeReservation={() => makeReservation(item)}/>
 									  </BigButton>
 								  )}
 						/>
