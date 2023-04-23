@@ -99,10 +99,6 @@ export default function ModalScreen() {
 			});
 	}, []);
 
-	useEffect(() => {
-		console.log(value);
-	}, [value]);
-
 	return (
 		<View style={{flex: 1}}>
 		<ScrollView style={styles.scrollView} contentContainerStyle={{flexGrow:1}} >

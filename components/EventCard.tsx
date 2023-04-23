@@ -4,7 +4,6 @@ import { Button, Card, Text } from "react-native-paper";
 import { Event, EventStatus } from '../api/Api'
 // @ts-ignore
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getAddressFromCoordinates } from "./GetAddressFromCoordinates";
 
 
@@ -54,7 +53,7 @@ export const EventCard = (
 				</View>
 			</Card.Content>
 			<Card.Actions>
-				<MaterialCommunityIcons name="account-multiple" size={30} color="#555"/>
+				<MaterialCommunityIcon name="account-multiple" size={30} color="#555"/>
 				<Text style={{marginRight: 20}}>{event.freePlace}/{event.maxPlace}</Text>
 				<Button mode="contained"
 						onPress={makeReservation}

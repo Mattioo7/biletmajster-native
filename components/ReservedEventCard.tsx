@@ -48,9 +48,12 @@ export const ReservedEventCard = (
 						month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'
 					}).format(event.endTime)}
 				</Text>
+				<Text>
+					Token: {reservation.reservationToken}
+				</Text>
 			</Card.Content>
 			<Card.Actions>
-				<IconButton icon="information" onPress={infoFunction} />
+				{/*<IconButton icon="information" onPress={infoFunction} />*/}
 				<IconButton icon="qrcode" onPress={qrFunction}/>
 				<Button onPress={() => cancelFunction(event.id, reservation.reservationToken)}>Cancel</Button>
 			</Card.Actions>

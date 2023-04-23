@@ -100,6 +100,10 @@ export default function TabTwoScreen() {
 		try {
 			await AsyncStorage.clear();
 			console.log('AsyncStorage successfully cleared!');
+			getReservations()
+				.then(() => {
+					setLoading(false);
+				});
 		} catch (e) {
 			console.log('Failed to clear AsyncStorage:', e);
 		}

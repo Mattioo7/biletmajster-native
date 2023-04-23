@@ -44,10 +44,61 @@ export default function TabOneScreen() {
 		}
 	};
 
+	const getEventsWithFilters = async (categoryId?: number, searchText?: string, sortBy?: string) => {
+		try {
+			let fetchedEvents;
+			if (categoryId !== undefined) {
+				const headers = {
+					headers: {
+						categoryId: categoryId.toString()
+					},
+				};
+				fetchedEvents = await apiClient.events.getByCategory(headers);
+			}
+			else {
+				fetchedEvents = await apiClient.events.getEvents();
+			}
+
+			if (fetchedEvents.ok) {
+				if (searchText !== undefined) {
+					fetchedEvents.data = fetchedEvents.data.filter((event) => {
+						return event.title.toLowerCase().includes(searchText.toLowerCase());
+					});
+				}
+				if (sortBy !== undefined) {
+					if (sortBy === "name") {
+						fetchedEvents.data.sort((a, b) => {
+							return a.name.localeCompare(b.name);
+						});
+					} else if (sortBy === "freePlace") {
+						fetchedEvents.data.sort((a, b) => {
+							return a.freePlace - b.freePlace;
+						});
+					} else if (sortBy === "startTime") {
+						fetchedEvents.data.sort((a, b) => {
+							return a.startTime - b.startTime;
+						});
+					} else if (sortBy === "endTime") {
+						fetchedEvents.data.sort((a, b) => {
+							return a.endTime - b.endTime;
+						});
+					}
+				}
+				setEvents(fetchedEvents.data);
+			}
+			else {
+				console.log("getEventsWithFilters status code: " + fetchedEvents.status);
+				console.log("Error in getEventsWithFilters: " + fetchedEvents);
+			}
+		} catch (error) {
+			console.warn(error);
+			Alert.alert('An error occurred');
+		}
+	};
+
 	const getCategories = async () => {
 		try {
 			const fetchedCategories = await apiClient.categories.getCategories();
-			// console.log("Fetched getCategories");
 			if (fetchedCategories.ok)
 				setCategories(fetchedCategories.data);
 			else {
@@ -67,18 +118,8 @@ export default function TabOneScreen() {
 					eventId: event.id.toString()
 				},
 			};
-			// console.log("Event id: " + event.id);
 
 			const reservation = await apiClient.reservation.makeReservation(headers);
-
-			// const reservation = {
-			// 	ok: true,
-			// 	data: {
-			// 		reservationToken: "123",
-			// 		placeId: 456
-			// 	}
-			// }
-			// console.log("Make reservation");
 
 			if (reservation.ok) {
 				const reservationData: Reservation = {
@@ -110,15 +151,18 @@ export default function TabOneScreen() {
 	}
 
 	useEffect(() => {
-		getEvents()
-			.then(() => {
-				setLoading(false);
-			});
 		getCategories()
 			.then(() => {
 				//console.log("Fetched categories");
 			});
 	}, []);
+
+	useEffect(() => {
+		getEventsWithFilters(categoryId, searchQuery, sortBy)
+			.then(() => {
+				setLoading(false);
+			});
+	}, [categoryId, searchQuery, sortBy]);
 
 	return (
 		<Provider>
@@ -132,7 +176,7 @@ export default function TabOneScreen() {
 								  refreshControl={
 									  <RefreshControl
 										  refreshing={isLoading}
-										  onRefresh={getEvents}
+										  onRefresh={() => getEventsWithFilters(categoryId, searchQuery, sortBy)}
 									  />
 								  }
 								  renderItem={({item, index}) => (
