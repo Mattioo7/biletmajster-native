@@ -28,7 +28,7 @@ export const EventCard = (
 
 	return (
 		<Card style={styles.card}>
-			<Card.Title title={event.title + ", id: " + event.id + ", " + event.status}
+			<Card.Title title={event.title}
 						titleStyle={{fontSize: 20, fontWeight: 'bold'}}
 						subtitle={address}
 						subtitleStyle={{fontSize: 14}}/>
