@@ -54,7 +54,7 @@ export const ReservedEventCard = (
 			</Card.Content>
 			<Card.Actions>
 				{/*<IconButton icon="information" onPress={infoFunction} />*/}
-				<IconButton icon="qrcode" onPress={qrFunction}/>
+				<IconButton icon="qrcode" onPress={qrFunction} testID="qr-code-button"/>
 				<Button onPress={() => cancelFunction(event.id, reservation.reservationToken)}>Cancel</Button>
 			</Card.Actions>
 
