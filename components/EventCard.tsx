@@ -1,11 +1,10 @@
-import React, {useEffect} from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import {Button, Card, Text} from "react-native-paper";
-import {Event} from '../api/Api'
+import React, { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import { Button, Card, Text } from "react-native-paper";
+import { Event, EventStatus } from '../api/Api'
 // @ts-ignore
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import {MaterialCommunityIcons} from "@expo/vector-icons";
-import {getAddressFromCoordinates} from "./GetAddressFromCoordinates";
+import { getAddressFromCoordinates } from "./GetAddressFromCoordinates";
 
 
 export const EventCard = (
@@ -29,7 +28,10 @@ export const EventCard = (
 
 	return (
 		<Card style={styles.card}>
-			<Card.Title title={event.title} titleStyle={{fontSize: 20, fontWeight: 'bold'}} subtitle={address} subtitleStyle={{fontSize: 14}}/>
+			<Card.Title title={event.title}
+						titleStyle={{fontSize: 20, fontWeight: 'bold'}}
+						subtitle={address}
+						subtitleStyle={{fontSize: 14}}/>
 			<Card.Content>
 				<View style={styles.contentView}>
 					<View style={styles.information}>
@@ -51,10 +53,13 @@ export const EventCard = (
 				</View>
 			</Card.Content>
 			<Card.Actions>
-				<MaterialCommunityIcons name="account-multiple" size={30} color="#555"/>
+				<MaterialCommunityIcon name="account-multiple" size={30} color="#555"/>
 				<Text style={{marginRight: 20}}>{event.freePlace}/{event.maxPlace}</Text>
-				{event.freePlace > 0 ? <Button mode="contained" onPress={makeReservation}>Reserve</Button> :
-					<Button mode="contained" disabled={true}>Reserve</Button>}
+				<Button mode="contained"
+						onPress={makeReservation}
+						disabled={event.freePlace <= 0 || event.status !== EventStatus.InFuture}>
+					Reserve
+				</Button>
 			</Card.Actions>
 		</Card>
 	)

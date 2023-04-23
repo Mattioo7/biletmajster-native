@@ -46,8 +46,6 @@ export interface Event {
    * @example 100
    */
   maxPlace: number;
-  /** @example "Seralized place schema" */
-  placeSchema?: string;
 }
 
 export interface EventWithPlaces {
