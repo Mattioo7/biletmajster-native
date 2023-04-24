@@ -1,12 +1,11 @@
-import { Pressable } from "react-native"
-import { FlatList } from "react-native-gesture-handler"
-import { Button, IconButton, Surface, ActivityIndicator, TextInput } from "react-native-paper"
+import {Pressable, Text, View} from "react-native"
+import {FlatList} from "react-native-gesture-handler"
+import {ActivityIndicator, Button, Surface, TextInput} from "react-native-paper"
 import Modal from 'react-native-modal';
-import { View, Text } from "react-native"
-import { useState } from "react"
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, {useState} from "react"
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
-export const ModalSelect = <T extends unknown>(
+export const ModalSelect = <T,>(
   props: {
     items: T[],
     renderItem: (arg0: T) => string,
@@ -42,7 +41,7 @@ export const ModalSelect = <T extends unknown>(
                     borderTopColor: "#00000030"
                   }}
                   onPress={() => {
-                    (props.setSelectedIndex ?? (() => { }))(row.index);
+                    (props.setSelectedIndex ?? (() => { console.log("EmptyFunction") }))(row.index);
                     setOpen(false);
                   }}
                 >
@@ -69,7 +68,7 @@ export const ModalSelect = <T extends unknown>(
                   <Button
                     icon={"trash-can"}
                     onPress={() => {
-                      (props.setSelectedIndex ?? (() => { }))(undefined);
+                      (props.setSelectedIndex ?? (() => { console.log("EmptyFunction") }))(undefined);
                       setOpen(false);
                     }}
                   >
@@ -102,7 +101,7 @@ export const ModalSelect = <T extends unknown>(
         }
         focusable={false}
         editable={false}
-        onChange={() => { }}
+        onChange={() => { console.log("EmptyFunction") }}
         style={{ width: "100%" }}
       />
     </View>

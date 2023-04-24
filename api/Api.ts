@@ -15,13 +15,116 @@ export interface Event {
    * @example 10
    */
   id: number;
+  /** @example "Short description of Event" */
+  title: string;
+  /**
+   * @format int64
+   * @example 1673034164
+   */
+  startTime: number;
+  /**
+   * @format int64
+   * @example 1683034164
+   */
+  endTime: number;
+  /** @example "40.4775315" */
+  latitude: string;
+  /** @example "-3.7051359" */
+  longitude: string;
+  /** @example "Long description of Event" */
+  name: string;
+  /** event status */
+  status: EventStatus;
+  categories: Category[];
   /**
    * @format int64
    * @example 2
    */
-  freePlace?: number;
+  freePlace: number;
+  /**
+   * @format int64
+   * @example 100
+   */
+  maxPlace: number;
+}
+
+export interface EventWithPlaces {
+  /**
+   * @format int64
+   * @example 10
+   */
+  id: number;
+  /** @example "Short description of Event" */
+  title: string;
+  /**
+   * @format int64
+   * @example 1673034164
+   */
+  startTime: number;
+  /**
+   * @format int64
+   * @example 1683034164
+   */
+  endTime: number;
+  /** @example "40.4775315" */
+  latitude: string;
+  /** @example "-3.7051359" */
+  longitude: string;
+  /** @example "Long description of Event" */
+  name: string;
+  /** event status */
+  status: EventStatus;
+  categories: Category[];
+  /**
+   * @format int64
+   * @example 2
+   */
+  freePlace: number;
+  /**
+   * @format int64
+   * @example 100
+   */
+  maxPlace: number;
+  places: Place[];
+  /** @example "Seralized place schema" */
+  placeSchema?: string;
+}
+
+export interface EventForm {
+  /** @example "Short description of Event" */
+  title: string;
+  /** @example "Long description of Event" */
+  name: string;
+  /**
+   * @format int64
+   * @example 1673034164
+   */
+  startTime: number;
+  /**
+   * @format int64
+   * @example 1683034164
+   */
+  endTime: number;
+  /** @example "40.4775315" */
+  latitude: string;
+  /** @example "-3.7051359" */
+  longitude: string;
+  /** @example "Seralized place schema" */
+  placeSchema?: string;
+  /**
+   * @format int64
+   * @example 2
+   */
+  maxPlace: number;
+  /** @minItems 0 */
+  categoriesIds: number[];
+}
+
+export interface EventPatch {
   /** @example "Short description of Event" */
   title?: string;
+  /** @example "Long description of Event" */
+  name?: string;
   /**
    * @format int64
    * @example 1673034164
@@ -32,17 +135,29 @@ export interface Event {
    * @example 1683034164
    */
   endTime?: number;
-  /** @example 40.4775315 */
+  /** @example "40.4775315" */
   latitude?: string;
-  /** @example -3.7051359 */
+  /** @example "-3.7051359" */
   longitude?: string;
-  /** @example "Long description of Event" */
-  name?: string;
   /** @example "Seralized place schema" */
   placeSchema?: string;
-  /** event status */
-  status?: EventStatus;
-  categories?: Category[];
+  /**
+   * @format int64
+   * @example 2
+   */
+  maxPlace?: number;
+  /** @minItems 0 */
+  categoriesIds?: number[];
+}
+
+export interface Place {
+  /**
+   * @format int64
+   * @example 21
+   */
+  id: number;
+  /** @example true */
+  free: boolean;
 }
 
 export interface Category {
@@ -50,9 +165,9 @@ export interface Category {
    * @format int64
    * @example 1
    */
-  id?: number;
+  id: number;
   /** @example "Sport" */
-  name?: string;
+  name: string;
 }
 
 /**
@@ -71,31 +186,44 @@ export interface ReservationDTO {
    * @format int64
    * @example 1
    */
-  eventId?: number;
+  eventId: number;
   /**
    * @format int64
    * @example 12
    */
-  placeId?: number;
+  placeId: number;
   /** @example "df0d69cbe68fb6e2b27aa88f6f94497e" */
-  reservationToken?: string;
+  reservationToken: string;
 }
 
-export interface OrganizerDTO {
+export interface Organizer {
   /**
    * @format int64
    * @example 10
    */
-  id?: number;
+  id: number;
   /** @example "theUser" */
-  name?: string;
+  name: string;
   /** @example "john@email.com" */
-  email?: string;
-  /** @example "12345" */
-  password?: string;
-  events?: Event[];
+  email: string;
   /** User Status */
-  status?: "pending" | "confirmed";
+  status: "pending" | "confirmed";
+}
+
+export interface OrganizerForm {
+  /** @example "theUser" */
+  name: string;
+  /** @example "john@email.com" */
+  email: string;
+  /** @example "12345" */
+  password: string;
+}
+
+export interface OrganizerPatch {
+  /** @example "NewUserName" */
+  name?: string;
+  /** @example "myNewPassword" */
+  password?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -144,7 +272,7 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = "https://pw.edu.pl/api/v3";
+  public baseUrl: string = "https://yourbackenhosting.edu.pl";
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private abortControllers = new Map<CancelToken, AbortController>();
@@ -311,7 +439,7 @@ export class HttpClient<SecurityDataType = unknown> {
  * @title System rezerwacji miejsc na eventy
  * @version 1.0.0
  * @termsOfService http://swagger.io/terms/
- * @baseUrl https://pw.edu.pl/api/v3
+ * @baseUrl https://yourbackenhosting.edu.pl
  * @contact <XXX@pw.edu.pl>
  *
  * Niniejsza dokumentacja stanowi opis REST API implemtowanego przez serwer centralny. Endpointy
@@ -343,52 +471,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/events
      * @secure
      */
-    addEvent: (
-      query: {
-        /**
-         * title of Event
-         * @example "Short description of Event"
-         */
-        title: string;
-        /**
-         * title of Event
-         * @example "Long description of Event"
-         */
-        name: string;
-        /** No of free places */
-        freePlace: number;
-        /** seralized place schema */
-        placeSchema?: string;
-        /**
-         * Unix time stamp of begin of event
-         * @example 1683034164
-         */
-        startTime: number;
-        /**
-         * Unix time stamp of end of event
-         * @example 1683034164
-         */
-        endTime: number;
-        /**
-         * Latitude of event
-         * @example 40.4775315
-         */
-        latitude: string;
-        /**
-         * Longitude of event
-         * @example -3.7051359
-         */
-        longitude: string;
-        /** Unix time stamp of end of event */
-        categories: number[];
-      },
-      params: RequestParams = {},
-    ) =>
+    addEvent: (data: EventForm, params: RequestParams = {}) =>
       this.request<Event, void>({
         path: `/events`,
         method: "POST",
-        query: query,
+        body: data,
         secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -403,7 +492,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     getMyEvents: (params: RequestParams = {}) =>
-      this.request<Event[], any>({
+      this.request<Event[], void>({
         path: `/events/my`,
         method: "GET",
         secure: true,
@@ -420,7 +509,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/events/{id}
      */
     getEventById: (id: number, params: RequestParams = {}) =>
-      this.request<Event, void>({
+      this.request<EventWithPlaces, void>({
         path: `/events/${id}`,
         method: "GET",
         format: "json",
@@ -453,7 +542,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/events/{id}
      * @secure
      */
-    patchEvent: (id: string, data: Event, params: RequestParams = {}) =>
+    patchEvent: (id: string, data: EventPatch, params: RequestParams = {}) =>
       this.request<void, void>({
         path: `/events/${id}`,
         method: "PATCH",
@@ -471,20 +560,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Return list of all events in category
      * @request GET:/events/getByCategory
      */
-    getByCategory: (
-      query: {
-        /**
-         * ID of category
-         * @format int64
-         */
-        categoryId: number;
-      },
-      params: RequestParams = {},
-    ) =>
+    getByCategory: (params: RequestParams = {}) =>
       this.request<Event[], void>({
         path: `/events/getByCategory`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),
@@ -515,17 +594,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/categories
      * @secure
      */
-    addCategories: (
-      query: {
-        /** name of category */
-        categoryName: string;
-      },
-      params: RequestParams = {},
-    ) =>
+    addCategories: (params: RequestParams = {}) =>
       this.request<Category, void>({
         path: `/categories`,
         method: "POST",
-        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -540,25 +612,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Create new reservation
      * @request POST:/reservation
      */
-    makeReservation: (
-      query: {
-        /**
-         * ID of event
-         * @format int64
-         */
-        eventId: number;
-        /**
-         * ID of place
-         * @format int64
-         */
-        placeID?: number;
-      },
-      params: RequestParams = {},
-    ) =>
+    makeReservation: (params: RequestParams = {}) =>
       this.request<ReservationDTO, void>({
         path: `/reservation`,
         method: "POST",
-        query: query,
         format: "json",
         ...params,
       }),
@@ -571,20 +628,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Create new reservation
      * @request DELETE:/reservation
      */
-    deleteReservation: (
-      query: {
-        /**
-         * token of reservation
-         * @example "df0d69cbe68fb6e2b27aa88f6f94497e"
-         */
-        reservationToken: string;
-      },
-      params: RequestParams = {},
-    ) =>
+    deleteReservation: (params: RequestParams = {}) =>
       this.request<void, void>({
         path: `/reservation`,
         method: "DELETE",
-        query: query,
         ...params,
       }),
   };
@@ -597,21 +644,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Create orginizer account
      * @request POST:/organizer
      */
-    signUp: (
-      query: {
-        /** name of Organizer */
-        name: string;
-        /** email of Organizer */
-        email: string;
-        /** password of Organizer */
-        password: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<OrganizerDTO, void>({
+    signUp: (data: OrganizerForm, params: RequestParams = {}) =>
+      this.request<Organizer, void>({
         path: `/organizer`,
         method: "POST",
-        query: query,
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Event organizer
+     * @name GetOrganizer
+     * @summary Get organizer account (my account)
+     * @request GET:/organizer
+     * @secure
+     */
+    getOrganizer: (params: RequestParams = {}) =>
+      this.request<Organizer, void>({
+        path: `/organizer`,
+        method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -624,19 +680,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Confirm orginizer account
      * @request POST:/organizer/{id}
      */
-    confirm: (
-      id: string,
-      query: {
-        /** code from email */
-        code: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<OrganizerDTO, void>({
+    confirm: (id: string, params: RequestParams = {}) =>
+      this.request<void, void>({
         path: `/organizer/${id}`,
         method: "POST",
-        query: query,
-        format: "json",
         ...params,
       }),
 
@@ -666,7 +713,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/organizer/{id}
      * @secure
      */
-    patchOrganizer: (id: string, data: OrganizerDTO, params: RequestParams = {}) =>
+    patchOrganizer: (id: string, data: OrganizerPatch, params: RequestParams = {}) =>
       this.request<void, void>({
         path: `/organizer/${id}`,
         method: "PATCH",
@@ -684,15 +731,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @summary Logs organizer into the system
      * @request GET:/organizer/login
      */
-    loginOrganizer: (
-      query: {
-        /** The organizer email for login */
-        email: string;
-        /** the password */
-        password: string;
-      },
-      params: RequestParams = {},
-    ) =>
+    loginOrganizer: (params: RequestParams = {}) =>
       this.request<
         {
           /** The session token. */
@@ -702,7 +741,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       >({
         path: `/organizer/login`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),

@@ -10,13 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     name: EAS build
     steps:
-      # - name: "Set ENV"
-      #   run: echo "$(BASE_URL)"
-      #   env:
-      #     BASE_URL: https://exampleapp.com
-
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Set Secrets
+        run: |
+          sed -i -e 's,http://10.0.2.2:8000,${{ secrets.BACKEND_URL }},g' app.json
+          sed -i -e 's,xyz,${{ secrets.MAP_KEY }},g' app.json
+          sed -i -e '3 c\\ const REACT_NATIVE_API = undefined;' constants/Backend.ts
+          sed -i -e '3 c\\ const REACT_NATIVE_MAPKEY = undefined;' constants/MAP_API_KEY.ts
 
       - name: Setup Node
         uses: actions/setup-node@v2
