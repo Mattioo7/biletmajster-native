@@ -1,7 +1,7 @@
 import { Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
 import { View } from '../../components/Themed';
 import { ReservedEventCard } from "../../components/ReservedEventCard";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Event, EventStatus } from "../../api/Api";
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
@@ -12,6 +12,7 @@ import { Reservation } from "../../models/Reservation";
 import EmptyListComponent from "../../components/EmptyListComponent";
 import { apiClient } from "../../api/apiClient";
 import { FAB } from "react-native-paper";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function TabTwoScreen() {
 	const router = useRouter();
@@ -33,24 +34,6 @@ export default function TabTwoScreen() {
 		}
 	}
 
-	// if backend is a mock
-	// const getEvents = async () => {
-	//   try {
-	//     const fetchedEvents = await apiClient.events.getEvents();
-	//     // console.log("Fetched getEvents");
-	//     if (fetchedEvents.ok)
-	//       setEvents(fetchedEvents.data);
-	//     else {
-	//       // TODO: Handle error
-	//     }
-	//   } catch (error) {
-	//     console.warn(error);
-	//     Alert.alert('An error occurred');
-	//   } finally {
-	//     setLoading(false);
-	//   }
-	// };
-
 	const showQRCode = (event: Event) => {
 		const dtf = new Intl.DateTimeFormat('en-US', {
 			year: 'numeric',
@@ -64,7 +47,8 @@ export default function TabTwoScreen() {
 		router.push("/QRPage")
 	}
 
-	const cancelReservation = async (id: number, reservationToken: string) => {
+	const cancelReservation = async (id: number, seat: number, reservationToken: string) => {
+		setLoading(true);
 		try {
 			const headers = {
 				headers: {
@@ -73,13 +57,13 @@ export default function TabTwoScreen() {
 			};
 
 			const response = await apiClient.reservation.deleteReservation(headers);
-			console.log(response.status);
+			// console.log(response.status);
 
 			if (response.status === 204) {
-				AsyncStorage.removeItem(id.toString())
+				AsyncStorage.removeItem(id.toString() + "_" + seat.toString())
 					.then(() => {
-						console.log('Item removed successfully!');
-						setReservations(prevState => prevState.filter(reservation => reservation.event.id != id));
+						// console.log('Item removed successfully!');
+						getReservations();
 					})
 					.catch((error) => {
 						console.error(error);
@@ -93,6 +77,8 @@ export default function TabTwoScreen() {
 		} catch (error) {
 			console.warn(error);
 			Alert.alert('An error occurred');
+		} finally {
+			setLoading(false);
 		}
 	}
 
@@ -109,15 +95,16 @@ export default function TabTwoScreen() {
 		}
 	}
 
-	useEffect(() => {
-		// if backend is a mock
-		// getEvents();
-
-		getReservations()
-			.then(() => {
-				setLoading(false);
-			});
-	}, []);
+	useFocusEffect(
+		useCallback(() => {
+			getReservations()
+				.finally(() => {
+					// console.log("Reservations: " + reservations.length);
+					setLoading(false);
+				});
+			return () => {};
+		}, [])
+	);
 
 	return (
 		<SafeAreaView style={{flex: 1}}>

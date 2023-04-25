@@ -2,7 +2,7 @@ import { Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet } from 'react
 import { View } from '../../components/Themed';
 import { Category, Event } from '../../api/Api'
 import { apiClient } from '../../api/apiClient';
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { BigButton } from "../../components/BigButton";
 import { EventCard } from "../../components/EventCard";
 import 'react-native-url-polyfill/auto';
@@ -15,6 +15,7 @@ import allEventsSortByState from "../../recoil/allEventsSortByState";
 import { Reservation } from "../../models/Reservation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EmptyListComponent from "../../components/EmptyListComponent";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function TabOneScreen() {
 	const [isLoading, setLoading] = useState(true);
@@ -31,11 +32,9 @@ export default function TabOneScreen() {
 	const getEvents = async () => {
 		try {
 			const fetchedEvents = await apiClient.events.getEvents();
-			// console.log("Fetched getEvents");
 			if (fetchedEvents.ok)
 				setEvents(fetchedEvents.data);
 			else {
-				// TODO: Handle error
 				console.log("Error: " + fetchedEvents);
 			}
 		} catch (error) {
@@ -72,7 +71,7 @@ export default function TabOneScreen() {
 						});
 					} else if (sortBy === "freePlace") {
 						fetchedEvents.data.sort((a, b) => {
-							return a.freePlace - b.freePlace;
+							return b.freePlace - a.freePlace;
 						});
 					} else if (sortBy === "startTime") {
 						fetchedEvents.data.sort((a, b) => {
@@ -102,7 +101,6 @@ export default function TabOneScreen() {
 			if (fetchedCategories.ok)
 				setCategories(fetchedCategories.data);
 			else {
-				// TODO: Handle error
 				console.log("Error: " + fetchedCategories);
 			}
 		} catch (error) {
@@ -112,7 +110,9 @@ export default function TabOneScreen() {
 	};
 
 	const makeReservation = async (event: Event) => {
+		setLoading(true);
 		try {
+
 			const headers = {
 				headers: {
 					eventId: event.id.toString()
@@ -127,26 +127,24 @@ export default function TabOneScreen() {
 					reservationToken: reservation.data.reservationToken,
 					placeId: reservation.data.placeId,
 				};
-				await AsyncStorage.setItem(event.id.toString(), JSON.stringify(reservationData))
+				await AsyncStorage.setItem(event.id.toString() + '_' + reservationData.placeId.toString(), JSON.stringify(reservationData))
 					.then(() => {
 						// console.log("Stored reservation: " + JSON.stringify(reservationData));
-					});
-
-				// refetch events
-				setLoading(true);
-				getEvents()
-					.then(() => {
-						setLoading(false);
 					});
 			}
 			else {
 				// TODO: Handle error
-				console.log("Error: " + reservation.error);
+				console.log("Error in file [index.tsx] in makeReservation = async (event: Event): " + reservation.error);
 				console.log(reservation.status);
 			}
 		} catch (error) {
 			console.warn(error);
 			Alert.alert('An error occurred');
+		} finally {
+			getEvents()
+				.finally(() => {
+					setLoading(false);
+				});
 		}
 	}
 
@@ -157,12 +155,15 @@ export default function TabOneScreen() {
 			});
 	}, []);
 
-	useEffect(() => {
-		getEventsWithFilters(categoryId, searchQuery, sortBy)
-			.then(() => {
-				setLoading(false);
-			});
-	}, [categoryId, searchQuery, sortBy]);
+	useFocusEffect(
+		useCallback(() => {
+			getEventsWithFilters(categoryId, searchQuery, sortBy)
+				.finally(() => {
+					setLoading(false);
+				});
+			return () => {};
+		}, [categoryId, searchQuery, sortBy])
+	);
 
 	return (
 		<Provider>
