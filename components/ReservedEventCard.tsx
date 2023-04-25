@@ -9,7 +9,7 @@ import { Reservation } from "../models/Reservation";
 export const ReservedEventCard = (
 	props: {
 		reservation: Reservation,
-		cancelFunction: (id: number, reservationToken: string) => void,
+		cancelFunction: (id: number, seat: number, reservationToken: string) => void,
 		qrFunction: () => void,
 		infoFunction: () => void
 	}) => {
@@ -51,11 +51,14 @@ export const ReservedEventCard = (
 				<Text>
 					Token: {reservation.reservationToken}
 				</Text>
+				<Text>
+					Seat: {reservation.placeId}
+				</Text>
 			</Card.Content>
 			<Card.Actions>
 				{/*<IconButton icon="information" onPress={infoFunction} />*/}
 				<IconButton icon="qrcode" onPress={qrFunction} testID="qr-code-button"/>
-				<Button onPress={() => cancelFunction(event.id, reservation.reservationToken)}>Cancel</Button>
+				<Button onPress={() => cancelFunction(event.id, reservation.placeId, reservation.reservationToken)}>Cancel</Button>
 			</Card.Actions>
 
 		</Card>
