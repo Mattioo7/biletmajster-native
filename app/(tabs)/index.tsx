@@ -71,7 +71,7 @@ export default function TabOneScreen() {
 						});
 					} else if (sortBy === "freePlace") {
 						fetchedEvents.data.sort((a, b) => {
-							return a.freePlace - b.freePlace;
+							return b.freePlace - a.freePlace;
 						});
 					} else if (sortBy === "startTime") {
 						fetchedEvents.data.sort((a, b) => {
@@ -155,13 +155,6 @@ export default function TabOneScreen() {
 			});
 	}, []);
 
-	useEffect(() => {
-		getEventsWithFilters(categoryId, searchQuery, sortBy)
-			.then(() => {
-				setLoading(false);
-			});
-	}, [categoryId, searchQuery, sortBy]);
-
 	useFocusEffect(
 		useCallback(() => {
 			getEventsWithFilters(categoryId, searchQuery, sortBy)
@@ -169,7 +162,7 @@ export default function TabOneScreen() {
 					setLoading(false);
 				});
 			return () => {};
-		}, [])
+		}, [categoryId, searchQuery, sortBy])
 	);
 
 	return (
