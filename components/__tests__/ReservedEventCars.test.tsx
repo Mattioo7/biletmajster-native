@@ -62,7 +62,7 @@ describe('ReservedEventCard', () => {
 
 		fireEvent.press(getByText('Cancel'));
 		expect(cancelFunctionMock).toHaveBeenCalledTimes(1);
-		expect(cancelFunctionMock).toHaveBeenCalledWith(reservation.event.id, reservation.reservationToken);
+		expect(cancelFunctionMock).toHaveBeenCalledWith(reservation.event.id, reservation.placeId, reservation.reservationToken);
 	});
 
 	it('should call the qrFunction when the QR code button is pressed', () => {
