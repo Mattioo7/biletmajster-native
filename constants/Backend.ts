@@ -4,7 +4,7 @@ import { REACT_NATIVE_API } from '@env'; // Important: Keep this import in line 
 
 export const CONSTANTS_BACKEND_LOCAL_MOCK = 'http://10.0.2.2:8000'
 export const CONSTANTS_BACKEND_LOCALHOST = 'http://10.0.2.2:5079'
-export const CONSTANTS_BACKEND_CLOUD = 'https://xxx.azurewebsites.net';
+export const CONSTANTS_BACKEND_CLOUD = 'https://biletmajster.azurewebsites.net';
 export const CONSTANTS_BACKEND_GR1 = 'https://dionizos-backend-app.azurewebsites.net/';
 export const CONSTANTS_BACKEND_GR2 = 'http://io2central-env.eba-vfjwqcev.eu-north-1.elasticbeanstalk.com';
 
