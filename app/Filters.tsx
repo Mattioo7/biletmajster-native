@@ -82,7 +82,7 @@ export default function ModalScreen() {
 				onFocus={() => setIsFocusCategory(true)}
 				onBlur={() => setIsFocusCategory(false)}
 				onChange={item => {
-					setCategoryId(prev => item.id);
+					setCategoryId(item.id);
 					setIsFocusCategory(false);
 				}}
 			/>

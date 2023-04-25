@@ -80,10 +80,10 @@ export default function ModalScreen() {
 				// refetch event
 				getEvent()
 					.then(() => {
-						setLoading(false);
-					})
-					.then(() => {
 						Alert.alert('Reservation successful');
+					})
+					.finally(() => {
+						setLoading(false);
 					});
 			} else {
 				// TODO: Handle error
