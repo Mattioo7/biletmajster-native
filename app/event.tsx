@@ -1,19 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import { Alert, Image, Platform, ScrollView, StyleSheet } from 'react-native';
+import { Alert, FlatList, Image, Platform, ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
 import React, { useEffect, useState } from "react";
-import { Event, EventStatus, EventWithPlaces, Place } from '../api/Api'
+import { Category, Event, EventStatus, EventWithPlaces, Place } from '../api/Api'
 import { apiClient } from '../api/apiClient';
-import { ActivityIndicator, Button, Card } from "react-native-paper";
+import { ActivityIndicator, Button, Card, Chip } from "react-native-paper";
 // @ts-ignore
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Dropdown } from 'react-native-element-dropdown';
 import { Reservation } from "../models/Reservation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface data {
+interface placeModel {
 	label: string;
 	value: number;
 }
@@ -25,7 +25,7 @@ export default function ModalScreen() {
 	const [event, setEvent] = useState<EventWithPlaces | undefined>();
 
 	// dropdown
-	const [data2, setData2] = useState<data[]>([]);
+	const [data2, setData2] = useState<placeModel[]>([]);
 	const [value, setValue] = useState<number>();
 	const [isFocus, setIsFocus] = useState(false);
 	// end dropdown
@@ -33,17 +33,19 @@ export default function ModalScreen() {
 	const getEvent = async () => {
 		try {
 			const fetchedEvents = await apiClient.events.getEventById(eventId as number);
-			// console.log("Fetched getEvent");
+
 			if (fetchedEvents.ok) {
 				setEvent(fetchedEvents.data);
-				// console.log(fetchedEvents.data);
 
-				const data22: data[] = fetchedEvents.data.places.map((place: Place) => ({
-					label: `Place ${place.id}`,
-					value: place.id,
-				}));
+				const placeModels: placeModel[] = fetchedEvents.data.places
+					.filter((place: Place) => place.free === true)
+					.sort((a: Place, b: Place) => a.id - b.id)
+					.map((place: Place) => ({
+						label: `Place ${place.id}`,
+						value: place.id,
+					}));
 
-				setData2(prev => data22);
+				setData2(prev => placeModels);
 			} else {
 				// TODO: Handle errors
 			}
@@ -54,6 +56,7 @@ export default function ModalScreen() {
 	};
 
 	const makeReservation = async (event: Event, placeId: number) => {
+		setLoading(true);
 		try {
 			const headers = {
 				headers: {
@@ -69,19 +72,20 @@ export default function ModalScreen() {
 					reservationToken: reservation.data.reservationToken,
 					placeId: reservation.data.placeId,
 				};
-				await AsyncStorage.setItem(event.id.toString(), JSON.stringify(reservationData))
+				await AsyncStorage.setItem(event.id.toString() + '_' + reservationData.placeId.toString(), JSON.stringify(reservationData))
 					.then(() => {
 						// console.log("Stored reservation: " + JSON.stringify(reservationData));
 					});
 
 				// refetch event
-				setLoading(true);
 				getEvent()
 					.then(() => {
 						setLoading(false);
+					})
+					.then(() => {
+						Alert.alert('Reservation successful');
 					});
-			}
-			else {
+			} else {
 				// TODO: Handle error
 				console.log("Error: " + reservation.error);
 				console.log(reservation.status);
@@ -101,122 +105,128 @@ export default function ModalScreen() {
 
 	return (
 		<View style={{flex: 1}}>
-		<ScrollView style={styles.scrollView} contentContainerStyle={{flexGrow:1}} >
-			<View style={styles.container}>
-				<Text style={styles.title}>Event details</Text>
-				<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)"/>
-				{/*<Text style={styles.title}>Event id: {eventId}</Text>*/}
-				{/*<EditScreenInfo path="app/modal.tsx" />*/}
+			<ScrollView style={styles.scrollView} contentContainerStyle={{flexGrow: 1}}>
+				<View style={styles.container}>
+					<Text style={styles.title}>Event details</Text>
+					<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)"/>
+					{/*<Text style={styles.title}>Event id: {eventId}</Text>*/}
+					{/*<EditScreenInfo path="app/modal.tsx" />*/}
 
-				{event === undefined
-					?
-					<View style={{marginTop: 20}}>
-						<ActivityIndicator animating size='large'/>
-					</View>
-					:
-					<View style={styles.cardView}>
-						<Card>
-							<Card.Content style={{rowGap: 5}}>
-								<Text style={{display: 'flex', fontSize: 20, fontWeight: 'bold'}}>
-									{event.title}
-									{/*{event.status}*/}
-									{/*{event.categories}*/}
-								</Text>
-								<Text style={{display: 'flex', fontSize: 20}}>
-									<MaterialCommunityIcon name="ticket" size={20} color="#555"/>
-									Free places: {event.freePlace}
-								</Text>
-								<Text style={{display: 'flex', fontSize: 20}}>
-									<MaterialCommunityIcon name="calendar-start" size={20} color="#555"/>
-									{new Intl.DateTimeFormat('en-US', {
-										year: 'numeric',
-										month: '2-digit',
-										day: '2-digit',
-										hour: '2-digit',
-										minute: '2-digit',
-										second: '2-digit'
-									})
-										.format(event.startTime)}
-								</Text>
-								<Text style={{display: 'flex', fontSize: 20}}>
-									<MaterialCommunityIcon name="calendar-end" size={20} color="#555"/>
-									{new Intl.DateTimeFormat('en-US', {
-										year: 'numeric',
-										month: '2-digit',
-										day: '2-digit',
-										hour: '2-digit',
-										minute: '2-digit',
-										second: '2-digit'
-									})
-										.format(event.endTime)}
-								</Text>
-								<Text style={{display: 'flex', fontSize: 20}}>
-									{event.name}
-								</Text>
-								<View style={{backgroundColor: "none", marginTop: 10, minHeight: 200}}>
-									<Text style={{display: 'flex', fontSize: 20}}>
-										<MaterialCommunityIcon name="seat" size={20} color="#555"/>
-										Seats:
+					{event === undefined
+						?
+						<View style={{marginTop: 20}}>
+							<ActivityIndicator animating size='large'/>
+						</View>
+						:
+						<View style={styles.cardView}>
+							<Card>
+								<Card.Content style={{rowGap: 5}}>
+									<Text style={{display: 'flex', fontSize: 20, fontWeight: 'bold'}}>
+										{event.title}
+										{/*{event.status}*/}
+										{/*{event.categories}*/}
 									</Text>
-									<Dropdown
-										style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-										placeholderStyle={styles.placeholderStyle}
-										selectedTextStyle={styles.selectedTextStyle}
-										inputSearchStyle={styles.inputSearchStyle}
-										iconStyle={styles.iconStyle}
-										data={data2}
-										search
-										maxHeight={300}
-										labelField="label"
-										valueField="value"
-										placeholder={!isFocus ? 'Select item' : '...'}
-										searchPlaceholder="Search..."
-										value={value?.toString()}
-										onFocus={() => setIsFocus(true)}
-										onBlur={() => setIsFocus(false)}
-										onChange={item => {
-											setValue(item.value);
-											setIsFocus(false);
-										}}
-									/>
-									<Button style={{marginTop: 10}}
-											mode="contained"
-											onPress={() => makeReservation(event, value!)}
-											disabled={event.freePlace <= 0 || event.status !== EventStatus.InFuture || value === undefined}>
-										Reserve
-									</Button>
-									{event.placeSchema ?
-										<Image
-											style={styles.image}
-											source={{uri: event.placeSchema}}
-										/>
-										: <Text>Not available</Text>}
-								</View>
-								{/*<View>
-								<Text style={{ display: 'flex', fontSize: 20 }}>
-									Categories:
-								</Text>
-								<FlatList
-									data={event.categories}
-									renderItem={({item, index}) => (
-										<Text style={{ display: 'flex', fontSize: 20 }}>
-											{item.name}
+									<Text style={{display: 'flex', fontSize: 20}}>
+										<MaterialCommunityIcon name="ticket" size={20} color="#555"/>
+										Free places: {event.freePlace}
+									</Text>
+									<Text style={{display: 'flex', fontSize: 20}}>
+										<MaterialCommunityIcon name="calendar-start" size={20} color="#555"/>
+										{new Intl.DateTimeFormat('en-US', {
+											year: 'numeric',
+											month: '2-digit',
+											day: '2-digit',
+											hour: '2-digit',
+											minute: '2-digit',
+											second: '2-digit'
+										})
+											.format(event.startTime)}
+									</Text>
+									<Text style={{display: 'flex', fontSize: 20}}>
+										<MaterialCommunityIcon name="calendar-end" size={20} color="#555"/>
+										{new Intl.DateTimeFormat('en-US', {
+											year: 'numeric',
+											month: '2-digit',
+											day: '2-digit',
+											hour: '2-digit',
+											minute: '2-digit',
+											second: '2-digit'
+										})
+											.format(event.endTime)}
+									</Text>
+									<Text style={{display: 'flex', fontSize: 20}}>
+										{event.name}
+									</Text>
+									<View style={{backgroundColor: "none", marginTop: 10}}>
+										<Text style={{display: 'flex', fontSize: 20}}>
+											Categories:
 										</Text>
-									)}
-								/>
-							</View>*/}
-							</Card.Content>
-							<Card.Actions style={{marginVertical: 50}}>
+										<View style={styles.chips}>
+											{
+												event.categories.map((category: Category) => (
+													<Chip key={category.id}>
+														{category.name}
+													</Chip>
+												))
+											}
+										</View>
+									</View>
+									<View style={{backgroundColor: "none", marginTop: 10, minHeight: 200}}>
+										<Text style={{display: 'flex', fontSize: 20}}>
+											<MaterialCommunityIcon name="seat" size={20} color="#555"/>
+											Seats:
+										</Text>
+										<Dropdown
+											style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+											placeholderStyle={styles.placeholderStyle}
+											selectedTextStyle={styles.selectedTextStyle}
+											inputSearchStyle={styles.inputSearchStyle}
+											iconStyle={styles.iconStyle}
+											data={data2}
+											search
+											maxHeight={300}
+											labelField="label"
+											valueField="value"
+											placeholder={!isFocus ? 'Select item' : '...'}
+											searchPlaceholder="Search..."
+											value={value}
+											onFocus={() => setIsFocus(true)}
+											onBlur={() => setIsFocus(false)}
+											onChange={item => {
+												setValue(item.value);
+												setIsFocus(false);
+											}}
+										/>
+										<Button style={{marginTop: 10}}
+												mode="contained"
+												onPress={() => makeReservation(event, value!)}
+												disabled={event.freePlace <= 0 || event.status !== EventStatus.InFuture || value === undefined}>
+											Reserve
+										</Button>
+										<View style={{backgroundColor: "none"}}>
+											{
+												event.placeSchema ?
+												<Image
+													style={styles.image}
+													source={{uri: event.placeSchema}}
+												/>
+												: <Text>Not available</Text>
+											}
+										</View>
 
-							</Card.Actions>
-						</Card>
-					</View>
-				}
+									</View>
+								</Card.Content>
+								<Card.Actions style={{marginVertical: 50}}>
 
-				{/* Use a light status bar on iOS to account for the black space above the modal */}
-				<StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'}/>
-			</View>
-		</ScrollView>
+								</Card.Actions>
+							</Card>
+						</View>
+					}
+
+					{/* Use a light status bar on iOS to account for the black space above the modal */}
+					<StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'}/>
+				</View>
+			</ScrollView>
 		</View>
 	);
 }
@@ -248,11 +258,21 @@ const styles = StyleSheet.create({
 		width: '80%',
 	},
 	image: {
-		height: '100%',
-		width: '100%',
+		// height: '100%',
+		// width: '100%',
 		maxHeight: 200,
-		// alignSelf: "center",
+		alignSelf: "center",
 		resizeMode: 'contain',
+		marginTop: 5
+
+	},
+	chips: {
+		backgroundColor: "none",
+		display: 'flex',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		columnGap: 5,
+		rowGap: 2,
 		marginTop: 5
 	},
 
