@@ -142,7 +142,7 @@ export default function TabOneScreen() {
 			Alert.alert('An error occurred');
 		} finally {
 			getEvents()
-				.then(() => {
+				.finally(() => {
 					setLoading(false);
 				});
 		}
@@ -158,7 +158,7 @@ export default function TabOneScreen() {
 	useFocusEffect(
 		useCallback(() => {
 			getEventsWithFilters(categoryId, searchQuery, sortBy)
-				.then(() => {
+				.finally(() => {
 					setLoading(false);
 				});
 			return () => {};

@@ -98,7 +98,7 @@ export default function TabTwoScreen() {
 	useFocusEffect(
 		useCallback(() => {
 			getReservations()
-				.then(() => {
+				.finally(() => {
 					// console.log("Reservations: " + reservations.length);
 					setLoading(false);
 				});
