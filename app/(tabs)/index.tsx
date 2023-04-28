@@ -33,7 +33,7 @@ export default function TabOneScreen() {
 		try {
 			const fetchedEvents = await apiClient.events.getEvents();
 			if (fetchedEvents.ok)
-				setEvents(fetchedEvents.data);
+				setEvents(fetchedEvents.data.sort((a, b) => a.id - b.id));
 			else {
 				console.log("Error: " + fetchedEvents);
 			}
@@ -59,6 +59,7 @@ export default function TabOneScreen() {
 			}
 
 			if (fetchedEvents.ok) {
+				fetchedEvents.data = fetchedEvents.data.sort((a, b) => a.id - b.id);
 				if (searchText !== undefined) {
 					fetchedEvents.data = fetchedEvents.data.filter((event) => {
 						return event.title.toLowerCase().includes(searchText.toLowerCase());
