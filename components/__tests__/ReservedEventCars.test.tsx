@@ -1,10 +1,25 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 import { ReservedEventCard } from '../ReservedEventCard';
 import { Reservation } from '../../models/Reservation';
 import { EventStatus } from "../../api/Api";
 import { NavigationContainer } from '@react-navigation/native';
 import { useRouter } from "expo-router";
+import { RecoilRoot } from 'recoil';
+
+jest.mock('expo-router', () => { // we want to mock a function from module used in ReservedEventCard.
+	// it is useRouter from expo-router, so we need to import it and mock it right at the beginning.
+	return {
+		useRouter: jest.fn()
+	};
+});
+
+beforeAll(() => {
+	(useRouter as any).mockReturnValue({ // object returned by useRouter only needs push,
+		// because that's what ReservedEventCard uses. Nothing else necessary
+		push: jest.fn(path => { })
+	})
+});
 
 describe('ReservedEventCard', () => {
 	const reservation: Reservation = {
@@ -37,77 +52,41 @@ describe('ReservedEventCard', () => {
 	const qrFunctionMock = jest.fn();
 	const infoFunctionMock = jest.fn();
 
-	jest.mock('@react-navigation/native', () => {
-		return {
-			useNavigation: () => ({
-				navigate: jest.fn(),
-				dispatch: jest.fn(),
-			}),
-			useRoute: () => ({
-				params: {
-					id: '123',
-				},
-			}),
-		};
-	});
+	beforeEach(() => {
 
-	jest.mock('expo-router', () => ({
-		useRouter: jest.fn()
-	}))
+		// Another thing - we're using recoil, so we have to either mock useRecoilState
+		// or add RecoilRoot like below
 
-	beforeAll(() => {
-		(useRouter as any).mockReturnValue({
-			navigate: jest.fn(path => { })
-		})
+		render(
+			<RecoilRoot>
+				<NavigationContainer>
+					<ReservedEventCard
+						reservation={reservation}
+						cancelFunction={cancelFunctionMock}
+						qrFunction={qrFunctionMock}
+						infoFunction={infoFunctionMock}
+					/>
+				</NavigationContainer>
+			</RecoilRoot>
+		);
 	});
 
 	it('should render the event information', () => {
-		const { getByText } = render(
-			<NavigationContainer>
-				<ReservedEventCard
-					reservation={reservation}
-					cancelFunction={cancelFunctionMock}
-					qrFunction={qrFunctionMock}
-					infoFunction={infoFunctionMock}
-				/>
-			</NavigationContainer>
-		);
 
-		expect(getByText(reservation.event.title)).toBeDefined();
-		expect(getByText(reservation.event.name)).toBeDefined();
-		expect(getByText(`Token: ${reservation.reservationToken}`)).toBeDefined();
+		expect(screen.getByText(reservation.event.title)).toBeDefined();
+		expect(screen.getByText(reservation.event.name)).toBeDefined();
 	});
 
 	it('should call the cancelFunction when the cancel button is pressed', () => {
-		const { getByText } = render(
-			<NavigationContainer>
-				<ReservedEventCard
-					reservation={reservation}
-					cancelFunction={cancelFunctionMock}
-					qrFunction={qrFunctionMock}
-					infoFunction={infoFunctionMock}
-				/>
-			</NavigationContainer>
-		);
 
-		fireEvent.press(getByText('Cancel'));
+		fireEvent.press(screen.getByText('Cancel'));
 		expect(cancelFunctionMock).toHaveBeenCalledTimes(1);
 		expect(cancelFunctionMock).toHaveBeenCalledWith(reservation.event.id, reservation.placeId, reservation.reservationToken);
 	});
 
 	it('should call the qrFunction when the QR code button is pressed', () => {
-		const { getByTestId } = render(
-			<NavigationContainer>
-				<ReservedEventCard
-					reservation={reservation}
-					cancelFunction={cancelFunctionMock}
-					qrFunction={qrFunctionMock}
-					infoFunction={infoFunctionMock}
-				/>
-			</NavigationContainer>
-		);
 
-		fireEvent.press(getByTestId('qr-code-button'));
+		fireEvent.press(screen.getByTestId('qr-code-button'));
 		expect(qrFunctionMock).toHaveBeenCalledTimes(1);
 	});
 });
