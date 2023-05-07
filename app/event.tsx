@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Alert, FlatList, Image, Platform, ScrollView, StyleSheet } from 'react-native';
+import { Alert, Image, Platform, ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
@@ -35,6 +35,11 @@ export default function ModalScreen() {
 			const fetchedEvents = await apiClient.events.getEventById(eventId as number);
 
 			if (fetchedEvents.ok) {
+
+				const image = fetchedEvents.data.placeSchema;
+				fetchedEvents.data.placeSchema = image ?
+					image.includes("data:image/png;base64,") ? image : "data:image/png;base64," + image : undefined;
+
 				setEvent(fetchedEvents.data);
 
 				const placeModels: placeModel[] = fetchedEvents.data.places
@@ -164,7 +169,7 @@ export default function ModalScreen() {
 										<View style={styles.chips}>
 											{
 												event.categories.map((category: Category) => (
-													<Chip key={category.id}>
+													<Chip key={category.id} style={{maxWidth: 130}}>
 														{category.name}
 													</Chip>
 												))
@@ -203,7 +208,7 @@ export default function ModalScreen() {
 												disabled={event.freePlace <= 0 || event.status !== EventStatus.InFuture || value === undefined}>
 											Reserve
 										</Button>
-										<View style={{backgroundColor: "none"}}>
+										<View style={{backgroundColor: "none", alignItems: "center"}}>
 											{
 												event.placeSchema ?
 												<Image
@@ -258,12 +263,11 @@ const styles = StyleSheet.create({
 		width: '80%',
 	},
 	image: {
-		// height: '100%',
-		// width: '100%',
+		height: '100%',
+		width: '100%',
 		maxHeight: 200,
-		alignSelf: "center",
-		resizeMode: 'contain',
-		marginTop: 5
+		resizeMode: "contain",
+		marginTop: 15
 
 	},
 	chips: {
@@ -272,7 +276,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		columnGap: 5,
-		rowGap: 2,
+		rowGap: 5,
 		marginTop: 5
 	},
 
