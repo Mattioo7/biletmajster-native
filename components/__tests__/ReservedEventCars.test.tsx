@@ -3,6 +3,8 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { ReservedEventCard } from '../ReservedEventCard';
 import { Reservation } from '../../models/Reservation';
 import { EventStatus } from "../../api/Api";
+import { NavigationContainer } from '@react-navigation/native';
+import { useRouter } from "expo-router";
 
 describe('ReservedEventCard', () => {
 	const reservation: Reservation = {
@@ -35,14 +37,40 @@ describe('ReservedEventCard', () => {
 	const qrFunctionMock = jest.fn();
 	const infoFunctionMock = jest.fn();
 
+	jest.mock('@react-navigation/native', () => {
+		return {
+			useNavigation: () => ({
+				navigate: jest.fn(),
+				dispatch: jest.fn(),
+			}),
+			useRoute: () => ({
+				params: {
+					id: '123',
+				},
+			}),
+		};
+	});
+
+	jest.mock('expo-router', () => ({
+		useRouter: jest.fn()
+	}))
+
+	beforeAll(() => {
+		(useRouter as any).mockReturnValue({
+			navigate: jest.fn(path => { })
+		})
+	});
+
 	it('should render the event information', () => {
 		const { getByText } = render(
-			<ReservedEventCard
-				reservation={reservation}
-				cancelFunction={cancelFunctionMock}
-				qrFunction={qrFunctionMock}
-				infoFunction={infoFunctionMock}
-			/>
+			<NavigationContainer>
+				<ReservedEventCard
+					reservation={reservation}
+					cancelFunction={cancelFunctionMock}
+					qrFunction={qrFunctionMock}
+					infoFunction={infoFunctionMock}
+				/>
+			</NavigationContainer>
 		);
 
 		expect(getByText(reservation.event.title)).toBeDefined();
@@ -52,12 +80,14 @@ describe('ReservedEventCard', () => {
 
 	it('should call the cancelFunction when the cancel button is pressed', () => {
 		const { getByText } = render(
-			<ReservedEventCard
-				reservation={reservation}
-				cancelFunction={cancelFunctionMock}
-				qrFunction={qrFunctionMock}
-				infoFunction={infoFunctionMock}
-			/>
+			<NavigationContainer>
+				<ReservedEventCard
+					reservation={reservation}
+					cancelFunction={cancelFunctionMock}
+					qrFunction={qrFunctionMock}
+					infoFunction={infoFunctionMock}
+				/>
+			</NavigationContainer>
 		);
 
 		fireEvent.press(getByText('Cancel'));
@@ -67,12 +97,14 @@ describe('ReservedEventCard', () => {
 
 	it('should call the qrFunction when the QR code button is pressed', () => {
 		const { getByTestId } = render(
-			<ReservedEventCard
-				reservation={reservation}
-				cancelFunction={cancelFunctionMock}
-				qrFunction={qrFunctionMock}
-				infoFunction={infoFunctionMock}
-			/>
+			<NavigationContainer>
+				<ReservedEventCard
+					reservation={reservation}
+					cancelFunction={cancelFunctionMock}
+					qrFunction={qrFunctionMock}
+					infoFunction={infoFunctionMock}
+				/>
+			</NavigationContainer>
 		);
 
 		fireEvent.press(getByTestId('qr-code-button'));
