@@ -10,12 +10,12 @@ export default function MapScreen() {
 	const navigation = useNavigation()
 
 	const [reservationLocation, setReservationLocation] = useRecoilState(selectedReservationLocation);
-	const [mapRegion, setMapRegion] = useState({
+	const mapRegion = {
 		latitude: reservationLocation.latitude,
 		longitude: reservationLocation.longitude,
 		latitudeDelta: 0.0922,
 		longitudeDelta: 0.0421,
-	})
+	};
 
 	useEffect(() => {
 		// set title on page load
