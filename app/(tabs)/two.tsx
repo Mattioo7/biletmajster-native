@@ -66,7 +66,9 @@ export default function TabTwoScreen() {
         dtf.format(event.endTime * 1000 /* fix */),
       title: event.name,
       description:
-        dtf.format(event.startTime * 1000 /* fix */) + " - " + dtf.format(event.endTime * 1000 /* fix */),
+        dtf.format(event.startTime * 1000 /* fix */) +
+        " - " +
+        dtf.format(event.endTime * 1000 /* fix */),
     });
     router.push("/QRPage");
   };

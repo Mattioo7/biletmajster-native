@@ -272,8 +272,8 @@ export default function ModalScreen() {
                     </View>
                   </View>
                 </Card.Content>
-                  {/* <Card.Actions style={{ marginVertical: 50 }}></Card.Actions> */}
-                  {/* Card actions must have children */}
+                {/* <Card.Actions style={{ marginVertical: 50 }}></Card.Actions> */}
+                {/* Card actions must have children */}
               </Card>
             </View>
           )}
