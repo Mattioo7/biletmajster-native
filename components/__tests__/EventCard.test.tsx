@@ -76,7 +76,7 @@ describe("EventCard", () => {
 
     const reserveButton = await waitFor(() => screen.getByText("Reserve"));
     expect(reserveButton).toBeTruthy();
-    expect(reserveButton.parent?.props.disabled ?? true).toBeFalsy();
+    expect(reserveButton.parent?.props.selectable ?? true).toBeFalsy();
 
     const noFreePlacesEvent = { ...event, freePlace: 0 };
     rerender(
