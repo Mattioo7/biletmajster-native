@@ -57,6 +57,10 @@ function RootLayoutNav() {
                 name="Filters"
                 options={{ presentation: "modal" }}
               />
+              <Stack.Screen
+                name="Backend"
+                options={{ presentation: "modal" }}
+              />
             </Stack>
           </ThemeProvider>
         </PaperProvider>

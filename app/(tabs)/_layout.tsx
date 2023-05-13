@@ -1,17 +1,32 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import { Pressable, useColorScheme } from "react-native";
+import { View } from "../../components/Themed";
 
 import Colors from "../../constants/Colors";
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+}
+
+function IconLink(props: { link: string, icon: string }) {
+  const colorScheme = useColorScheme();
+
+  return <Link href={props.link} asChild>
+      <Pressable>
+        {({ pressed }) => (
+          <FontAwesome
+            name={props.icon as any}
+            size={25}
+            color={Colors[colorScheme ?? "light"].text}
+            style={{ marginRight: 20, opacity: pressed ? 0.5 : 1 }}
+          />
+        )}
+      </Pressable>
+    </Link>
 }
 
 export default function TabLayout() {
@@ -29,18 +44,10 @@ export default function TabLayout() {
           title: "Events",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
-            <Link href="/Filters" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="filter"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 20, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+            <View style={{ flexDirection: "row", alignContent: "center", alignItems: "center", justifyContent: "center" }}>
+              <IconLink link="/Filters" icon="filter" />
+              <IconLink link="/Backend" icon="server" />
+            </View>
           ),
         }}
       />
