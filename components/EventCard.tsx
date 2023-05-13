@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
 import { Event, EventStatus } from "../api/Api";
@@ -12,7 +12,7 @@ export const EventCard = (props: {
 }) => {
   const { event, makeReservation } = { ...props };
 
-  const [address, setAddress] = React.useState<string>("");
+  const [address, setAddress] = useState<string>("");
 
   useEffect(() => {
     getAddressFromCoordinates({

@@ -11,7 +11,7 @@ export type EventSortBy = keyof typeof eventSortByLabels;
 
 export const eventSortByPairs: { value: EventSortBy; label: string }[] =
   Object.keys(eventSortByLabels).map((key) => {
-    return { value: key, label: eventSortByLabels[key] } as any;
+    return { value: key, label: eventSortByLabels[key as EventSortBy] } as any;
   });
 
 const allEventsSortByState = atom<EventSortBy | undefined>({

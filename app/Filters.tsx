@@ -87,7 +87,7 @@ export default function ModalScreen() {
         valueField="id"
         placeholder={!isFocusCategory ? "Categories" : "..."}
         searchPlaceholder="Search..."
-        value={categoryId}
+        value={categoryId ? categories[categoryId] : undefined}
         onFocus={() => setIsFocusCategory(true)}
         onBlur={() => setIsFocusCategory(false)}
         onChange={(item) => {

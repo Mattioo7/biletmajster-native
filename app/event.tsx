@@ -238,7 +238,7 @@ export default function ModalScreen() {
                       valueField="value"
                       placeholder={!isFocus ? "Select item" : "..."}
                       searchPlaceholder="Search..."
-                      value={value}
+                      value={value ? data2[value] : undefined}
                       onFocus={() => setIsFocus(true)}
                       onBlur={() => setIsFocus(false)}
                       onChange={(item) => {
@@ -272,7 +272,8 @@ export default function ModalScreen() {
                     </View>
                   </View>
                 </Card.Content>
-                <Card.Actions style={{ marginVertical: 50 }}></Card.Actions>
+                  {/* <Card.Actions style={{ marginVertical: 50 }}></Card.Actions> */}
+                  {/* Card actions must have children */}
               </Card>
             </View>
           )}
