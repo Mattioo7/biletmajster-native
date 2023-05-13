@@ -6,9 +6,10 @@ export const BigButton = (props: {
   children: ReactNode | ReactNode[];
   onPress: () => void;
   index?: number;
+  href: string;
 }) => {
   return (
-    <Link href="/event" asChild>
+    <Link href={props.href} asChild>
       <Pressable
         onPress={props.onPress}
         android_ripple={{

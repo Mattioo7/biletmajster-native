@@ -203,6 +203,7 @@ export default function TabOneScreen() {
                   onPress={() => {
                     setActiveEventId(item.id);
                   }}
+                  href="/event"
                 >
                   <EventCard
                     event={item}

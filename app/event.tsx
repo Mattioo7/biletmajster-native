@@ -259,7 +259,7 @@ export default function ModalScreen() {
                       Reserve
                     </Button>
                     <View
-                      style={{ backgroundColor: "none", alignItems: "center" }}
+                      style={{ backgroundColor: "none", alignItems: "center", justifyContent: "center", maxHeight: 300, padding: 10  }}
                     >
                       {event.placeSchema ? (
                         <Image
@@ -315,9 +315,8 @@ const styles = StyleSheet.create({
   image: {
     height: "100%",
     width: "100%",
-    maxHeight: 200,
     resizeMode: "contain",
-    marginTop: 15,
+    margin: 15,
   },
   chips: {
     backgroundColor: "none",

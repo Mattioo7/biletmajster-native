@@ -1,14 +1,8 @@
-import {
-  Alert,
-  FlatList,
-  RefreshControl,
-  SafeAreaView,
-  StyleSheet,
-} from "react-native";
+import { Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet, } from "react-native";
 import { View } from "../../components/Themed";
 import { ReservedEventCard } from "../../components/ReservedEventCard";
-import { useCallback, useEffect, useState } from "react";
-import { Event, EventStatus } from "../../api/Api";
+import { useCallback, useState } from "react";
+import { Event } from "../../api/Api";
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
 import { useRouter } from "expo-router";
@@ -19,6 +13,7 @@ import EmptyListComponent from "../../components/EmptyListComponent";
 import { apiClient } from "../../api/apiClient";
 import { FAB } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
+import { BigButton } from "../../components/BigButton";
 
 export default function TabTwoScreen() {
   const router = useRouter();
@@ -146,16 +141,25 @@ export default function TabTwoScreen() {
               />
             }
             renderItem={({ item, index }) => (
-              <ReservedEventCard
-                key={item.event.id}
-                reservation={item}
-                qrFunction={() => showQRCode(item.event)}
-                cancelFunction={cancelReservation}
-                infoFunction={() => {
+              <BigButton
+                index={index}
+                onPress={() => {
                   setActiveEventId(item.event.id);
-                  router.push("/event");
+                  console.log("/reservation");
                 }}
-              />
+                href="/reservation"
+              >
+                <ReservedEventCard
+                  key={item.event.id}
+                  reservation={item}
+                  qrFunction={() => showQRCode(item.event)}
+                  cancelFunction={cancelReservation}
+                  infoFunction={() => {
+                    setActiveEventId(item.event.id);
+                    router.push("/reservation");
+                  }}
+                />
+              </BigButton>
             )}
           />
         </View>
