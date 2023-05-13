@@ -175,7 +175,7 @@ export default function ModalScreen() {
                       hour: "2-digit",
                       minute: "2-digit",
                       second: "2-digit",
-                    }).format(event.startTime)}
+                    }).format(event.startTime * 1000 /* fix */)}
                   </Text>
                   <Text style={{ display: "flex", fontSize: 20 }}>
                     <MaterialCommunityIcon
@@ -190,7 +190,7 @@ export default function ModalScreen() {
                       hour: "2-digit",
                       minute: "2-digit",
                       second: "2-digit",
-                    }).format(event.endTime)}
+                    }).format(event.endTime * 1000 /* fix */)}
                   </Text>
                   <Text style={{ display: "flex", fontSize: 20 }}>
                     {event.name}

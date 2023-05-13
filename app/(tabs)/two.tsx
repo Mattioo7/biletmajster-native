@@ -61,12 +61,12 @@ export default function TabTwoScreen() {
         ", " +
         event.longitude +
         " from " +
-        dtf.format(event.startTime) +
+        dtf.format(event.startTime * 1000 /* fix */) +
         " to " +
-        dtf.format(event.endTime),
+        dtf.format(event.endTime * 1000 /* fix */),
       title: event.name,
       description:
-        dtf.format(event.startTime) + " - " + dtf.format(event.endTime),
+        dtf.format(event.startTime * 1000 /* fix */) + " - " + dtf.format(event.endTime * 1000 /* fix */),
     });
     router.push("/QRPage");
   };

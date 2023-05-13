@@ -46,7 +46,7 @@ export const EventCard = (props: {
                 hour: "2-digit",
                 minute: "2-digit",
                 second: "2-digit",
-              }).format(event.startTime)}
+              }).format(event.startTime * 1000 /* fix */)}
             </Text>
             <Text style={{ display: "flex", fontSize: 18 }}>
               <MaterialCommunityIcon name="calendar" size={26} color="#555" />
@@ -57,7 +57,7 @@ export const EventCard = (props: {
                 hour: "2-digit",
                 minute: "2-digit",
                 second: "2-digit",
-              }).format(event.endTime)}
+              }).format(event.endTime * 1000 /* fix */)}
             </Text>
           </View>
         </View>
