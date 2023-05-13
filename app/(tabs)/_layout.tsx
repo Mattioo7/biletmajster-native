@@ -12,10 +12,11 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-function IconLink(props: { link: string, icon: string }) {
+function IconLink(props: { link: string; icon: string }) {
   const colorScheme = useColorScheme();
 
-  return <Link href={props.link} asChild>
+  return (
+    <Link href={props.link} asChild>
       <Pressable>
         {({ pressed }) => (
           <FontAwesome
@@ -27,6 +28,7 @@ function IconLink(props: { link: string, icon: string }) {
         )}
       </Pressable>
     </Link>
+  );
 }
 
 export default function TabLayout() {
@@ -44,7 +46,14 @@ export default function TabLayout() {
           title: "Events",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
-            <View style={{ flexDirection: "row", alignContent: "center", alignItems: "center", justifyContent: "center" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignContent: "center",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <IconLink link="/Filters" icon="filter" />
               <IconLink link="/Backend" icon="server" />
             </View>

@@ -28,7 +28,9 @@ export default function TabTwoScreen() {
 
   const [isLoading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
-  const [reservations, setReservations] = useState<ReservationWithBackend[]>([]);
+  const [reservations, setReservations] = useState<ReservationWithBackend[]>(
+    []
+  );
   const [activeEventId, setActiveEventId] =
     useRecoilState(selectedEventIdState);
 
@@ -91,7 +93,9 @@ export default function TabTwoScreen() {
 
       const customClient = new Api({ baseUrl: backend });
 
-      const response = await customClient.reservation.deleteReservation(headers);
+      const response = await customClient.reservation.deleteReservation(
+        headers
+      );
       // console.log(response.status);
 
       if (response.status === 204) {

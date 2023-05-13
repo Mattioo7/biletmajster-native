@@ -12,7 +12,12 @@ import selectedReservationLocation from "../recoil/selectedReservationLocation";
 
 export const ReservedEventCard = (props: {
   reservation: ReservationWithBackend;
-  cancelFunction: (id: number, seat: number, reservationToken: string, backend: string) => void;
+  cancelFunction: (
+    id: number,
+    seat: number,
+    reservationToken: string,
+    backend: string
+  ) => void;
   qrFunction: () => void;
   infoFunction: () => void;
 }) => {

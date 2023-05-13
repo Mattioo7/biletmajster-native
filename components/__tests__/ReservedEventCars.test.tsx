@@ -48,7 +48,7 @@ describe("ReservedEventCard", () => {
     },
     reservationToken: "testToken123",
     placeId: 1,
-    backend: "BACKEND"
+    backend: "BACKEND",
   };
   const cancelFunctionMock = jest.fn();
   const qrFunctionMock = jest.fn();

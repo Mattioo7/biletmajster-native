@@ -143,7 +143,7 @@ export default function TabOneScreen() {
           event: event,
           reservationToken: reservation.data.reservationToken,
           placeId: reservation.data.placeId,
-          backend: backend
+          backend: backend,
         };
         await AsyncStorage.setItem(
           event.id.toString() + "_" + reservationData.placeId.toString(),
