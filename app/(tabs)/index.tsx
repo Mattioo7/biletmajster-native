@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import { View } from "../../components/Themed";
 import { Category, Event } from "../../api/Api";
-import { apiClient } from "../../api/apiClient";
 import { useCallback, useEffect, useState } from "react";
 import { BigButton } from "../../components/BigButton";
 import { EventCard } from "../../components/EventCard";
@@ -22,8 +21,10 @@ import { Reservation } from "../../models/Reservation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EmptyListComponent from "../../components/EmptyListComponent";
 import { useFocusEffect } from "@react-navigation/native";
+import { useApiClient } from "../../functions/useApiClient";
 
 export default function TabOneScreen() {
+  const apiClient = useApiClient();
   const [isLoading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);

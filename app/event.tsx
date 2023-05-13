@@ -11,7 +11,7 @@ import {
   EventWithPlaces,
   Place,
 } from "../api/Api";
-import { apiClient } from "../api/apiClient";
+import { useApiClient } from "../functions/useApiClient";
 import { ActivityIndicator, Button, Card, Chip } from "react-native-paper";
 // @ts-ignore
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -25,6 +25,7 @@ interface placeModel {
 }
 
 export default function ModalScreen() {
+  const apiClient = useApiClient();
   const [isLoading, setLoading] = useState(true);
 
   const [eventId, setEventId] = useRecoilState(selectedEventIdState);

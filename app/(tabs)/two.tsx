@@ -16,11 +16,12 @@ import qrDataState from "../../recoil/qrDataState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Reservation } from "../../models/Reservation";
 import EmptyListComponent from "../../components/EmptyListComponent";
-import { apiClient } from "../../api/apiClient";
+import { useApiClient } from "../../functions/useApiClient";
 import { FAB } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
 
 export default function TabTwoScreen() {
+  const apiClient = useApiClient();
   const router = useRouter();
   const [qrData, setQrData] = useRecoilState(qrDataState);
 
