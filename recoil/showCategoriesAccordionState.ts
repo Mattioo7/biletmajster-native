@@ -1,8 +1,8 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 const showCategoriesAccordionState = atom<boolean>({
-	key: 'showCategoriesAccordionState',
-	default: false
+  key: "showCategoriesAccordionState",
+  default: false,
 });
 
 export default showCategoriesAccordionState;
