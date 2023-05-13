@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { ReservedEventCard } from "../ReservedEventCard";
-import { Reservation } from "../../models/Reservation";
+import { Reservation, ReservationWithBackend } from "../../models/Reservation";
 import { EventStatus } from "../../api/Api";
 import { NavigationContainer } from "@react-navigation/native";
 import { useRouter } from "expo-router";
@@ -23,7 +23,7 @@ beforeAll(() => {
 });
 
 describe("ReservedEventCard", () => {
-  const reservation: Reservation = {
+  const reservation: ReservationWithBackend = {
     event: {
       id: 1,
       title: "Test Event",
@@ -48,6 +48,7 @@ describe("ReservedEventCard", () => {
     },
     reservationToken: "testToken123",
     placeId: 1,
+    backend: "BACKEND"
   };
   const cancelFunctionMock = jest.fn();
   const qrFunctionMock = jest.fn();
@@ -82,7 +83,8 @@ describe("ReservedEventCard", () => {
     expect(cancelFunctionMock).toHaveBeenCalledWith(
       reservation.event.id,
       reservation.placeId,
-      reservation.reservationToken
+      reservation.reservationToken,
+      reservation.backend
     );
   });
 
