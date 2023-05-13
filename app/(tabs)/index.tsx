@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import { View } from "../../components/Themed";
 import { Category, Event } from "../../api/Api";
-import { apiClient } from "../../api/apiClient";
 import { useCallback, useEffect, useState } from "react";
 import { BigButton } from "../../components/BigButton";
 import { EventCard } from "../../components/EventCard";
@@ -18,15 +17,19 @@ import { Provider } from "react-native-paper";
 import allEventsSearchNameState from "../../recoil/allEventsSortByNameState";
 import allEventsFilterByCategoryState from "../../recoil/allEventsFilterByCategoryState";
 import allEventsSortByState from "../../recoil/allEventsSortByState";
-import { Reservation } from "../../models/Reservation";
+import { Reservation, ReservationWithBackend } from "../../models/Reservation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EmptyListComponent from "../../components/EmptyListComponent";
 import { useFocusEffect } from "@react-navigation/native";
+import { useApiClient } from "../../functions/useApiClient";
+import { backendUrlState } from "../../recoil/backendUrlState";
 
 export default function TabOneScreen() {
+  const apiClient = useApiClient();
   const [isLoading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [backend, _] = useRecoilState(backendUrlState);
 
   const [activeEventId, setActiveEventId] =
     useRecoilState(selectedEventIdState);
@@ -136,10 +139,11 @@ export default function TabOneScreen() {
       const reservation = await apiClient.reservation.makeReservation(headers);
 
       if (reservation.ok) {
-        const reservationData: Reservation = {
+        const reservationData: ReservationWithBackend = {
           event: event,
           reservationToken: reservation.data.reservationToken,
           placeId: reservation.data.placeId,
+          backend: backend,
         };
         await AsyncStorage.setItem(
           event.id.toString() + "_" + reservationData.placeId.toString(),

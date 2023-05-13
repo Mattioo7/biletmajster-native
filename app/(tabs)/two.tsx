@@ -8,25 +8,29 @@ import {
 import { View } from "../../components/Themed";
 import { ReservedEventCard } from "../../components/ReservedEventCard";
 import { useCallback, useEffect, useState } from "react";
-import { Event, EventStatus } from "../../api/Api";
+import { Api, Event, EventStatus } from "../../api/Api";
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
 import { useRouter } from "expo-router";
 import qrDataState from "../../recoil/qrDataState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Reservation } from "../../models/Reservation";
+import { Reservation, ReservationWithBackend } from "../../models/Reservation";
 import EmptyListComponent from "../../components/EmptyListComponent";
-import { apiClient } from "../../api/apiClient";
+import { useApiClient } from "../../functions/useApiClient";
 import { FAB } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
+import { backendUrlState } from "../../recoil/backendUrlState";
 
 export default function TabTwoScreen() {
+  const apiClient = useApiClient();
   const router = useRouter();
   const [qrData, setQrData] = useRecoilState(qrDataState);
 
   const [isLoading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [reservations, setReservations] = useState<ReservationWithBackend[]>(
+    []
+  );
   const [activeEventId, setActiveEventId] =
     useRecoilState(selectedEventIdState);
 
@@ -66,7 +70,9 @@ export default function TabTwoScreen() {
         dtf.format(event.endTime * 1000 /* fix */),
       title: event.name,
       description:
-        dtf.format(event.startTime * 1000 /* fix */) + " - " + dtf.format(event.endTime * 1000 /* fix */),
+        dtf.format(event.startTime * 1000 /* fix */) +
+        " - " +
+        dtf.format(event.endTime * 1000 /* fix */),
     });
     router.push("/QRPage");
   };
@@ -74,7 +80,8 @@ export default function TabTwoScreen() {
   const cancelReservation = async (
     id: number,
     seat: number,
-    reservationToken: string
+    reservationToken: string,
+    backend: string
   ) => {
     setLoading(true);
     try {
@@ -84,7 +91,11 @@ export default function TabTwoScreen() {
         },
       };
 
-      const response = await apiClient.reservation.deleteReservation(headers);
+      const customClient = new Api({ baseUrl: backend });
+
+      const response = await customClient.reservation.deleteReservation(
+        headers
+      );
       // console.log(response.status);
 
       if (response.status === 204) {
