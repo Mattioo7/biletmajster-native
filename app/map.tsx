@@ -1,43 +1,44 @@
-import { Platform, StyleSheet,  } from 'react-native';
-import { View, Text } from '../components/Themed';
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from 'expo-router';
+import { Platform, StyleSheet } from "react-native";
+import { View, Text } from "../components/Themed";
+import { useEffect, useState } from "react";
+import { useNavigation } from "expo-router";
 import MapView, { Marker } from "react-native-maps";
 import { useRecoilState } from "recoil";
 import selectedReservationLocation from "../recoil/selectedReservationLocation";
 
 export default function MapScreen() {
-	const navigation = useNavigation()
+  const navigation = useNavigation();
 
-	const [reservationLocation, setReservationLocation] = useRecoilState(selectedReservationLocation);
-	const mapRegion = {
-		latitude: reservationLocation.latitude,
-		longitude: reservationLocation.longitude,
-		latitudeDelta: 0.0922,
-		longitudeDelta: 0.0421,
-	};
+  const [reservationLocation, setReservationLocation] = useRecoilState(
+    selectedReservationLocation
+  );
+  const mapRegion = {
+    latitude: reservationLocation.latitude,
+    longitude: reservationLocation.longitude,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
 
-	useEffect(() => {
-		// set title on page load
-		navigation.setOptions({ title: "Map" });
-	}, []);
+  useEffect(() => {
+    // set title on page load
+    navigation.setOptions({ title: "Map" });
+  }, []);
 
-	return (
-		<View style={styles.container}>
-			<MapView style={styles.map}
-				region={mapRegion}>
-				<Marker coordinate={mapRegion} title={"Reservation location"}/>
-			</MapView>
-		</View>
-	);
+  return (
+    <View style={styles.container}>
+      <MapView style={styles.map} region={mapRegion}>
+        <Marker coordinate={mapRegion} title={"Reservation location"} />
+      </MapView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	map: {
-		width: '100%',
-		height: '100%',
-	},
+  container: {
+    flex: 1,
+  },
+  map: {
+    width: "100%",
+    height: "100%",
+  },
 });
