@@ -4,5 +4,14 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["api", "app", "assets", "components", "constants", "data", "models", "recoil"]
+  "include": [
+    "api",
+    "app",
+    "assets",
+    "components",
+    "constants",
+    "data",
+    "models",
+    "recoil"
+  ]
 }
