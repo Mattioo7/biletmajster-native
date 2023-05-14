@@ -1,8 +1,8 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 const selectedEventIdState = atom<number | undefined>({
-	key: 'selectedEventIdState',
-	default: undefined
+  key: "selectedEventIdState",
+  default: undefined,
 });
 
 export default selectedEventIdState;

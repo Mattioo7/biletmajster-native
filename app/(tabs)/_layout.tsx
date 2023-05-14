@@ -1,14 +1,14 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {Link, Tabs} from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Tabs, useRouter } from "expo-router";
+import React from "react";
+import { useColorScheme } from "react-native";
+import { IconButton } from "react-native-paper";
+import { View } from "../../components/Themed";
 
-import Colors from '../../constants/Colors';
+import Colors from "../../constants/Colors";
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+  name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
@@ -16,38 +16,45 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-      }}>
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Events',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Events",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="calendar" color={color} />
+          ),
           headerRight: () => (
-            <Link href="/Filters" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="filter"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 20, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+            <View
+              style={{
+                flexDirection: "row",
+                alignContent: "center",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: -10,
+              }}
+            >
+              <IconButton icon="web" onPress={() => router.push("/Backend")} />
+              <IconButton
+                icon="filter"
+                onPress={() => router.push("/Filters")}
+              />
+            </View>
           ),
         }}
       />
       <Tabs.Screen
         name="two"
         options={{
-          title: 'My reservations',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "My reservations",
+          tabBarIcon: ({ color }) => <TabBarIcon name="ticket" color={color} />,
         }}
       />
     </Tabs>

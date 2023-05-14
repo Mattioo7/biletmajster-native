@@ -1,11 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet, Dimensions } from 'react-native';
-import { View, Text } from '../components/Themed';
+import { StatusBar } from "expo-status-bar";
+import { Platform, StyleSheet, Dimensions } from "react-native";
+import { View, Text } from "../components/Themed";
 import { useRecoilValue } from "recoil";
 import qrDataState from "../recoil/qrDataState";
-import React, { useEffect, useState } from 'react';
-import QRCode from 'react-native-qrcode-svg';
-import { useNavigation } from 'expo-router';
+import { useEffect } from "react";
+import QRCode from "react-native-qrcode-svg";
+import { useNavigation } from "expo-router";
 
 /* Example:
  * const [qr, setQr] = useRecoilState(qrDataState);
@@ -16,7 +16,7 @@ import { useNavigation } from 'expo-router';
  */
 export default function ModalScreen() {
   const data = useRecoilValue(qrDataState);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   useEffect(() => {
     // set title on page load
@@ -25,24 +25,31 @@ export default function ModalScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={{
-        flexDirection: 'column',
-        alignContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
-        justifyContent: 'center',
-        gap: 10,
-        width: '100%',
-        height: '100%'
-      }}>
+      <View
+        style={{
+          flexDirection: "column",
+          alignContent: "center",
+          alignItems: "center",
+          alignSelf: "center",
+          justifyContent: "center",
+          gap: 10,
+          width: "100%",
+          height: "100%",
+        }}
+      >
         <QRCode
           value={data.coreData}
-          size={Math.min(Dimensions.get("window").width, Dimensions.get("window").height) - 100}
+          size={
+            Math.min(
+              Dimensions.get("window").width,
+              Dimensions.get("window").height
+            ) - 100
+          }
         />
         <Text style={styles.title}>{data.title}</Text>
         <Text>{data.description}</Text>
       </View>
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
   );
 }
@@ -50,20 +57,20 @@ export default function ModalScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 5,
     height: 1,
-    width: '100%',
+    width: "100%",
   },
   margins: {
     margin: 10,
     marginTop: 0,
-  }
+  },
 });

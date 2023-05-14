@@ -18,7 +18,6 @@ jobs:
           submodules: true
       - name: Remove local environment configuration
         run: |
-          sed -i -e '3 c\\ const REACT_NATIVE_API = undefined;' constants/Backend.ts
           sed -i -e '3 c\\ const REACT_NATIVE_MAPKEY = undefined;' constants/MAP_API_KEY.ts
       - name: Install Node
         uses: actions/setup-node@v1
