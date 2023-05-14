@@ -28,7 +28,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Events",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color} />,
           headerRight: () => (
             <View
               style={{
@@ -52,7 +52,7 @@ export default function TabLayout() {
         name="two"
         options={{
           title: "My reservations",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ticket" color={color} />,
         }}
       />
     </Tabs>
