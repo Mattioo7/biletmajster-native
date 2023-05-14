@@ -26,9 +26,9 @@ interface placeModel {
 
 export default function ModalScreen() {
   const apiClient = useApiClient();
-  const [isLoading, setLoading] = useState(true);
+  const [_1, setLoading] = useState(true);
 
-  const [eventId, setEventId] = useRecoilState(selectedEventIdState);
+  const [eventId, _2] = useRecoilState(selectedEventIdState);
   const [event, setEvent] = useState<EventWithPlaces | undefined>();
 
   // dropdown
@@ -61,7 +61,7 @@ export default function ModalScreen() {
             value: place.id,
           }));
 
-        setData2((prev) => placeModels);
+        setData2(placeModels);
       } else {
         // TODO: Handle errors
       }
@@ -133,8 +133,6 @@ export default function ModalScreen() {
             lightColor="#eee"
             darkColor="rgba(255,255,255,0.1)"
           />
-          {/*<Text style={styles.title}>Event id: {eventId}</Text>*/}
-          {/*<EditScreenInfo path="app/modal.tsx" />*/}
 
           {event === undefined ? (
             <View style={{ marginTop: 20 }}>
@@ -250,7 +248,9 @@ export default function ModalScreen() {
                     <Button
                       style={{ marginTop: 10 }}
                       mode="contained"
-                      onPress={() => makeReservation(event, value!)}
+                      onPress={() => {
+                        if (value !== undefined) makeReservation(event, value);
+                      }}
                       disabled={
                         event.freePlace <= 0 ||
                         event.status !== EventStatus.InFuture ||

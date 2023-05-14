@@ -1,6 +1,8 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
-import { Pressable, useColorScheme } from "react-native";
+import { Tabs, useRouter } from "expo-router";
+import React from "react";
+import { useColorScheme } from "react-native";
+import { IconButton } from "react-native-paper";
 import { View } from "../../components/Themed";
 
 import Colors from "../../constants/Colors";
@@ -12,27 +14,9 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-function IconLink(props: { link: string; icon: string }) {
-  const colorScheme = useColorScheme();
-
-  return (
-    <Link href={props.link} asChild>
-      <Pressable>
-        {({ pressed }) => (
-          <FontAwesome
-            name={props.icon as any}
-            size={25}
-            color={Colors[colorScheme ?? "light"].text}
-            style={{ marginRight: 20, opacity: pressed ? 0.5 : 1 }}
-          />
-        )}
-      </Pressable>
-    </Link>
-  );
-}
-
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
     <Tabs
@@ -44,7 +28,9 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Events",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="calendar" color={color} />
+          ),
           headerRight: () => (
             <View
               style={{
@@ -52,10 +38,14 @@ export default function TabLayout() {
                 alignContent: "center",
                 alignItems: "center",
                 justifyContent: "center",
+                gap: -10,
               }}
             >
-              <IconLink link="/Filters" icon="filter" />
-              <IconLink link="/Backend" icon="server" />
+              <IconButton icon="web" onPress={() => router.push("/Backend")} />
+              <IconButton
+                icon="filter"
+                onPress={() => router.push("/Filters")}
+              />
             </View>
           ),
         }}
@@ -64,7 +54,7 @@ export default function TabLayout() {
         name="two"
         options={{
           title: "My reservations",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="ticket" color={color} />,
         }}
       />
     </Tabs>

@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { backendUrlState, urls } from "../recoil/backendUrlState";
+import { backendUrlState } from "../recoil/backendUrlState";
 import { Api } from "../api/Api";
 
 export const useApiClient = () => {

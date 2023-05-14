@@ -4,7 +4,7 @@ import { Button, Card, Chip, Text } from "react-native-paper";
 import { Category, Event, EventStatus } from "../api/Api";
 // @ts-ignore
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { getAddressFromCoordinates } from "./GetAddressFromCoordinates";
+import { getAddressFromCoordinates } from "../functions/GetAddressFromCoordinates";
 
 export const EventCard = (props: {
   event: Event;

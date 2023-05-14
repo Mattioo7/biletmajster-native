@@ -8,7 +8,7 @@ import {
 import { View } from "../../components/Themed";
 import { Category, Event } from "../../api/Api";
 import { useCallback, useEffect, useState } from "react";
-import { BigButton } from "../../components/BigButton";
+import { EventCardButton } from "../../components/EventCardButton";
 import { EventCard } from "../../components/EventCard";
 import "react-native-url-polyfill/auto";
 import { useRecoilState } from "recoil";
@@ -17,31 +17,28 @@ import { Provider } from "react-native-paper";
 import allEventsSearchNameState from "../../recoil/allEventsSortByNameState";
 import allEventsFilterByCategoryState from "../../recoil/allEventsFilterByCategoryState";
 import allEventsSortByState from "../../recoil/allEventsSortByState";
-import { Reservation, ReservationWithBackend } from "../../models/Reservation";
+import { ReservationWithBackend } from "../../models/Reservation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EmptyListComponent from "../../components/EmptyListComponent";
 import { useFocusEffect } from "@react-navigation/native";
 import { useApiClient } from "../../functions/useApiClient";
 import { backendUrlState } from "../../recoil/backendUrlState";
+import { useRouter } from "expo-router";
 
 export default function TabOneScreen() {
   const apiClient = useApiClient();
   const [isLoading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [backend, _] = useRecoilState(backendUrlState);
+  const [_1, setCategories] = useState<Category[]>([]);
+  const [backend, _2] = useRecoilState(backendUrlState);
+  const router = useRouter();
 
-  const [activeEventId, setActiveEventId] =
-    useRecoilState(selectedEventIdState);
+  const [_3, setActiveEventId] = useRecoilState(selectedEventIdState);
 
   // filters and sorts
-  const [searchQuery, setSearchQuery] = useRecoilState(
-    allEventsSearchNameState
-  );
-  const [categoryId, setCategoryId] = useRecoilState(
-    allEventsFilterByCategoryState
-  );
-  const [sortBy, setSortBy] = useRecoilState(allEventsSortByState);
+  const [searchQuery, _4] = useRecoilState(allEventsSearchNameState);
+  const [categoryId, _5] = useRecoilState(allEventsFilterByCategoryState);
+  const [sortBy, _6] = useRecoilState(allEventsSortByState);
 
   const getEvents = async () => {
     try {
@@ -202,17 +199,18 @@ export default function TabOneScreen() {
                 />
               }
               renderItem={({ item, index }) => (
-                <BigButton
+                <EventCardButton
                   index={index}
                   onPress={() => {
                     setActiveEventId(item.id);
+                    router.push("/event"); // now Link is not required in button
                   }}
                 >
                   <EventCard
                     event={item}
                     makeReservation={() => makeReservation(item)}
                   />
-                </BigButton>
+                </EventCardButton>
               )}
             />
           </View>

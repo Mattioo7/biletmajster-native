@@ -12,6 +12,7 @@
     "constants",
     "data",
     "models",
-    "recoil"
+    "recoil",
+    "functions"
   ]
 }

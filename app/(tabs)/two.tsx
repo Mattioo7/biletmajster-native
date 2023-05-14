@@ -7,41 +7,35 @@ import {
 } from "react-native";
 import { View } from "../../components/Themed";
 import { ReservedEventCard } from "../../components/ReservedEventCard";
-import { useCallback, useEffect, useState } from "react";
-import { Api, Event, EventStatus } from "../../api/Api";
+import { useCallback, useState } from "react";
+import { Api, Event } from "../../api/Api";
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
 import { useRouter } from "expo-router";
 import qrDataState from "../../recoil/qrDataState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Reservation, ReservationWithBackend } from "../../models/Reservation";
+import { ReservationWithBackend } from "../../models/Reservation";
 import EmptyListComponent from "../../components/EmptyListComponent";
-import { useApiClient } from "../../functions/useApiClient";
 import { FAB } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
-import { backendUrlState } from "../../recoil/backendUrlState";
 
 export default function TabTwoScreen() {
-  const apiClient = useApiClient();
   const router = useRouter();
-  const [qrData, setQrData] = useRecoilState(qrDataState);
+  const [_1, setQrData] = useRecoilState(qrDataState);
 
   const [isLoading, setLoading] = useState(true);
-  const [events, setEvents] = useState<Event[]>([]);
+  // const [events, setEvents] = useState<Event[]>([]);
   const [reservations, setReservations] = useState<ReservationWithBackend[]>(
     []
   );
-  const [activeEventId, setActiveEventId] =
-    useRecoilState(selectedEventIdState);
+  const [_2, setActiveEventId] = useRecoilState(selectedEventIdState);
 
   const getReservations = async () => {
     try {
       const keys = await AsyncStorage.getAllKeys();
       const data = await AsyncStorage.multiGet(keys);
 
-      setReservations((prevState) =>
-        data.map(([key, value]) => JSON.parse(value as string))
-      );
+      setReservations(data.map(([_key, value]) => JSON.parse(value as string)));
     } catch (e) {
       console.log(e);
     }
@@ -156,7 +150,7 @@ export default function TabTwoScreen() {
                 onRefresh={getReservations}
               />
             }
-            renderItem={({ item, index }) => (
+            renderItem={({ item }) => (
               <ReservedEventCard
                 key={item.event.id}
                 reservation={item}
