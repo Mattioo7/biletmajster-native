@@ -13,6 +13,6 @@
     "data",
     "models",
     "recoil",
-    "functions/GetAddressFromCoordinates.tsx"
+    "functions"
   ]
 }

@@ -5,7 +5,7 @@ import { Event } from "../api/Api";
 // @ts-ignore
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { getAddressFromCoordinates } from "../functions/GetAddressFromCoordinates";
-import { Reservation, ReservationWithBackend } from "../models/Reservation";
+import { ReservationWithBackend } from "../models/Reservation";
 import { useRouter } from "expo-router";
 import { useRecoilState } from "recoil";
 import selectedReservationLocation from "../recoil/selectedReservationLocation";
@@ -22,12 +22,12 @@ export const ReservedEventCard = (props: {
   infoFunction: () => void;
 }) => {
   const router = useRouter();
-  const { reservation, cancelFunction, qrFunction, infoFunction } = {
+  const { reservation, cancelFunction, qrFunction, /* infoFunction : unused */ } = {
     ...props,
   };
   const event: Event = reservation.event;
 
-  const [reservationLocation, setReservationLocation] = useRecoilState(
+  const [_reservationLocation, setReservationLocation] = useRecoilState(
     selectedReservationLocation
   );
 

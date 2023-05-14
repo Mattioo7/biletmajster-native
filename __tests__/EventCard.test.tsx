@@ -40,7 +40,7 @@ describe("EventCard", () => {
     const { getByText } = render(
       <EventCard event={event} makeReservation={mockFunction} />
     );
-    const title = getByText(event.title!);
+    const title = getByText(event.title);
 
     await waitFor(() => {
       expect(title).toBeDefined();
@@ -56,7 +56,7 @@ describe("EventCard", () => {
   });
 
   it("displays the correct number of free and maximum places for the event", async () => {
-    const { getByText, findByText } = render(
+    const { findByText } = render(
       <EventCard event={event} makeReservation={mockFunction} />
     );
 

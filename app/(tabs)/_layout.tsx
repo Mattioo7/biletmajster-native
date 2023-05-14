@@ -1,7 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs, useRouter } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import React from "react";
-import { Pressable, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
 import { IconButton } from "react-native-paper";
 import { View } from "../../components/Themed";
 

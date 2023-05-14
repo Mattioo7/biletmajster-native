@@ -1,4 +1,3 @@
-import { render } from "@testing-library/react-native";
 import { eventSortByPairs } from "../recoil/allEventsSortByState";
 
 describe("EventSortByPairs", () => {

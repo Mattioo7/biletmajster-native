@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { Alert, Platform, StyleSheet } from "react-native";
-import { Text, View } from "../components/Themed";
+import { View } from "../components/Themed";
 import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { Category } from "../api/Api";

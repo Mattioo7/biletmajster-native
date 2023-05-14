@@ -18,7 +18,7 @@ beforeAll(() => {
   (useRouter as any).mockReturnValue({
     // object returned by useRouter only needs push,
     // because that's what ReservedEventCard uses. Nothing else necessary
-    push: jest.fn((path) => {}),
+    push: jest.fn(() => {}),
   });
 });
 

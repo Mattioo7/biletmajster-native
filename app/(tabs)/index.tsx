@@ -17,7 +17,7 @@ import { Provider } from "react-native-paper";
 import allEventsSearchNameState from "../../recoil/allEventsSortByNameState";
 import allEventsFilterByCategoryState from "../../recoil/allEventsFilterByCategoryState";
 import allEventsSortByState from "../../recoil/allEventsSortByState";
-import { Reservation, ReservationWithBackend } from "../../models/Reservation";
+import { ReservationWithBackend } from "../../models/Reservation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EmptyListComponent from "../../components/EmptyListComponent";
 import { useFocusEffect } from "@react-navigation/native";
@@ -28,20 +28,20 @@ export default function TabOneScreen() {
   const apiClient = useApiClient();
   const [isLoading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [backend, _] = useRecoilState(backendUrlState);
+  const [_1, setCategories] = useState<Category[]>([]);
+  const [backend, _2] = useRecoilState(backendUrlState);
 
-  const [activeEventId, setActiveEventId] =
+  const [_3, setActiveEventId] =
     useRecoilState(selectedEventIdState);
 
   // filters and sorts
-  const [searchQuery, setSearchQuery] = useRecoilState(
+  const [searchQuery, _4] = useRecoilState(
     allEventsSearchNameState
   );
-  const [categoryId, setCategoryId] = useRecoilState(
+  const [categoryId, _5] = useRecoilState(
     allEventsFilterByCategoryState
   );
-  const [sortBy, setSortBy] = useRecoilState(allEventsSortByState);
+  const [sortBy, _6] = useRecoilState(allEventsSortByState);
 
   const getEvents = async () => {
     try {

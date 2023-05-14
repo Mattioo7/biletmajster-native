@@ -1,50 +1,47 @@
-import { MAP_API_KEY } from "../constants/MAP_API_KEY";
+// import { MAP_API_KEY } from "../constants/MAP_API_KEY";
 
-interface LocationInfo {
-  items: {
-    access: {
-      lat: number;
-      lng: number;
-    }[];
-    address: {
-      city: string;
-      countryCode: string;
-      countryName: string;
-      county: string;
-      countyCode: string;
-      district: string;
-      houseNumber: string;
-      label: string;
-      postalCode: string;
-      state: string;
-      street: string;
-    };
-    distance: number;
-    houseNumberType: string;
-    id: string;
-    mapView: {
-      east: number;
-      north: number;
-      south: number;
-      west: number;
-    };
-    position: {
-      lat: number;
-      lng: number;
-    };
-    resultType: string;
-    title: string;
-  }[];
-}
+// interface LocationInfo {
+//   items: {
+//     access: {
+//       lat: number;
+//       lng: number;
+//     }[];
+//     address: {
+//       city: string;
+//       countryCode: string;
+//       countryName: string;
+//       county: string;
+//       countyCode: string;
+//       district: string;
+//       houseNumber: string;
+//       label: string;
+//       postalCode: string;
+//       state: string;
+//       street: string;
+//     };
+//     distance: number;
+//     houseNumberType: string;
+//     id: string;
+//     mapView: {
+//       east: number;
+//       north: number;
+//       south: number;
+//       west: number;
+//     };
+//     position: {
+//       lat: number;
+//       lng: number;
+//     };
+//     resultType: string;
+//     title: string;
+//   }[];
+// }
 
-export function getAddressFromCoordinates({
-  latitude,
-  longitude,
-}: {
+export function getAddressFromCoordinates(_arg: {
   latitude: string;
   longitude: string;
 }): Promise<string | undefined> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     resolve("Warsaw, Poland");
   });
 

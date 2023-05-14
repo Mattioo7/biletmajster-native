@@ -1,25 +1,11 @@
-import { StatusBar } from "expo-status-bar";
-import { Alert, Platform, Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 import { useRecoilState } from "recoil";
-import React, { useEffect, useState } from "react";
-import { Category } from "../api/Api";
-import { useApiClient } from "../functions/useApiClient";
-import { Button, Card, Checkbox, Searchbar } from "react-native-paper";
-import allEventsSortByState, {
-  eventSortByPairs,
-} from "../recoil/allEventsSortByState";
-import allEventsSearchNameState from "../recoil/allEventsSortByNameState";
-import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryState";
-import { Dropdown } from "react-native-element-dropdown";
-import { useTheme } from "react-native-paper";
+import { Card, Checkbox } from "react-native-paper";
 import { backendUrlState, urls } from "../recoil/backendUrlState";
-import { useColorScheme } from "react-native";
-import Colors from "../constants/Colors";
 
 export default function ModalScreen() {
   const [backend, setBackend] = useRecoilState(backendUrlState);
-  const scheme = useColorScheme();
 
   return (
     <View style={styles.container}>
