@@ -28,7 +28,9 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Events",
-          tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="calendar" color={color} />
+          ),
           headerRight: () => (
             <View
               style={{
