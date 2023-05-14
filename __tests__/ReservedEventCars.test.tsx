@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import { ReservedEventCard } from "../ReservedEventCard";
-import { Reservation, ReservationWithBackend } from "../../models/Reservation";
-import { EventStatus } from "../../api/Api";
+import { ReservedEventCard } from "../components/ReservedEventCard";
+import { ReservationWithBackend } from "../models/Reservation";
+import { EventStatus } from "../api/Api";
 import { NavigationContainer } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { RecoilRoot } from "recoil";

@@ -4,7 +4,7 @@ import { Button, Card, IconButton, Text } from "react-native-paper";
 import { Event } from "../api/Api";
 // @ts-ignore
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { getAddressFromCoordinates } from "./GetAddressFromCoordinates";
+import { getAddressFromCoordinates } from "../functions/GetAddressFromCoordinates";
 import { Reservation, ReservationWithBackend } from "../models/Reservation";
 import { useRouter } from "expo-router";
 import { useRecoilState } from "recoil";

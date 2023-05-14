@@ -1,8 +1,7 @@
-import React from "react";
 import { render, screen, waitFor } from "@testing-library/react-native";
-import { EventCard } from "../EventCard";
-import { Event, EventStatus } from "../../api/Api";
-import * as GetAddressModule from "../GetAddressFromCoordinates";
+import { EventCard } from "../components/EventCard";
+import { Event, EventStatus } from "../api/Api";
+import * as GetAddressModule from "../functions/GetAddressFromCoordinates";
 
 describe("EventCard", () => {
   const event: Event = {
@@ -22,7 +21,7 @@ describe("EventCard", () => {
   const mockFunction = jest.fn();
 
   // Mock the getAddressFromCoordinates function
-  jest.mock("../GetAddressFromCoordinates", () => ({
+  jest.mock("../functions/GetAddressFromCoordinates", () => ({
     getAddressFromCoordinates: jest
       .fn()
       .mockImplementation(() => Promise.resolve("Mocked City, Mocked Country")),
