@@ -133,8 +133,6 @@ export default function ModalScreen() {
             lightColor="#eee"
             darkColor="rgba(255,255,255,0.1)"
           />
-          {/*<Text style={styles.title}>Event id: {eventId}</Text>*/}
-          {/*<EditScreenInfo path="app/modal.tsx" />*/}
 
           {event === undefined ? (
             <View style={{ marginTop: 20 }}>
