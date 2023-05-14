@@ -22,7 +22,11 @@ export const ReservedEventCard = (props: {
   infoFunction: () => void;
 }) => {
   const router = useRouter();
-  const { reservation, cancelFunction, qrFunction, /* infoFunction : unused */ } = {
+  const {
+    reservation,
+    cancelFunction,
+    qrFunction /* infoFunction : unused */,
+  } = {
     ...props,
   };
   const event: Event = reservation.event;

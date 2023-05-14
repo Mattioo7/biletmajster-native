@@ -36,11 +36,14 @@ export default function TabLayout() {
                 alignContent: "center",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: -10
+                gap: -10,
               }}
             >
               <IconButton icon="web" onPress={() => router.push("/Backend")} />
-              <IconButton icon="filter" onPress={() => router.push("/Filters")}/>
+              <IconButton
+                icon="filter"
+                onPress={() => router.push("/Filters")}
+              />
             </View>
           ),
         }}

@@ -31,16 +31,11 @@ export default function TabOneScreen() {
   const [_1, setCategories] = useState<Category[]>([]);
   const [backend, _2] = useRecoilState(backendUrlState);
 
-  const [_3, setActiveEventId] =
-    useRecoilState(selectedEventIdState);
+  const [_3, setActiveEventId] = useRecoilState(selectedEventIdState);
 
   // filters and sorts
-  const [searchQuery, _4] = useRecoilState(
-    allEventsSearchNameState
-  );
-  const [categoryId, _5] = useRecoilState(
-    allEventsFilterByCategoryState
-  );
+  const [searchQuery, _4] = useRecoilState(allEventsSearchNameState);
+  const [categoryId, _5] = useRecoilState(allEventsFilterByCategoryState);
   const [sortBy, _6] = useRecoilState(allEventsSortByState);
 
   const getEvents = async () => {

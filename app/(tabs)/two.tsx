@@ -28,17 +28,14 @@ export default function TabTwoScreen() {
   const [reservations, setReservations] = useState<ReservationWithBackend[]>(
     []
   );
-  const [_2, setActiveEventId] =
-    useRecoilState(selectedEventIdState);
+  const [_2, setActiveEventId] = useRecoilState(selectedEventIdState);
 
   const getReservations = async () => {
     try {
       const keys = await AsyncStorage.getAllKeys();
       const data = await AsyncStorage.multiGet(keys);
 
-      setReservations(
-        data.map(([_key, value]) => JSON.parse(value as string))
-      );
+      setReservations(data.map(([_key, value]) => JSON.parse(value as string)));
     } catch (e) {
       console.log(e);
     }

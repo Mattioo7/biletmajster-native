@@ -20,13 +20,21 @@ export default function ModalScreen() {
             elevation={2}
             style={
               backend === bk.url
-                ? { backgroundColor: "white", borderWidth: 2, margin: -2, borderColor: "#6750A4", width: "100%" }
+                ? {
+                    backgroundColor: "white",
+                    borderWidth: 2,
+                    margin: -2,
+                    borderColor: "#6750A4",
+                    width: "100%",
+                  }
                 : { backgroundColor: "white", width: "100%" }
             }
           >
             <Card.Content>
               <View style={{ flexDirection: "row", marginLeft: -12 }}>
-                <Checkbox status={backend === bk.url ? "checked" : "unchecked"} />
+                <Checkbox
+                  status={backend === bk.url ? "checked" : "unchecked"}
+                />
                 <View style={{ flexDirection: "column" }}>
                   <Text style={styles.title}>{bk.name}</Text>
                   <Text style={styles.text}>{bk.url}</Text>

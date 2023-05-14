@@ -9,9 +9,7 @@ import selectedReservationLocation from "../recoil/selectedReservationLocation";
 export default function MapScreen() {
   const navigation = useNavigation();
 
-  const [reservationLocation, _] = useRecoilState(
-    selectedReservationLocation
-  );
+  const [reservationLocation, _] = useRecoilState(selectedReservationLocation);
   const mapRegion = {
     latitude: reservationLocation.latitude,
     longitude: reservationLocation.longitude,

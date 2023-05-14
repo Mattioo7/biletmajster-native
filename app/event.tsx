@@ -250,10 +250,9 @@ export default function ModalScreen() {
                     <Button
                       style={{ marginTop: 10 }}
                       mode="contained"
-                        onPress={() => {
-                          if (value !== undefined)
-                            makeReservation(event, value);
-                        }}
+                      onPress={() => {
+                        if (value !== undefined) makeReservation(event, value);
+                      }}
                       disabled={
                         event.freePlace <= 0 ||
                         event.status !== EventStatus.InFuture ||
