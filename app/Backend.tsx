@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import React, { useEffect, useState } from "react";
 import { Category } from "../api/Api";
 import { useApiClient } from "../functions/useApiClient";
-import { Button, Card, Searchbar } from "react-native-paper";
+import { Button, Card, Checkbox, Searchbar } from "react-native-paper";
 import allEventsSortByState, {
   eventSortByPairs,
 } from "../recoil/allEventsSortByState";
@@ -14,9 +14,12 @@ import allEventsFilterByCategoryState from "../recoil/allEventsFilterByCategoryS
 import { Dropdown } from "react-native-element-dropdown";
 import { useTheme } from "react-native-paper";
 import { backendUrlState, urls } from "../recoil/backendUrlState";
+import { useColorScheme } from "react-native";
+import Colors from "../constants/Colors";
 
 export default function ModalScreen() {
   const [backend, setBackend] = useRecoilState(backendUrlState);
+  const scheme = useColorScheme();
 
   return (
     <View style={styles.container}>
@@ -28,15 +31,21 @@ export default function ModalScreen() {
           style={{ width: "100%" }}
         >
           <Card
+            elevation={2}
             style={
-              backend == bk.url
-                ? { borderWidth: 4, width: "100%" }
-                : { width: "100%" }
+              backend === bk.url
+                ? { backgroundColor: "white", borderWidth: 2, margin: -2, borderColor: "#6750A4", width: "100%" }
+                : { backgroundColor: "white", width: "100%" }
             }
           >
             <Card.Content>
-              <Text style={styles.title}>{bk.name}</Text>
-              <Text style={styles.text}>{bk.url}</Text>
+              <View style={{ flexDirection: "row", marginLeft: -12 }}>
+                <Checkbox status={backend === bk.url ? "checked" : "unchecked"} />
+                <View style={{ flexDirection: "column" }}>
+                  <Text style={styles.title}>{bk.name}</Text>
+                  <Text style={styles.text}>{bk.url}</Text>
+                </View>
+              </View>
             </Card.Content>
           </Card>
         </Pressable>
