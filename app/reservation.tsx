@@ -4,21 +4,13 @@ import { Text, View } from "../components/Themed";
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
 import { useEffect, useState } from "react";
-import {
-	Category,
-	Event,
-	EventStatus,
-	EventWithPlaces,
-	Place,
-} from "../api/Api";
-import { apiClient } from "../api/apiClient";
-import { ActivityIndicator, Button, Card, Chip, IconButton } from "react-native-paper";
+import { Category, EventWithPlaces, } from "../api/Api";
+import { ActivityIndicator, Card, Chip, IconButton } from "react-native-paper";
 // @ts-ignore
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { Reservation } from "../models/Reservation";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import selectedReservationLocation from "../recoil/selectedReservationLocation";
 import { useRouter } from "expo-router";
+import { useApiClient } from "../functions/useApiClient";
 
 interface placeModel {
 	label: string;
@@ -27,6 +19,7 @@ interface placeModel {
 
 export default function ReservationScreen() {
 	const router = useRouter();
+	const apiClient = useApiClient();
 
 	const [isLoading, setLoading] = useState(true);
 
