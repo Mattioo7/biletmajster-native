@@ -1,10 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { Alert, Platform, StyleSheet } from "react-native";
-import { Text, View } from "../components/Themed";
+import { View } from "../components/Themed";
 import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { Category } from "../api/Api";
-import { apiClient } from "../api/apiClient";
+import { useApiClient } from "../functions/useApiClient";
 import { Button, Searchbar } from "react-native-paper";
 import allEventsSortByState, {
   eventSortByPairs,
@@ -15,6 +15,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useTheme } from "react-native-paper";
 
 export default function ModalScreen() {
+  const apiClient = useApiClient();
   const theme = useTheme();
 
   // categories

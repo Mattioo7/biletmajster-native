@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import { ReservedEventCard } from "../ReservedEventCard";
-import { Reservation } from "../../models/Reservation";
-import { EventStatus } from "../../api/Api";
+import { ReservedEventCard } from "../components/ReservedEventCard";
+import { ReservationWithBackend } from "../models/Reservation";
+import { EventStatus } from "../api/Api";
 import { NavigationContainer } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { RecoilRoot } from "recoil";
@@ -18,12 +18,12 @@ beforeAll(() => {
   (useRouter as any).mockReturnValue({
     // object returned by useRouter only needs push,
     // because that's what ReservedEventCard uses. Nothing else necessary
-    push: jest.fn((path) => {}),
+    push: jest.fn(() => {}),
   });
 });
 
 describe("ReservedEventCard", () => {
-  const reservation: Reservation = {
+  const reservation: ReservationWithBackend = {
     event: {
       id: 1,
       title: "Test Event",
@@ -48,6 +48,7 @@ describe("ReservedEventCard", () => {
     },
     reservationToken: "testToken123",
     placeId: 1,
+    backend: "BACKEND",
   };
   const cancelFunctionMock = jest.fn();
   const qrFunctionMock = jest.fn();
@@ -82,7 +83,8 @@ describe("ReservedEventCard", () => {
     expect(cancelFunctionMock).toHaveBeenCalledWith(
       reservation.event.id,
       reservation.placeId,
-      reservation.reservationToken
+      reservation.reservationToken,
+      reservation.backend
     );
   });
 

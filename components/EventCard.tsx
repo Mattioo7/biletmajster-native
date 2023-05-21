@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, Card, Text } from "react-native-paper";
-import { Event, EventStatus } from "../api/Api";
+import { Button, Card, Chip, Text } from "react-native-paper";
+import { Category, Event, EventStatus } from "../api/Api";
 // @ts-ignore
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { getAddressFromCoordinates } from "./GetAddressFromCoordinates";
+import { getAddressFromCoordinates } from "../functions/GetAddressFromCoordinates";
 
 export const EventCard = (props: {
   event: Event;
@@ -59,6 +59,14 @@ export const EventCard = (props: {
                 second: "2-digit",
               }).format(event.endTime * 1000 /* fix */)}
             </Text>
+
+            <View style={styles.chips}>
+              {event.categories.map((category: Category) => (
+                <Chip key={category.id} style={{ maxWidth: 130 }}>
+                  {category.name}
+                </Chip>
+              ))}
+            </View>
           </View>
         </View>
       </Card.Content>
@@ -67,6 +75,7 @@ export const EventCard = (props: {
         <Text style={{ marginRight: 20 }}>
           {event.freePlace}/{event.maxPlace}
         </Text>
+
         <Button
           mode="contained"
           onPress={makeReservation}
@@ -100,5 +109,14 @@ const styles = StyleSheet.create({
   button: {
     marginLeft: 40,
     marginTop: 10,
+  },
+  chips: {
+    backgroundColor: "none",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    columnGap: 5,
+    rowGap: 5,
+    marginTop: 5,
   },
 });

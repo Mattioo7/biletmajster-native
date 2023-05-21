@@ -1,38 +1,41 @@
-import { Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet, } from "react-native";
+import {
+  Alert,
+  FlatList,
+  RefreshControl,
+  SafeAreaView,
+  StyleSheet,
+} from "react-native";
 import { View } from "../../components/Themed";
 import { ReservedEventCard } from "../../components/ReservedEventCard";
 import { useCallback, useState } from "react";
-import { Event } from "../../api/Api";
+import { Api, Event } from "../../api/Api";
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../../recoil/selectedEventIdState";
 import { useRouter } from "expo-router";
 import qrDataState from "../../recoil/qrDataState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Reservation } from "../../models/Reservation";
+import { ReservationWithBackend } from "../../models/Reservation";
 import EmptyListComponent from "../../components/EmptyListComponent";
-import { apiClient } from "../../api/apiClient";
 import { FAB } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
-import { BigButton } from "../../components/BigButton";
 
 export default function TabTwoScreen() {
   const router = useRouter();
-  const [qrData, setQrData] = useRecoilState(qrDataState);
+  const [_1, setQrData] = useRecoilState(qrDataState);
 
   const [isLoading, setLoading] = useState(true);
-  const [events, setEvents] = useState<Event[]>([]);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [activeEventId, setActiveEventId] =
-    useRecoilState(selectedEventIdState);
+  // const [events, setEvents] = useState<Event[]>([]);
+  const [reservations, setReservations] = useState<ReservationWithBackend[]>(
+    []
+  );
+  const [_2, setActiveEventId] = useRecoilState(selectedEventIdState);
 
   const getReservations = async () => {
     try {
       const keys = await AsyncStorage.getAllKeys();
       const data = await AsyncStorage.multiGet(keys);
 
-      setReservations((prevState) =>
-        data.map(([key, value]) => JSON.parse(value as string))
-      );
+      setReservations(data.map(([_key, value]) => JSON.parse(value as string)));
     } catch (e) {
       console.log(e);
     }
@@ -61,7 +64,9 @@ export default function TabTwoScreen() {
         dtf.format(event.endTime * 1000 /* fix */),
       title: event.name,
       description:
-        dtf.format(event.startTime * 1000 /* fix */) + " - " + dtf.format(event.endTime * 1000 /* fix */),
+        dtf.format(event.startTime * 1000 /* fix */) +
+        " - " +
+        dtf.format(event.endTime * 1000 /* fix */),
     });
     router.push("/QRPage");
   };
@@ -69,7 +74,8 @@ export default function TabTwoScreen() {
   const cancelReservation = async (
     id: number,
     seat: number,
-    reservationToken: string
+    reservationToken: string,
+    backend: string
   ) => {
     setLoading(true);
     try {
@@ -79,7 +85,11 @@ export default function TabTwoScreen() {
         },
       };
 
-      const response = await apiClient.reservation.deleteReservation(headers);
+      const customClient = new Api({ baseUrl: backend });
+
+      const response = await customClient.reservation.deleteReservation(
+        headers
+      );
       // console.log(response.status);
 
       if (response.status === 204) {
@@ -140,26 +150,17 @@ export default function TabTwoScreen() {
                 onRefresh={getReservations}
               />
             }
-            renderItem={({ item, index }) => (
-              <BigButton
-                index={index}
-                onPress={() => {
+            renderItem={({ item }) => (
+              <ReservedEventCard
+                key={item.event.id}
+                reservation={item}
+                qrFunction={() => showQRCode(item.event)}
+                cancelFunction={cancelReservation}
+                infoFunction={() => {
                   setActiveEventId(item.event.id);
-                  console.log("/reservation");
+                  router.push("/event");
                 }}
-                href="/reservation"
-              >
-                <ReservedEventCard
-                  key={item.event.id}
-                  reservation={item}
-                  qrFunction={() => showQRCode(item.event)}
-                  cancelFunction={cancelReservation}
-                  infoFunction={() => {
-                    setActiveEventId(item.event.id);
-                    router.push("/reservation");
-                  }}
-                />
-              </BigButton>
+              />
             )}
           />
         </View>

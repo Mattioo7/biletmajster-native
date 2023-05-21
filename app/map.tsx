@@ -1,6 +1,6 @@
-import { Platform, StyleSheet } from "react-native";
-import { View, Text } from "../components/Themed";
-import { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import { View } from "../components/Themed";
+import { useEffect } from "react";
 import { useNavigation } from "expo-router";
 import MapView, { Marker } from "react-native-maps";
 import { useRecoilState } from "recoil";
@@ -9,9 +9,7 @@ import selectedReservationLocation from "../recoil/selectedReservationLocation";
 export default function MapScreen() {
   const navigation = useNavigation();
 
-  const [reservationLocation, setReservationLocation] = useRecoilState(
-    selectedReservationLocation
-  );
+  const [reservationLocation, _] = useRecoilState(selectedReservationLocation);
   const mapRegion = {
     latitude: reservationLocation.latitude,
     longitude: reservationLocation.longitude,

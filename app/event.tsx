@@ -11,7 +11,7 @@ import {
   EventWithPlaces,
   Place,
 } from "../api/Api";
-import { apiClient } from "../api/apiClient";
+import { useApiClient } from "../functions/useApiClient";
 import { ActivityIndicator, Button, Card, Chip } from "react-native-paper";
 // @ts-ignore
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -25,9 +25,10 @@ interface placeModel {
 }
 
 export default function ModalScreen() {
-  const [isLoading, setLoading] = useState(true);
+  const apiClient = useApiClient();
+  const [_1, setLoading] = useState(true);
 
-  const [eventId, setEventId] = useRecoilState(selectedEventIdState);
+  const [eventId, _2] = useRecoilState(selectedEventIdState);
   const [event, setEvent] = useState<EventWithPlaces | undefined>();
 
   // dropdown
@@ -60,7 +61,7 @@ export default function ModalScreen() {
             value: place.id,
           }));
 
-        setData2((prev) => placeModels);
+        setData2(placeModels);
       } else {
         // TODO: Handle errors
       }
@@ -132,8 +133,6 @@ export default function ModalScreen() {
             lightColor="#eee"
             darkColor="rgba(255,255,255,0.1)"
           />
-          {/*<Text style={styles.title}>Event id: {eventId}</Text>*/}
-          {/*<EditScreenInfo path="app/modal.tsx" />*/}
 
           {event === undefined ? (
             <View style={{ marginTop: 20 }}>
@@ -249,7 +248,9 @@ export default function ModalScreen() {
                     <Button
                       style={{ marginTop: 10 }}
                       mode="contained"
-                      onPress={() => makeReservation(event, value!)}
+                      onPress={() => {
+                        if (value !== undefined) makeReservation(event, value);
+                      }}
                       disabled={
                         event.freePlace <= 0 ||
                         event.status !== EventStatus.InFuture ||
@@ -272,8 +273,8 @@ export default function ModalScreen() {
                     </View>
                   </View>
                 </Card.Content>
-                  {/* <Card.Actions style={{ marginVertical: 50 }}></Card.Actions> */}
-                  {/* Card actions must have children */}
+                {/* <Card.Actions style={{ marginVertical: 50 }}></Card.Actions> */}
+                {/* Card actions must have children */}
               </Card>
             </View>
           )}

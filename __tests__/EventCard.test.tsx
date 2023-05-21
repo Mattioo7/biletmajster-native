@@ -1,8 +1,7 @@
-import React from "react";
 import { render, screen, waitFor } from "@testing-library/react-native";
-import { EventCard } from "../EventCard";
-import { Event, EventStatus } from "../../api/Api";
-import * as GetAddressModule from "../GetAddressFromCoordinates";
+import { EventCard } from "../components/EventCard";
+import { Event, EventStatus } from "../api/Api";
+import * as GetAddressModule from "../functions/GetAddressFromCoordinates";
 
 describe("EventCard", () => {
   const event: Event = {
@@ -22,7 +21,7 @@ describe("EventCard", () => {
   const mockFunction = jest.fn();
 
   // Mock the getAddressFromCoordinates function
-  jest.mock("../GetAddressFromCoordinates", () => ({
+  jest.mock("../functions/GetAddressFromCoordinates", () => ({
     getAddressFromCoordinates: jest
       .fn()
       .mockImplementation(() => Promise.resolve("Mocked City, Mocked Country")),
@@ -41,7 +40,7 @@ describe("EventCard", () => {
     const { getByText } = render(
       <EventCard event={event} makeReservation={mockFunction} />
     );
-    const title = getByText(event.title!);
+    const title = getByText(event.title);
 
     await waitFor(() => {
       expect(title).toBeDefined();
@@ -57,7 +56,7 @@ describe("EventCard", () => {
   });
 
   it("displays the correct number of free and maximum places for the event", async () => {
-    const { getByText, findByText } = render(
+    const { findByText } = render(
       <EventCard event={event} makeReservation={mockFunction} />
     );
 

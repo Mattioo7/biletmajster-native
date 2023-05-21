@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Dimensions } from "react-native";
 import { View, Text } from "../components/Themed";
 import { useRecoilValue } from "recoil";
 import qrDataState from "../recoil/qrDataState";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import QRCode from "react-native-qrcode-svg";
 import { useNavigation } from "expo-router";
 

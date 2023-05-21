@@ -4,25 +4,34 @@ import { Button, Card, IconButton, Text } from "react-native-paper";
 import { Event } from "../api/Api";
 // @ts-ignore
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { getAddressFromCoordinates } from "./GetAddressFromCoordinates";
-import { Reservation } from "../models/Reservation";
+import { getAddressFromCoordinates } from "../functions/GetAddressFromCoordinates";
+import { ReservationWithBackend } from "../models/Reservation";
 import { useRouter } from "expo-router";
 import { useRecoilState } from "recoil";
 import selectedReservationLocation from "../recoil/selectedReservationLocation";
 
 export const ReservedEventCard = (props: {
-  reservation: Reservation;
-  cancelFunction: (id: number, seat: number, reservationToken: string) => void;
+  reservation: ReservationWithBackend;
+  cancelFunction: (
+    id: number,
+    seat: number,
+    reservationToken: string,
+    backend: string
+  ) => void;
   qrFunction: () => void;
   infoFunction: () => void;
 }) => {
   const router = useRouter();
-  const { reservation, cancelFunction, qrFunction, infoFunction } = {
+  const {
+    reservation,
+    cancelFunction,
+    qrFunction /* infoFunction : unused */,
+  } = {
     ...props,
   };
   const event: Event = reservation.event;
 
-  const [reservationLocation, setReservationLocation] = useRecoilState(
+  const [_reservationLocation, setReservationLocation] = useRecoilState(
     selectedReservationLocation
   );
 
@@ -70,6 +79,10 @@ export const ReservedEventCard = (props: {
           <MaterialCommunityIcon name="seat" size={26} color="#555" />
           Seat no.: {reservation.placeId}
         </Text>
+        <Text>
+          <MaterialCommunityIcon name="server" size={26} color="#555" />
+          {reservation.backend}
+        </Text>
       </Card.Content>
       <Card.Actions>
         {/*<IconButton icon="information" onPress={infoFunction} />*/}
@@ -84,7 +97,8 @@ export const ReservedEventCard = (props: {
             cancelFunction(
               event.id,
               reservation.placeId,
-              reservation.reservationToken
+              reservation.reservationToken,
+              reservation.backend
             )
           }
         >

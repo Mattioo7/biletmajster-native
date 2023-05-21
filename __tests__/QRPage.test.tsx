@@ -1,7 +1,6 @@
 import renderer from "react-test-renderer";
 import { RecoilRoot } from "recoil";
-import ModalScreen from "../QRPage";
-import React from "react";
+import ModalScreen from "../app/QRPage";
 
 jest.mock("expo-router", () => ({
   useNavigation: jest.fn().mockImplementation(() => {
