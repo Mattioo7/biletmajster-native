@@ -64,7 +64,6 @@ export const ReservedEventCard = (props: {
         subtitleStyle={{ fontSize: 14 }}
       />
       <Card.Content>
-        <Text style={{ marginBottom: 10 }}>{event.name}</Text>
         <Text style={{ display: "flex", fontSize: 18 }}>
           <MaterialCommunityIcon name="calendar" size={26} color="#555" />
           {new Intl.DateTimeFormat("en-US", {
@@ -75,17 +74,6 @@ export const ReservedEventCard = (props: {
             minute: "2-digit",
             second: "2-digit",
           }).format(event.startTime * 1000 /* fix */)}
-        </Text>
-        <Text style={{ display: "flex", fontSize: 18 }}>
-          <MaterialCommunityIcon name="calendar" size={26} color="#555" />
-          {new Intl.DateTimeFormat("en-US", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          }).format(event.endTime * 1000 /* fix */)}
         </Text>
         <Text>
           <MaterialCommunityIcon name="seat" size={26} color="#555" />
