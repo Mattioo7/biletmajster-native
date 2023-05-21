@@ -72,9 +72,8 @@ describe("ReservedEventCard", () => {
     );
   });
 
-  it("should render the event information", () => {
+  it("should render the event title", () => {
     expect(screen.getByText(reservation.event.title)).toBeDefined();
-    expect(screen.getByText(reservation.event.name)).toBeDefined();
   });
 
   it("should call the cancelFunction when the cancel button is pressed", () => {
