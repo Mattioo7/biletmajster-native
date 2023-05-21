@@ -205,7 +205,6 @@ export default function TabOneScreen() {
                     setActiveEventId(item.id);
                     router.push("/event"); // now Link is not required in button
                   }}
-                  href="/event"
                 >
                   <EventCard
                     event={item}
