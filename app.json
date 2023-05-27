@@ -12,9 +12,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jacobblabs.biletmajsternative"
     },
     "android": {
       "adaptiveIcon": {
@@ -33,6 +36,9 @@
       },
       "api": "http://10.0.2.2:8000",
       "mapkey": "xyz"
-    }
+    },
+    "plugins": [
+      "@config-plugins/detox"
+    ]
   }
 }
