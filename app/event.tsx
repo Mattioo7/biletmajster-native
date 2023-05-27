@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { Alert, Image, Platform, ScrollView, StyleSheet } from "react-native";
+import { Alert, Animated, FlatList, Image, Platform, ScrollView, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Category,
   Event,
@@ -18,6 +18,9 @@ import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIc
 import { Dropdown } from "react-native-element-dropdown";
 import { Reservation } from "../models/Reservation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSafeAreaFrame } from "react-native-safe-area-context";
+import { backendUrlState } from "../recoil/backendUrlState";
+import { ScalingDot } from "react-native-animated-pagination-dots";
 
 interface placeModel {
   label: string;
@@ -27,6 +30,11 @@ interface placeModel {
 export default function ModalScreen() {
   const apiClient = useApiClient();
   const [_1, setLoading] = useState(true);
+
+  const { width } = useSafeAreaFrame();
+  const imgWidth = width - 20;
+  const [backend, _3] = useRecoilState(backendUrlState);
+  const scrollX = React.useRef(new Animated.Value(0)).current;
 
   const [eventId, _2] = useRecoilState(selectedEventIdState);
   const [event, setEvent] = useState<EventWithPlaces | undefined>();
@@ -157,6 +165,37 @@ export default function ModalScreen() {
       >
         <View style={styles.container}>
           {/*TODO: tutaj chcę dodać slider*/}
+          {
+            photoUrls.length === 0 ? undefined :
+              <>
+                <FlatList
+                  onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                    {
+                      useNativeDriver: false,
+                    }
+                  )}
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.photos}
+                  horizontal={true}
+                  snapToAlignment="start"
+                  decelerationRate="normal"
+                  snapToInterval={imgWidth + 10}
+                  data={photoUrls}
+                  renderItem={
+                    ({ item, index }) =>
+                      <View style={{ width: imgWidth, marginLeft: index === 0 ? 0 : 10 }}>
+                        <Card style={{ width: '100%' }}>
+                          <Card.Cover source={{ uri: photoUrls[index] }} />
+                        </Card>
+                      </View>
+                  }
+                />
+                <View style={{ height: 40 }}>
+                  <ScalingDot data={photoUrls} scrollX={scrollX} />
+                </View>
+              </>
+          }
 
           <Text style={styles.title}>Event details</Text>
 
@@ -336,6 +375,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
+  },
+  photos: {
+    marginBottom: 10,
+    marginHorizontal: 10,
   },
   cardView: {
     padding: 10,
