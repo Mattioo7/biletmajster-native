@@ -48,10 +48,13 @@ export default function ModalScreen() {
       } else {
         // TODO: Handle errors
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.warn(error);
-      Alert.alert("An error occurred in fetching photos urls for event with id: [" + eventId + "]");
+      Alert.alert(
+        "An error occurred in fetching photos urls for event with id: [" +
+          eventId +
+          "]"
+      );
     }
   };
 
@@ -87,7 +90,9 @@ export default function ModalScreen() {
       }
     } catch (error) {
       console.warn(error);
-      Alert.alert("An error occurred in fetching event with id: [" + eventId + "]");
+      Alert.alert(
+        "An error occurred in fetching event with id: [" + eventId + "]"
+      );
     }
   };
 
@@ -130,7 +135,11 @@ export default function ModalScreen() {
       }
     } catch (error) {
       console.warn(error);
-      Alert.alert("An error occurred in making reservation for event with id: [" + eventId + "]");
+      Alert.alert(
+        "An error occurred in making reservation for event with id: [" +
+          eventId +
+          "]"
+      );
     }
   };
 
@@ -147,9 +156,7 @@ export default function ModalScreen() {
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <View style={styles.container}>
-
           {/*TODO: tutaj chcę dodać slider*/}
-
 
           <Text style={styles.title}>Event details</Text>
 
@@ -285,7 +292,13 @@ export default function ModalScreen() {
                       Reserve
                     </Button>
                     <View
-                      style={{ backgroundColor: "none", alignItems: "center", justifyContent: "center", maxHeight: 300, padding: 10  }}
+                      style={{
+                        backgroundColor: "none",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        maxHeight: 300,
+                        padding: 10,
+                      }}
                     >
                       {event.placeSchema ? (
                         <Image
