@@ -86,7 +86,9 @@ export const ReservedEventCard = (props: {
       </Card.Content>
       <Card.Actions>
         {/*<IconButton icon="information" onPress={infoFunction} />*/}
-        <IconButton icon="map" onPress={mapFunction} />
+        <IconButton
+          icon="map"
+          onPress={mapFunction} />
         <IconButton
           icon="qrcode"
           onPress={qrFunction}

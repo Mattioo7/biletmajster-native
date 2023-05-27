@@ -30,12 +30,30 @@ export default function ModalScreen() {
 
   const [eventId, _2] = useRecoilState(selectedEventIdState);
   const [event, setEvent] = useState<EventWithPlaces | undefined>();
+  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
 
   // dropdown
   const [data2, setData2] = useState<placeModel[]>([]);
   const [value, setValue] = useState<number>();
   const [isFocus, setIsFocus] = useState(false);
   // end dropdown
+
+  const getPhotosUrls = async () => {
+    try {
+      const fetchedPhotos = await apiClient.events.getPhoto(eventId as number);
+
+      if (fetchedPhotos.ok) {
+        setPhotoUrls(fetchedPhotos.data);
+        console.log(fetchedPhotos.data);
+      } else {
+        // TODO: Handle errors
+      }
+    }
+    catch (error) {
+      console.warn(error);
+      Alert.alert("An error occurred in fetching photos urls for event with id: [" + eventId + "]");
+    }
+  };
 
   const getEvent = async () => {
     try {
@@ -62,12 +80,14 @@ export default function ModalScreen() {
           }));
 
         setData2(placeModels);
+
+        await getPhotosUrls();
       } else {
         // TODO: Handle errors
       }
     } catch (error) {
       console.warn(error);
-      Alert.alert("An error occurred");
+      Alert.alert("An error occurred in fetching event with id: [" + eventId + "]");
     }
   };
 
@@ -110,7 +130,7 @@ export default function ModalScreen() {
       }
     } catch (error) {
       console.warn(error);
-      Alert.alert("An error occurred");
+      Alert.alert("An error occurred in making reservation for event with id: [" + eventId + "]");
     }
   };
 
@@ -127,7 +147,12 @@ export default function ModalScreen() {
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <View style={styles.container}>
+
+          {/*TODO: tutaj chcę dodać slider*/}
+
+
           <Text style={styles.title}>Event details</Text>
+
           <View
             style={styles.separator}
             lightColor="#eee"
