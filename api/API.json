@@ -35,7 +35,9 @@
   "paths": {
     "/events": {
       "get": {
-        "tags": ["Event"],
+        "tags": [
+          "Event"
+        ],
         "summary": "Return list of all events",
         "operationId": "getEvents",
         "responses": {
@@ -55,7 +57,9 @@
         }
       },
       "post": {
-        "tags": ["Event"],
+        "tags": [
+          "Event"
+        ],
         "summary": "Add new event",
         "operationId": "addEvent",
         "requestBody": {
@@ -95,7 +99,9 @@
     },
     "/events/my": {
       "get": {
-        "tags": ["Event"],
+        "tags": [
+          "Event"
+        ],
         "summary": "Return list of events made by organizer, according to session",
         "operationId": "getMyEvents",
         "responses": {
@@ -125,7 +131,9 @@
     },
     "/events/{id}": {
       "get": {
-        "tags": ["Event"],
+        "tags": [
+          "Event"
+        ],
         "summary": "Find event by ID",
         "description": "Returns a single event",
         "operationId": "getEventById",
@@ -161,7 +169,9 @@
         }
       },
       "delete": {
-        "tags": ["Event"],
+        "tags": [
+          "Event"
+        ],
         "summary": "Cancel event",
         "operationId": "cancelEvent",
         "parameters": [
@@ -193,7 +203,9 @@
         ]
       },
       "patch": {
-        "tags": ["Event"],
+        "tags": [
+          "Event"
+        ],
         "summary": "patch existing event",
         "operationId": "patchEvent",
         "parameters": [
@@ -241,9 +253,148 @@
         ]
       }
     },
+    "/events/{id}/photos": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Get list of photo of event",
+        "description": "Returns a list of photo paths",
+        "operationId": "getPhoto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": [
+                    "path_to_photo1",
+                    "path_to_photo2",
+                    "path_to_photo3"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Cancel event",
+        "operationId": "deletePhoto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of Event",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "path",
+            "in": "header",
+            "description": "path of photo",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "deleted"
+          },
+          "403": {
+            "description": "invalid session"
+          },
+          "404": {
+            "description": "id or path not found"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "patch existing event",
+        "operationId": "putPhoto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of Event",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "path",
+            "in": "header",
+            "description": "path of photo",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "path added"
+          },
+          "400": {
+            "description": "path already exist"
+          },
+          "403": {
+            "description": "invalid session"
+          },
+          "404": {
+            "description": "id not found"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
     "/events/getByCategory": {
       "get": {
-        "tags": ["Event"],
+        "tags": [
+          "Event"
+        ],
         "summary": "Return list of all events in category",
         "operationId": "getByCategory",
         "parameters": [
@@ -280,7 +431,9 @@
     },
     "/categories": {
       "get": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "summary": "Return list of all categories",
         "operationId": "getCategories",
         "responses": {
@@ -300,7 +453,9 @@
         }
       },
       "post": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "summary": "Create new category",
         "operationId": "addCategories",
         "parameters": [
@@ -341,7 +496,9 @@
     },
     "/reservation": {
       "post": {
-        "tags": ["Reservation"],
+        "tags": [
+          "Reservation"
+        ],
         "summary": "Create new reservation",
         "operationId": "makeReservation",
         "parameters": [
@@ -386,7 +543,9 @@
         }
       },
       "delete": {
-        "tags": ["Reservation"],
+        "tags": [
+          "Reservation"
+        ],
         "summary": "Create new reservation",
         "operationId": "deleteReservation",
         "parameters": [
@@ -413,7 +572,9 @@
     },
     "/organizer": {
       "post": {
-        "tags": ["Event organizer"],
+        "tags": [
+          "Event organizer"
+        ],
         "summary": "Create orginizer account",
         "operationId": "signUp",
         "requestBody": {
@@ -443,7 +604,9 @@
         }
       },
       "get": {
-        "tags": ["Event organizer"],
+        "tags": [
+          "Event organizer"
+        ],
         "summary": "Get organizer account (my account)",
         "operationId": "getOrganizer",
         "responses": {
@@ -470,7 +633,9 @@
     },
     "/organizer/{id}": {
       "post": {
-        "tags": ["Event organizer"],
+        "tags": [
+          "Event organizer"
+        ],
         "summary": "Confirm orginizer account",
         "operationId": "confirm",
         "parameters": [
@@ -509,7 +674,9 @@
         }
       },
       "delete": {
-        "tags": ["Event organizer"],
+        "tags": [
+          "Event organizer"
+        ],
         "summary": "Confirm orginizer account",
         "operationId": "deleteOrganizer",
         "parameters": [
@@ -541,7 +708,9 @@
         ]
       },
       "patch": {
-        "tags": ["Event organizer"],
+        "tags": [
+          "Event organizer"
+        ],
         "summary": "Patch orginizer account",
         "operationId": "patchOrganizer",
         "parameters": [
@@ -591,7 +760,9 @@
     },
     "/organizer/login": {
       "get": {
-        "tags": ["Event organizer"],
+        "tags": [
+          "Event organizer"
+        ],
         "summary": "Logs organizer into the system",
         "description": "",
         "operationId": "loginOrganizer",
@@ -840,7 +1011,11 @@
             "type": "array",
             "items": {
               "type": "integer",
-              "example": [1, 2, 3]
+              "example": [
+                1,
+                2,
+                3
+              ]
             },
             "minItems": 0
           }
@@ -888,7 +1063,11 @@
             "type": "array",
             "items": {
               "type": "integer",
-              "example": [1, 2, 3]
+              "example": [
+                1,
+                2,
+                3
+              ]
             },
             "minItems": 0
           }
@@ -896,7 +1075,10 @@
       },
       "Place": {
         "type": "object",
-        "required": ["id", "free"],
+        "required": [
+          "id",
+          "free"
+        ],
         "properties": {
           "id": {
             "type": "integer",
@@ -911,7 +1093,10 @@
       },
       "Category": {
         "type": "object",
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "integer",
@@ -927,12 +1112,21 @@
       "EventStatus": {
         "type": "string",
         "description": "event status",
-        "enum": ["inFuture", "pending", "done", "cancelled"],
+        "enum": [
+          "inFuture",
+          "pending",
+          "done",
+          "cancelled"
+        ],
         "example": "done"
       },
       "ReservationDTO": {
         "type": "object",
-        "required": ["eventId", "placeId", "reservationToken"],
+        "required": [
+          "eventId",
+          "placeId",
+          "reservationToken"
+        ],
         "properties": {
           "eventId": {
             "type": "integer",
@@ -952,7 +1146,12 @@
       },
       "Organizer": {
         "type": "object",
-        "required": ["id", "name", "email", "status"],
+        "required": [
+          "id",
+          "name",
+          "email",
+          "status"
+        ],
         "properties": {
           "id": {
             "type": "integer",
@@ -970,13 +1169,20 @@
           "status": {
             "type": "string",
             "description": "User Status",
-            "enum": ["pending", "confirmed"]
+            "enum": [
+              "pending",
+              "confirmed"
+            ]
           }
         }
       },
       "OrganizerForm": {
         "type": "object",
-        "required": ["name", "email", "password"],
+        "required": [
+          "name",
+          "email",
+          "password"
+        ],
         "properties": {
           "name": {
             "type": "string",
