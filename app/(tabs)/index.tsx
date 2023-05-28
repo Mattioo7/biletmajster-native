@@ -166,11 +166,11 @@ export default function TabOneScreen() {
     }
   };
 
-  useEffect(() => {
-    getCategories().then(() => {
-      //console.log("Fetched categories");
-    });
-  }, []);
+  // useEffect(() => {
+  //   getCategories().then(() => {
+  //     //console.log("Fetched categories");
+  //   });
+  // }, []);
 
   useFocusEffect(
     useCallback(() => {

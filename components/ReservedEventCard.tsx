@@ -25,7 +25,8 @@ export const ReservedEventCard = (props: {
   const {
     reservation,
     cancelFunction,
-    qrFunction /* infoFunction : unused */,
+    qrFunction,
+    infoFunction,
   } = {
     ...props,
   };
@@ -85,7 +86,7 @@ export const ReservedEventCard = (props: {
         </Text>
       </Card.Content>
       <Card.Actions>
-        {/*<IconButton icon="information" onPress={infoFunction} />*/}
+        <IconButton icon="information" onPress={infoFunction} />
         <IconButton icon="map" onPress={mapFunction} />
         <IconButton
           icon="qrcode"

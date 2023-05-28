@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { Alert, Image, Platform, ScrollView, StyleSheet } from "react-native";
+import { Alert, Animated, FlatList, Image, Platform, ScrollView, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Category, EventWithPlaces } from "../api/Api";
 import { ActivityIndicator, Card, Chip, IconButton } from "react-native-paper";
 // @ts-ignore
@@ -11,6 +11,9 @@ import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIc
 import selectedReservationLocation from "../recoil/selectedReservationLocation";
 import { useRouter } from "expo-router";
 import { useApiClient } from "../functions/useApiClient";
+import { useSafeAreaFrame } from "react-native-safe-area-context";
+import { backendUrlState } from "../recoil/backendUrlState";
+import { ScalingDot } from "react-native-animated-pagination-dots";
 
 interface placeModel {
   label: string;
@@ -21,10 +24,36 @@ export default function ReservationScreen() {
   const router = useRouter();
   const apiClient = useApiClient();
 
+  const { width } = useSafeAreaFrame();
+  const imgWidth = width - 20;
+  const [backend, _3] = useRecoilState(backendUrlState);
+  const scrollX = React.useRef(new Animated.Value(0)).current;
+
   const [isLoading, setLoading] = useState(true);
 
   const [eventId, setEventId] = useRecoilState(selectedEventIdState);
   const [event, setEvent] = useState<EventWithPlaces | undefined>();
+  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
+
+  const getPhotosUrls = async () => {
+    try {
+      const fetchedPhotos = await apiClient.events.getPhoto(eventId as number);
+
+      if (fetchedPhotos.ok) {
+        setPhotoUrls(fetchedPhotos.data);
+        console.log(fetchedPhotos.data);
+      } else {
+        // TODO: Handle errors
+      }
+    } catch (error) {
+      console.warn(error);
+      Alert.alert(
+        "An error occurred in fetching photos urls for event with id: [" +
+        eventId +
+        "]"
+      );
+    }
+  };
 
   const getEvent = async () => {
     try {
@@ -41,6 +70,7 @@ export default function ReservationScreen() {
           : undefined;
 
         setEvent(fetchedEvents.data);
+        await getPhotosUrls();
       }
     } catch (error) {
       console.warn(error);
@@ -72,6 +102,38 @@ export default function ReservationScreen() {
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <View style={styles.container}>
+          {
+            photoUrls.length === 0 ? undefined :
+              <>
+                <FlatList
+                  onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                    {
+                      useNativeDriver: false,
+                    }
+                  )}
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.photos}
+                  horizontal={true}
+                  snapToAlignment="start"
+                  decelerationRate="normal"
+                  snapToInterval={imgWidth + 10}
+                  data={photoUrls}
+                  renderItem={
+                    ({ item, index }) =>
+                      <View style={{ width: imgWidth, marginLeft: index === 0 ? 0 : 10 }}>
+                        <Card style={{ width: '100%' }}>
+                          <Card.Cover source={{ uri: photoUrls[index] }} resizeMode={'stretch'} />
+                        </Card>
+                      </View>
+                  }
+                />
+                <View style={{ height: 40 }}>
+                  <ScalingDot data={photoUrls} scrollX={scrollX} />
+                </View>
+              </>
+          }
+
           <Text style={styles.title}>Reservation details</Text>
           <View
             style={styles.separator}
@@ -204,6 +266,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
+  },
+  photos: {
+    marginBottom: 10,
+    marginHorizontal: 10,
   },
   cardView: {
     padding: 10,

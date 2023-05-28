@@ -21,6 +21,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSafeAreaFrame } from "react-native-safe-area-context";
 import { backendUrlState } from "../recoil/backendUrlState";
 import { ScalingDot } from "react-native-animated-pagination-dots";
+import { useRouter } from "expo-router";
 
 interface placeModel {
   label: string;
@@ -45,6 +46,9 @@ export default function ModalScreen() {
   const [value, setValue] = useState<number>();
   const [isFocus, setIsFocus] = useState(false);
   // end dropdown
+
+  const router = useRouter();
+  const [_4, setActiveEventId] = useRecoilState(selectedEventIdState);
 
   const getPhotosUrls = async () => {
     try {
@@ -164,7 +168,6 @@ export default function ModalScreen() {
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <View style={styles.container}>
-          {/*TODO: tutaj chcę dodać slider*/}
           {
             photoUrls.length === 0 ? undefined :
               <>
@@ -186,7 +189,7 @@ export default function ModalScreen() {
                     ({ item, index }) =>
                       <View style={{ width: imgWidth, marginLeft: index === 0 ? 0 : 10 }}>
                         <Card style={{ width: '100%' }}>
-                          <Card.Cover source={{ uri: photoUrls[index] }} />
+                          <Card.Cover source={{ uri: photoUrls[index] }} resizeMode={'stretch'} />
                         </Card>
                       </View>
                   }
@@ -320,7 +323,11 @@ export default function ModalScreen() {
                       style={{ marginTop: 10 }}
                       mode="contained"
                       onPress={() => {
-                        if (value !== undefined) makeReservation(event, value);
+                        if (value !== undefined) {
+                          makeReservation(event, value).then(() => {
+                            router.push("/two");
+                          });
+                        }
                       }}
                       disabled={
                         event.freePlace <= 0 ||

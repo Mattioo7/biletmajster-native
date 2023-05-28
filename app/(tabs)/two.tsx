@@ -158,7 +158,7 @@ export default function TabTwoScreen() {
                 cancelFunction={cancelReservation}
                 infoFunction={() => {
                   setActiveEventId(item.event.id);
-                  router.push("/event");
+                  router.push("/reservation");
                 }}
               />
             )}
@@ -170,7 +170,7 @@ export default function TabTwoScreen() {
         small
         icon="minus"
         onPress={clearAllData}
-        disabled={true}
+        // disabled={true}
       />
     </SafeAreaView>
   );
