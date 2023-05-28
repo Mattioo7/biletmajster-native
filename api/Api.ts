@@ -592,6 +592,56 @@ export class Api<
       }),
 
     /**
+     * @description Returns a list of photo paths
+     *
+     * @tags Event
+     * @name GetPhoto
+     * @summary Get list of photo of event
+     * @request GET:/events/{id}/photos
+     */
+    getPhoto: (id: number, params: RequestParams = {}) =>
+      this.request<string[], void>({
+        path: `/events/${id}/photos`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Event
+     * @name DeletePhoto
+     * @summary Cancel event
+     * @request DELETE:/events/{id}/photos
+     * @secure
+     */
+    deletePhoto: (id: string, params: RequestParams = {}) =>
+      this.request<void, void>({
+        path: `/events/${id}/photos`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Event
+     * @name PutPhoto
+     * @summary patch existing event
+     * @request POST:/events/{id}/photos
+     * @secure
+     */
+    putPhoto: (id: string, params: RequestParams = {}) =>
+      this.request<void, void>({
+        path: `/events/${id}/photos`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
      * No description
      *
      * @tags Event

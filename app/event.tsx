@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { Alert, Image, Platform, ScrollView, StyleSheet } from "react-native";
+import { Alert, Animated, FlatList, Image, Platform, ScrollView, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 import { useRecoilState } from "recoil";
 import selectedEventIdState from "../recoil/selectedEventIdState";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Category,
   Event,
@@ -18,6 +18,10 @@ import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIc
 import { Dropdown } from "react-native-element-dropdown";
 import { Reservation } from "../models/Reservation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSafeAreaFrame } from "react-native-safe-area-context";
+import { backendUrlState } from "../recoil/backendUrlState";
+import { ScalingDot } from "react-native-animated-pagination-dots";
+import { useRouter } from "expo-router";
 
 interface placeModel {
   label: string;
@@ -28,14 +32,43 @@ export default function ModalScreen() {
   const apiClient = useApiClient();
   const [_1, setLoading] = useState(true);
 
+  const { width } = useSafeAreaFrame();
+  const imgWidth = width - 20;
+  const [backend, _3] = useRecoilState(backendUrlState);
+  const scrollX = React.useRef(new Animated.Value(0)).current;
+
   const [eventId, _2] = useRecoilState(selectedEventIdState);
   const [event, setEvent] = useState<EventWithPlaces | undefined>();
+  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
 
   // dropdown
   const [data2, setData2] = useState<placeModel[]>([]);
   const [value, setValue] = useState<number>();
   const [isFocus, setIsFocus] = useState(false);
   // end dropdown
+
+  const router = useRouter();
+  const [_4, setActiveEventId] = useRecoilState(selectedEventIdState);
+
+  const getPhotosUrls = async () => {
+    try {
+      const fetchedPhotos = await apiClient.events.getPhoto(eventId as number);
+
+      if (fetchedPhotos.ok) {
+        setPhotoUrls(fetchedPhotos.data);
+        console.log(fetchedPhotos.data);
+      } else {
+        // TODO: Handle errors
+      }
+    } catch (error) {
+      console.warn(error);
+      Alert.alert(
+        "An error occurred in fetching photos urls for event with id: [" +
+          eventId +
+          "]"
+      );
+    }
+  };
 
   const getEvent = async () => {
     try {
@@ -62,12 +95,16 @@ export default function ModalScreen() {
           }));
 
         setData2(placeModels);
+
+        await getPhotosUrls();
       } else {
         // TODO: Handle errors
       }
     } catch (error) {
       console.warn(error);
-      Alert.alert("An error occurred");
+      Alert.alert(
+        "An error occurred in fetching event with id: [" + eventId + "]"
+      );
     }
   };
 
@@ -110,7 +147,11 @@ export default function ModalScreen() {
       }
     } catch (error) {
       console.warn(error);
-      Alert.alert("An error occurred");
+      Alert.alert(
+        "An error occurred in making reservation for event with id: [" +
+          eventId +
+          "]"
+      );
     }
   };
 
@@ -127,7 +168,40 @@ export default function ModalScreen() {
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <View style={styles.container}>
+          {
+            photoUrls.length === 0 ? undefined :
+              <>
+                <FlatList
+                  onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                    {
+                      useNativeDriver: false,
+                    }
+                  )}
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.photos}
+                  horizontal={true}
+                  snapToAlignment="start"
+                  decelerationRate="normal"
+                  snapToInterval={imgWidth + 10}
+                  data={photoUrls}
+                  renderItem={
+                    ({ item, index }) =>
+                      <View style={{ width: imgWidth, marginLeft: index === 0 ? 0 : 10 }}>
+                        <Card style={{ width: '100%' }}>
+                          <Card.Cover source={{ uri: photoUrls[index] }} resizeMode={'stretch'} />
+                        </Card>
+                      </View>
+                  }
+                />
+                <View style={{ height: 40 }}>
+                  <ScalingDot data={photoUrls} scrollX={scrollX} />
+                </View>
+              </>
+          }
+
           <Text style={styles.title}>Event details</Text>
+
           <View
             style={styles.separator}
             lightColor="#eee"
@@ -249,7 +323,11 @@ export default function ModalScreen() {
                       style={{ marginTop: 10 }}
                       mode="contained"
                       onPress={() => {
-                        if (value !== undefined) makeReservation(event, value);
+                        if (value !== undefined) {
+                          makeReservation(event, value).then(() => {
+                            router.push("/two");
+                          });
+                        }
                       }}
                       disabled={
                         event.freePlace <= 0 ||
@@ -260,7 +338,13 @@ export default function ModalScreen() {
                       Reserve
                     </Button>
                     <View
-                      style={{ backgroundColor: "none", alignItems: "center", justifyContent: "center", maxHeight: 300, padding: 10  }}
+                      style={{
+                        backgroundColor: "none",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        maxHeight: 300,
+                        padding: 10,
+                      }}
                     >
                       {event.placeSchema ? (
                         <Image
@@ -298,6 +382,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
+  },
+  photos: {
+    marginBottom: 10,
+    marginHorizontal: 10,
   },
   cardView: {
     padding: 10,
